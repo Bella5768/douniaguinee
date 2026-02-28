@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
@@ -24,36 +23,13 @@ def is_staff_user(user):
 
 
 def staff_login_url(request):
-    return f"/gestion/login/?next={request.path}"
-
-
-def admin_login(request):
-    if request.user.is_authenticated and request.user.is_staff:
-        next_url = request.GET.get('next') or 'admin_dashboard'
-        return redirect(next_url)
-
-    if request.method == 'POST':
-        username = (request.POST.get('username') or '').strip()
-        password = request.POST.get('password') or ''
-        user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_staff:
-            login(request, user)
-            next_url = request.GET.get('next') or 'admin_dashboard'
-            return redirect(next_url)
-        messages.error(request, "Identifiants invalides ou accès non autorisé.")
-
-    return render(request, 'gestion/login.html')
-
-
-def admin_logout(request):
-    logout(request)
-    return redirect('landing_page')
+    return f"/admin/login/?next={request.path}"
 
 
 def staff_required(view_func):
     """Require an authenticated staff user for custom gestion views."""
     wrapped = login_required(view_func, login_url=staff_login_url)
-    return user_passes_test(is_staff_user)(wrapped)
+    return user_passes_test(is_staff_user, login_url=staff_login_url)(wrapped)
 
 
 @staff_required
