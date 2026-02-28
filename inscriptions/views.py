@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
@@ -22,6 +23,40 @@ def is_staff_user(user):
     return user.is_staff
 
 
+def staff_login_url(request):
+    return f"/gestion/login/?next={request.path}"
+
+
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        next_url = request.GET.get('next') or 'admin_dashboard'
+        return redirect(next_url)
+
+    if request.method == 'POST':
+        username = (request.POST.get('username') or '').strip()
+        password = request.POST.get('password') or ''
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_staff:
+            login(request, user)
+            next_url = request.GET.get('next') or 'admin_dashboard'
+            return redirect(next_url)
+        messages.error(request, "Identifiants invalides ou accès non autorisé.")
+
+    return render(request, 'gestion/login.html')
+
+
+def admin_logout(request):
+    logout(request)
+    return redirect('landing_page')
+
+
+def staff_required(view_func):
+    """Require an authenticated staff user for custom gestion views."""
+    wrapped = login_required(view_func, login_url=staff_login_url)
+    return user_passes_test(is_staff_user)(wrapped)
+
+
+@staff_required
 def manage_hero_stats_images(request):
     """Vue pour gérer les images du hero et des statistiques"""
     hero_images_gauche = HeroImage.objects.filter(position='gauche').order_by('ordre', 'date_ajout')
@@ -39,6 +74,7 @@ def manage_hero_stats_images(request):
 
 
 @require_POST
+@staff_required
 def add_hero_image(request):
     """Ajouter une image hero"""
     titre = request.POST.get('titre', '')
@@ -67,6 +103,7 @@ def add_hero_image(request):
 
 
 @require_POST
+@staff_required
 def add_stats_image(request):
     """Ajouter une image statistiques"""
     titre = request.POST.get('titre', '')
@@ -93,6 +130,7 @@ def add_stats_image(request):
 
 
 @require_POST
+@staff_required
 def toggle_hero_image(request, image_id):
     """Activer/désactiver une image hero"""
     image = get_object_or_404(HeroImage, id=image_id)
@@ -104,6 +142,7 @@ def toggle_hero_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def toggle_stats_image(request, image_id):
     """Activer/désactiver une image statistiques"""
     image = get_object_or_404(StatsImage, id=image_id)
@@ -115,6 +154,7 @@ def toggle_stats_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def delete_hero_image(request, image_id):
     """Supprimer une image hero"""
     image = get_object_or_404(HeroImage, id=image_id)
@@ -123,6 +163,7 @@ def delete_hero_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def delete_stats_image(request, image_id):
     """Supprimer une image statistiques"""
     image = get_object_or_404(StatsImage, id=image_id)
@@ -131,6 +172,7 @@ def delete_stats_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def update_hero_image_order(request):
     """Mettre à jour l'ordre des images hero"""
     orders = request.POST.getlist('orders[]')
@@ -145,6 +187,7 @@ def update_hero_image_order(request):
 
 
 @require_POST
+@staff_required
 def update_stats_image_order(request):
     """Mettre à jour l'ordre des images statistiques"""
     orders = request.POST.getlist('orders[]')
@@ -789,6 +832,7 @@ def event_page(request, event_slug):
     return render(request, 'inscriptions/event.html', context)
 
 
+@staff_required
 def admin_evenements(request):
     """Gestion des événements (DounIA 1 / DounIA 2)"""
     try:
@@ -952,6 +996,7 @@ Date: {timezone.now().strftime('%d/%m/%Y %H:%M')}
     return redirect('landing_page')
 
 
+@staff_required
 def admin_dashboard(request):
     """Tableau de bord administrateur"""
     total = Inscription.objects.count()
@@ -1004,6 +1049,7 @@ def admin_dashboard(request):
     return render(request, 'gestion/dashboard.html', context)
 
 
+@staff_required
 def admin_inscriptions(request):
     """Gestion des inscriptions"""
     inscriptions = Inscription.objects.all().order_by('-date_inscription')
@@ -1040,6 +1086,7 @@ def admin_inscriptions(request):
     return render(request, 'gestion/inscriptions.html', context)
 
 
+@staff_required
 def admin_inscription_detail(request, pk):
     """Détail d'une inscription"""
     inscription = get_object_or_404(Inscription, pk=pk)
@@ -1047,6 +1094,7 @@ def admin_inscription_detail(request, pk):
     return render(request, 'gestion/detail.html', context)
 
 
+@staff_required
 def admin_inscription_edit(request, pk):
     """Modifier une inscription"""
     inscription = get_object_or_404(Inscription, pk=pk)
@@ -1077,6 +1125,7 @@ def admin_inscription_edit(request, pk):
     return render(request, 'gestion/edit.html', context)
 
 
+@staff_required
 def admin_inscription_delete(request, pk):
     """Supprimer une inscription"""
     inscription = get_object_or_404(Inscription, pk=pk)
@@ -1089,6 +1138,7 @@ def admin_inscription_delete(request, pk):
     return render(request, 'gestion/delete.html', context)
 
 
+@staff_required
 def admin_inscription_valider(request, pk):
     """Valider une inscription et envoyer l'agenda"""
     inscription = get_object_or_404(Inscription, pk=pk)
@@ -1100,6 +1150,7 @@ def admin_inscription_valider(request, pk):
     return redirect('admin_inscription_detail', pk=inscription.pk)
 
 
+@staff_required
 def admin_contenu_page(request):
     """Page de gestion du contenu"""
     config = SiteConfiguration.get()
@@ -1111,6 +1162,7 @@ def admin_contenu_page(request):
     return render(request, 'gestion/contenu_page.html', context)
 
 
+@staff_required
 def admin_chiffres(request):
     """Gestion des chiffres clés"""
     if request.method == 'POST':
@@ -1157,6 +1209,7 @@ def admin_chiffres(request):
     return render(request, 'gestion/chiffres.html', context)
 
 
+@staff_required
 def admin_experts(request):
     """Gestion des experts"""
     if request.method == 'POST':
@@ -1201,6 +1254,7 @@ def admin_experts(request):
     return render(request, 'gestion/experts.html', context)
 
 
+@staff_required
 def admin_partenaires(request):
     """Gestion des partenaires"""
     if request.method == 'POST':
@@ -1252,6 +1306,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 
+@staff_required
 def admin_dounia_events(request):
     """Interface de gestion des événements DounIA"""
     from .models import DouniaEvent
@@ -1418,6 +1473,7 @@ def admin_dounia_events(request):
     return render(request, 'gestion/admin_dounia_events.html', context)
 
 
+@staff_required
 def admin_restitution(request):
     """Interface de gestion de la page restitution"""
     from .models import Restitution
@@ -1537,6 +1593,7 @@ def admin_restitution(request):
     return render(request, 'gestion/admin_restitution.html', context)
 
 
+@staff_required
 def admin_ateliers(request):
     """Gestion des ateliers"""
     if request.method == 'POST':
@@ -1628,6 +1685,7 @@ def admin_ateliers(request):
     return render(request, 'gestion/ateliers.html', context)
 
 
+@staff_required
 def admin_edit_section(request, section):
     """Édition d'une section spécifique"""
     config = SiteConfiguration.get()
@@ -1817,6 +1875,7 @@ def admin_edit_section(request, section):
     return render(request, 'gestion/edit_section.html', context)
 
 
+@staff_required
 def export_inscriptions_csv(request):
     """Export des inscriptions en CSV"""
     response = HttpResponse(content_type='text/csv')
@@ -1840,6 +1899,7 @@ def export_inscriptions_csv(request):
     return response
 
 
+@staff_required
 def export_inscriptions_pdf(request):
     """Export des inscriptions en PDF"""
     from reportlab.pdfgen import canvas
@@ -1885,11 +1945,13 @@ def export_inscriptions_pdf(request):
     return doc
 
 
+@staff_required
 def generer_agenda_pdf_view(request):
     """Générer le PDF de l'agenda"""
     return generer_agenda_pdf(request)
 
 
+@staff_required
 def manage_hero_images(request):
     """Vue pour gérer les images du carousel hero (ancienne fonction)"""
     hero_images = HeroCarouselImage.objects.all().order_by('ordre', 'date_ajout')
@@ -1901,6 +1963,7 @@ def manage_hero_images(request):
 
 
 @require_POST
+@staff_required
 def add_carousel_image(request):
     """Ajouter une image au carousel hero"""
     titre = request.POST.get('titre', '')
@@ -1926,6 +1989,7 @@ def add_carousel_image(request):
 
 
 @require_POST
+@staff_required
 def toggle_carousel_image(request, image_id):
     """Activer/désactiver une image carousel"""
     image = get_object_or_404(HeroCarouselImage, id=image_id)
@@ -1936,6 +2000,7 @@ def toggle_carousel_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def delete_carousel_image(request, image_id):
     """Supprimer une image carousel"""
     image = get_object_or_404(HeroCarouselImage, id=image_id)
@@ -1944,6 +2009,7 @@ def delete_carousel_image(request, image_id):
 
 
 @require_POST
+@staff_required
 def update_image_order(request):
     """Mettre à jour l'ordre des images (ancienne fonction)"""
     orders = request.POST.getlist('orders[]')

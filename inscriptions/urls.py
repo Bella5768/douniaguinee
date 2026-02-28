@@ -9,6 +9,10 @@ urlpatterns = [
     path('rapport-download/', views.rapport_download, name='rapport_download'),
     path('rapport-view/', views.rapport_view_pdf, name='rapport_view_pdf'),
 
+    # Auth gestion
+    path('gestion/login/', views.admin_login, name='admin_login'),
+    path('gestion/logout/', views.admin_logout, name='admin_logout'),
+
     # Dashboard de gestion
     path('gestion/', views.admin_dashboard, name='admin_dashboard'),
     path('gestion/inscriptions/', views.admin_inscriptions, name='admin_inscriptions'),
