@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DounIA — Données Numériques & Intelligence Artificielle en Guinée. Processus scientifique et collaboratif pour coconstruire une vision nationale autour de la gouvernance des données et de l'IA.">
+    <meta name="keywords" content="DounIA, Intelligence Artificielle, Guinée, Données Numériques, Gouvernance, Ateliers">
+    <title>{% block title %}DounIA — Données Numériques & Intelligence Artificielle{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5.6">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+    <nav class="navbar navbar-expand-lg navbar-dounia fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-baseline gap-2" href="{% url 'landing_page' %}">Doun<span>IA</span> <small style="font-size:0.45em;font-weight:500;opacity:0.7;letter-spacing:0.5px;">Données Numériques &amp; l'Intelligence Artificielle</small></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <form class="d-flex me-3 position-relative" role="search" id="quickSearchForm" style="display: flex !important;">
+                    <input class="form-control" type="search" placeholder="Rechercher..." aria-label="Rechercher" id="quickSearchInput" autocomplete="off" style="min-width: 250px; border-radius: 20px; border: 1px solid #dee2e6; padding: 0.375rem 1rem; font-size: 0.9rem; display: block !important;">
+                    <div id="searchDropdown" class="position-absolute w-100 bg-white border rounded-3 shadow-lg mt-1" style="top: 100%; z-index: 1000; display: none; max-height: 400px; overflow-y: auto;">
+                        <div class="p-3">
+                            <div class="text-muted small">Tapez pour rechercher...</div>
+                        </div>
+                    </div>
+                </form>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'landing_page' %}#evenements">Événements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'landing_page' %}#about">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'landing_page' %}#podcast">Podcast</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'landing_page' %}#experts">Experts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'landing_page' %}#inscription">Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gestion/">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5>Doun<span style="color: var(--accent);">IA</span></h5>
+                    <p class="small">{{ config.footer_description }}</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#about"><i class="bi bi-chevron-right me-1"></i>À propos</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#livrable"><i class="bi bi-chevron-right me-1"></i>Livrable</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#ateliers"><i class="bi bi-chevron-right me-1"></i>Ateliers thématiques</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#podcast"><i class="bi bi-chevron-right me-1"></i>Podcast</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#experts"><i class="bi bi-chevron-right me-1"></i>Experts</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#inscription"><i class="bi bi-chevron-right me-1"></i>S'inscrire</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>{{ config.footer_email }}</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>{{ config.footer_lieu }}</li>
+                    </ul>
+                    <div class="d-flex gap-3 mt-3">
+                        <a href="#" class="fs-5"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="fs-5"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0">&copy; 2026 DounIA — Tous droits réservés. Conçu avec soin pour la Guinée.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+    // Recherche instantanée avec dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.getElementById('quickSearchForm');
+        const searchInput = document.getElementById('quickSearchInput');
+        const searchDropdown = document.getElementById('searchDropdown');
+        let searchTimeout;
+        
+        if (searchForm && searchInput && searchDropdown) {
+            // Cache pour éviter les requêtes répétées
+            let searchCache = {};
+            
+            // Fonction pour effectuer la recherche AJAX
+            function performSearch(query) {
+                if (searchCache[query]) {
+                    displayResults(searchCache[query]);
+                    return;
+                }
+                
+                fetch(`{% url 'search_results' %}?q=${encodeURIComponent(query)}&ajax=1`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    searchCache[query] = data;
+                    displayResults(data);
+                })
+                .catch(error => {
+                    console.error('Erreur de recherche:', error);
+                    searchDropdown.innerHTML = `
+                        <div class="p-3">
+                            <div class="text-danger small">Erreur lors de la recherche</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Fonction pour afficher les résultats
+            function displayResults(data) {
+                if (data.results && data.results.length > 0) {
+                    let html = '<div class="search-results-container">';
+                    
+                    data.results.slice(0, 8).forEach((result, index) => {
+                        const typeClass = result.type;
+                        let url;
+                        if (result.url.startsWith('http')) {
+                            url = result.url;
+                        } else if (result.url.startsWith('/')) {
+                            url = result.url;
+                        } else if (result.url.startsWith('#')) {
+                            url = `{% url 'landing_page' %}${result.url}`;
+                        } else {
+                            url = result.url;
+                        }
+                        
+                        html += `
+                            <a class="search-result-item text-decoration-none d-block p-3 border-bottom hover-bg-light" 
+                               style="transition: background-color 0.2s;"
+                               href="${url}"
+                               data-url="${url}"
+                               data-index="${index}">
+                                <div class="d-flex align-items-start">
+                                    <div class="me-3">
+                                        <span class="badge bg-${getTypeColor(typeClass)} text-uppercase" 
+                                              style="font-size: 0.7rem;">${result.type}</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold text-dark mb-1">${result.title}</div>
+                                        ${result.subtitle ? `<div class="text-muted small mb-1">${result.subtitle}</div>` : ''}
+                                        ${result.description ? `<div class="text-muted small">${result.description}</div>` : ''}
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    
+                    if (data.count > 8) {
+                        html += `
+                            <div class="p-2 text-center border-top">
+                                <a href="{% url 'search_results' %}?q=${encodeURIComponent(data.query)}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    Voir tous les ${data.count} résultats
+                                </a>
+                            </div>
+                        `;
+                    }
+                    
+                    html += '</div>';
+                    searchDropdown.innerHTML = html;
+                } else {
+                    searchDropdown.innerHTML = `
+                        <div class="p-3">
+                            <div class="text-muted small">Aucun résultat trouvé pour "${data.query}"</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Fonction pour obtenir la couleur du badge selon le type
+            function getTypeColor(type) {
+                const colors = {
+                    'evenement': 'primary',
+                    'chiffre': 'success',
+                    'partenaire': 'info',
+                    'expert': 'warning',
+                    'section': 'secondary',
+                    'page': 'dark'
+                };
+                return colors[type] || 'secondary';
+            }
+            
+            // Gérer la saisie dans le champ de recherche
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.trim();
+                
+                clearTimeout(searchTimeout);
+                
+                if (query.length < 2) {
+                    searchDropdown.style.display = 'none';
+                    return;
+                }
+                
+                searchDropdown.style.display = 'block';
+                searchDropdown.innerHTML = `
+                    <div class="p-3">
+                        <div class="text-muted small">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            Recherche en cours...
+                        </div>
+                    </div>
+                `;
+                
+                // Attendre 300ms après la fin de la saisie pour lancer la recherche
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 300);
+            });
+            
+            // Gérer le focus
+            searchInput.addEventListener('focus', function() {
+                if (searchInput.value.trim().length >= 2) {
+                    searchDropdown.style.display = 'block';
+                }
+            });
+            
+            // Cacher le dropdown quand on clique ailleurs
+            document.addEventListener('click', function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            // Empêcher la fermeture du dropdown quand on clique sur un résultat
+            searchDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Empêcher la soumission du formulaire
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                    window.location.href = `{% url 'search_results' %}?q=${encodeURIComponent(query)}`;
+                }
+            });
+        }
+    });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

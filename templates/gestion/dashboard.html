@@ -1,0 +1,255 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Tableau de bord — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2>Tableau de bord</h2>
+        <p class="mb-0">Vue d'ensemble des inscriptions DounIA 2</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'admin_inscriptions' %}" class="btn btn-admin-primary btn-sm">
+            <i class="bi bi-people me-1"></i>Inscriptions
+        </a>
+        <a href="{% url 'export_inscriptions_csv' %}" class="btn btn-admin-accent btn-sm">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+    </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-total">
+            <div class="stat-card-icon"><i class="bi bi-people-fill"></i></div>
+            <div>
+                <div class="stat-card-number">{{ total }}</div>
+                <div class="stat-card-label">Inscriptions totales</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-atelier">
+            <div class="stat-card-icon"><i class="bi bi-journal-text"></i></div>
+            <div>
+                <div class="stat-card-number">{{ stats_atelier|length }}</div>
+                <div class="stat-card-label">Ateliers actifs</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-profil">
+            <div class="stat-card-icon"><i class="bi bi-person-badge"></i></div>
+            <div>
+                <div class="stat-card-number">{{ stats_profil|length }}</div>
+                <div class="stat-card-label">Types de profils</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-format">
+            <div class="stat-card-icon"><i class="bi bi-laptop"></i></div>
+            <div>
+                <div class="stat-card-number">{{ stats_format|length }}</div>
+                <div class="stat-card-label">Formats choisis</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Répartition par atelier</h5>
+            </div>
+            <div class="admin-card-body">
+                {% for s in stats_atelier %}
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold text-truncate me-2">{{ s.label }}</span>
+                        <span class="badge bg-light text-primary">{{ s.count }}</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar" style="width: {% widthratio s.count total 100 %}%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="admin-empty-state"><i class="bi bi-inbox"></i><p>Aucune inscription</p></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i>Répartition par profil</h5>
+            </div>
+            <div class="admin-card-body">
+                {% for s in stats_profil %}
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold">{{ s.label }}</span>
+                        <span class="badge bg-accent-subtle">{{ s.count }}</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar bg-accent-bar" style="width: {% widthratio s.count total 100 %}%"></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="admin-empty-state"><i class="bi bi-inbox"></i><p>Aucune inscription</p></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-display me-2"></i>Format préféré</h5>
+            </div>
+            <div class="admin-card-body">
+                {% for s in stats_format %}
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold">{{ s.label }}</span>
+                        <span class="badge bg-light text-success">{{ s.count }}</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar" style="width: {% widthratio s.count total 100 %}%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="admin-empty-state"><i class="bi bi-inbox"></i><p>Aucune inscription</p></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-hand-thumbs-up me-2"></i>Type d'engagement</h5>
+            </div>
+            <div class="admin-card-body">
+                {% for s in stats_engagement %}
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold">{{ s.label }}</span>
+                        <span class="badge bg-light text-info">{{ s.count }}</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar" style="width: {% widthratio s.count total 100 %}%; background: linear-gradient(90deg, #06b6d4, #0891b2);"></div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="admin-empty-state"><i class="bi bi-inbox"></i><p>Aucune inscription</p></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="admin-section-header">
+    <div class="section-icon action-icon-purple"><i class="bi bi-lightning-charge-fill"></i></div>
+    <h3>Accès rapide</h3>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <a href="{% url 'manage_hero_stats_images' %}" class="quick-action-card">
+            <div class="action-icon action-icon-blue me-3"><i class="bi bi-images"></i></div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-semibold" style="font-size:0.9rem;">Images Hero & Stats</h6>
+                <p class="mb-0 small" style="color: var(--admin-text-secondary);">Gérer les images du hero et statistiques</p>
+            </div>
+            <i class="bi bi-chevron-right action-arrow"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'admin_contenu_page' %}" class="quick-action-card">
+            <div class="action-icon action-icon-green me-3"><i class="bi bi-file-earmark-text"></i></div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-semibold" style="font-size:0.9rem;">Contenu de la page</h6>
+                <p class="mb-0 small" style="color: var(--admin-text-secondary);">Modifier les textes et descriptions</p>
+            </div>
+            <i class="bi bi-chevron-right action-arrow"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'admin_chiffres' %}" class="quick-action-card">
+            <div class="action-icon action-icon-orange me-3"><i class="bi bi-graph-up-arrow"></i></div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-semibold" style="font-size:0.9rem;">Chiffres clés</h6>
+                <p class="mb-0 small" style="color: var(--admin-text-secondary);">Gérer les statistiques affichées</p>
+            </div>
+            <i class="bi bi-chevron-right action-arrow"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'admin_restitution' %}" class="quick-action-card">
+            <div class="action-icon action-icon-purple me-3"><i class="bi bi-file-earmark-text"></i></div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-semibold" style="font-size:0.9rem;">Restitution</h6>
+                <p class="mb-0 small" style="color: var(--admin-text-secondary);">Gérer la page de restitution</p>
+            </div>
+            <i class="bi bi-chevron-right action-arrow"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'admin_dounia_events' %}" class="quick-action-card">
+            <div class="action-icon action-icon-blue me-3"><i class="bi bi-calendar-event"></i></div>
+            <div class="flex-grow-1">
+                <h6 class="mb-1 fw-semibold" style="font-size:0.9rem;">Événements DounIA</h6>
+                <p class="mb-0 small" style="color: var(--admin-text-secondary);">Gérer DounIA 1 & 2</p>
+            </div>
+            <i class="bi bi-chevron-right action-arrow"></i>
+        </a>
+    </div>
+</div>
+
+<!-- Recent Inscriptions -->
+<div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Dernières inscriptions</h5>
+        <a href="{% url 'admin_inscriptions' %}" class="btn btn-admin-outline btn-sm">Voir tout <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="admin-card-body p-0">
+        <div class="table-responsive">
+            <table class="table admin-table mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Nom complet</th>
+                        <th>Email</th>
+                        <th>Institution</th>
+                        <th>Atelier</th>
+                        <th>Profil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for insc in recent %}
+                    <tr>
+                        <td><span class="small" style="color: var(--admin-text-secondary);">{{ insc.date_inscription|date:"d/m/Y H:i" }}</span></td>
+                        <td class="fw-semibold">{{ insc.prenom }} {{ insc.nom }}</td>
+                        <td><a href="mailto:{{ insc.email }}" class="text-decoration-none small">{{ insc.email }}</a></td>
+                        <td class="small">{{ insc.institution }}</td>
+                        <td><span class="badge bg-light text-primary">{{ insc.get_atelier_display|truncatewords:4 }}</span></td>
+                        <td><span class="badge bg-light text-secondary">{{ insc.get_profil_display }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="admin-empty-state"><i class="bi bi-inbox"></i><p>Aucune inscription enregistrée</p></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

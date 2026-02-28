@@ -1,0 +1,100 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Experts — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_contenu_page' %}">Contenu de la page</a></li>
+            <li class="breadcrumb-item active">Experts</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Experts & Participants</h2>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body p-0">
+                    <table class="table table-hover admin-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Ordre</th>
+                                <th>Photo</th>
+                                <th>Nom</th>
+                                <th>Spécialité</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for e in experts_list %}
+                            <tr>
+                                <td>{{ e.ordre }}</td>
+                                <td>
+                                    {% if e.photo %}
+                                    <img src="{{ e.photo.url }}" alt="{{ e.nom }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+                                    {% else %}
+                                    <div style="width:36px;height:36px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;"><i class="bi bi-person text-muted"></i></div>
+                                    {% endif %}
+                                </td>
+                                <td class="fw-semibold">{{ e.nom }}</td>
+                                <td class="text-muted">{{ e.specialite }}</td>
+                                <td class="text-center text-nowrap">
+                                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editExpert{{ e.pk }}"><i class="bi bi-pencil"></i></button>
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Supprimer cet expert ?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="pk" value="{{ e.pk }}">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editExpert{{ e.pk }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="border-radius:16px;">
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="edit">
+                                            <input type="hidden" name="pk" value="{{ e.pk }}">
+                                            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Modifier l'expert</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                                            <div class="modal-body">
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" value="{{ e.nom }}" required></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Spécialité</label><input type="text" class="form-control" name="specialite" value="{{ e.specialite }}" required></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="{{ e.ordre }}"></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Photo (laisser vide pour garder l'actuelle)</label><input type="file" class="form-control" name="photo" accept="image/*"></div>
+                                            </div>
+                                            <div class="modal-footer border-0"><button type="submit" class="btn btn-accent">Enregistrer</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <tr><td colspan="5" class="text-center text-muted py-4">Aucun expert</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Ajouter un expert</h6></div>
+                <div class="admin-card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add">
+                        <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" required></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Spécialité</label><input type="text" class="form-control" name="specialite" required></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Photo</label><input type="file" class="form-control" name="photo" accept="image/*"></div>
+                        <button type="submit" class="btn btn-accent w-100"><i class="bi bi-plus-lg me-1"></i>Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.evenement.titre|default:edition|title }} - DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+.event-hero {
+    background: linear-gradient(135deg, #004080 0%, #0066cc 50%, #0080ff 100%);
+    color: white;
+    padding: 4rem 0 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.event-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+.event-hero .container {
+    position: relative;
+    z-index: 2;
+}
+.event-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.event-hero .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    font-weight: 300;
+}
+.section-event {
+    padding: 3rem 0;
+}
+.section-event.bg-light-custom {
+    background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+}
+.section-event h2 {
+    color: #004080;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    text-align: center;
+    position: relative;
+}
+.section-event h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #004080, #0080ff);
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+.objectif-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border-left: 4px solid #0066cc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.objectif-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+.objectif-card h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+.chiffre-card {
+    background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0,102,204,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+.chiffre-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,102,204,0.3);
+}
+.chiffre-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+}
+.chiffre-label {
+    font-size: 0.95rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+.image-carousel {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    overflow: hidden;
+}
+.image-carousel h2 {
+    color: #004080;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+.image-carousel-track {
+    display: flex;
+    gap: 1rem;
+    animation: scroll 20s linear infinite;
+    width: fit-content;
+}
+.image-carousel-track:hover {
+    animation-play-state: paused;
+}
+.image-carousel img {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 280px;
+    height: 180px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    max-width: 500px;
+    margin: 0 auto;
+}
+.empty-state i {
+    font-size: 3rem;
+    color: #0066cc;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+.empty-state h5 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+.empty-state p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.empty-state small {
+    color: #999;
+    font-size: 0.85rem;
+}
+.empty-state a {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 600;
+}
+.empty-state a:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Événement -->
+<section class="event-hero">
+    <div class="container">
+        <h1>{{ event.evenement.titre|default:edition|title }}</h1>
+        {% if event.evenement.sous_titre %}
+        <p class="subtitle">{{ event.evenement.sous_titre }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Objectifs -->
+<section class="section-event bg-light-custom">
+    <div class="container">
+        <h2><i class="bi bi-flag me-2"></i>Objectifs</h2>
+        {% if event.objectifs %}
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% for obj in event.objectifs %}
+                <div class="objectif-card">
+                    <h5><i class="bi bi-check2-circle text-success me-2"></i>{{ obj }}</h5>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-info-circle"></i>
+            <h5>Aucun objectif défini</h5>
+            <p>Vous pouvez ajouter des objectifs pour cet événement via l’administration.</p>
+            <small><a href="/gestion/evenements/">Gestion > Événements</a></small>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Chiffres clés -->
+<section class="section-event">
+    <div class="container">
+        <h2><i class="bi bi-bar-chart me-2"></i>Chiffres clés</h2>
+        {% if event.chiffres %}
+        <div class="row g-4">
+            {% for c in event.chiffres %}
+            <div class="col-md-4">
+                <div class="chiffre-card">
+                    <div class="chiffre-number">{{ c.nombre }}{{ c.suffixe }}</div>
+                    <div class="chiffre-label">{{ c.label }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-graph-up"></i>
+            <h5>Aucun chiffre clé défini</h5>
+            <p>Ajoutez des statistiques pour cet événement via l’administration.</p>
+            <small><a href="/gestion/chiffres/">Gestion > Chiffres</a> (choisir l’édition {{ edition|title }})</small>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Images Carousel -->
+<section class="image-carousel">
+    <div class="container">
+        <h2><i class="bi bi-images me-2"></i>Galerie</h2>
+        {% if event.images %}
+        <div class="image-carousel-track">
+            {% for img in event.images %}
+            <img src="{{ img.get_image_url }}" alt="{{ img.titre|default:'Image' }}">
+            {% endfor %}
+            {% for img in event.images %}
+            <img src="{{ img.get_image_url }}" alt="{{ img.titre|default:'Image' }}">
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="bi bi-image"></i>
+            <h5>Aucune image ajoutée</h5>
+            <p>Partagez des photos pour illustrer cet événement.</p>
+            <small><a href="/gestion/evenements/">Gestion > Événements</a></small>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="section-event">
+    <div class="container text-center">
+        <a href="{% url 'landing_page' %}#evenements" class="btn btn-outline-primary btn-lg me-3">
+            <i class="bi bi-arrow-left me-2"></i>Retour aux événements
+        </a>
+        <a href="{% url 'landing_page' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-house me-2"></i>Accueil
+        </a>
+    </div>
+</section>
+{% endblock %}

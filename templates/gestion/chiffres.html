@@ -1,0 +1,118 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Chiffres clés — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_contenu_page' %}">Contenu de la page</a></li>
+            <li class="breadcrumb-item active">Chiffres clés</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Chiffres clés</h2>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body p-0">
+                    <table class="table table-hover admin-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Édition</th>
+                                <th>Ordre</th>
+                                <th>Nombre</th>
+                                <th>Suffixe</th>
+                                <th>Libellé</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in chiffres %}
+                            <tr>
+                                <td>
+                                    <span class="badge {% if c.edition == 'dounia1' %}bg-primary{% else %}bg-success{% endif %}">
+                                        {{ c.get_edition_display }}
+                                    </span>
+                                </td>
+                                <td>{{ c.ordre }}</td>
+                                <td class="fw-bold">{{ c.nombre }}</td>
+                                <td>{{ c.suffixe }}</td>
+                                <td>{{ c.label }}</td>
+                                <td class="text-center text-nowrap">
+                                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ c.pk }}"><i class="bi bi-pencil"></i></button>
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Supprimer ce chiffre ?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="pk" value="{{ c.pk }}">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editModal{{ c.pk }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="border-radius:16px;">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="edit">
+                                            <input type="hidden" name="pk" value="{{ c.pk }}">
+                                            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Modifier</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                                            <div class="modal-body">
+                                                <div class="row g-3">
+                                                    <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Édition</label>
+                                                        <select class="form-select" name="edition">
+                                                            {% for key,label in edition_choices %}
+                                                            <option value="{{ key }}" {% if c.edition == key %}selected{% endif %}>{{ label }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4"><label class="form-label small fw-semibold">Nombre</label><input type="number" class="form-control" name="nombre" value="{{ c.nombre }}" required></div>
+                                                    <div class="col-4"><label class="form-label small fw-semibold">Suffixe</label><input type="text" class="form-control" name="suffixe" value="{{ c.suffixe }}"></div>
+                                                    <div class="col-4"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="{{ c.ordre }}"></div>
+                                                    <div class="col-12"><label class="form-label small fw-semibold">Libellé</label><input type="text" class="form-control" name="label" value="{{ c.label }}" required></div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer border-0"><button type="submit" class="btn btn-accent">Enregistrer</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <tr><td colspan="6" class="text-center text-muted py-4">Aucun chiffre clé</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Ajouter un chiffre</h6></div>
+                <div class="admin-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Édition</label>
+                            <select class="form-select" name="edition">
+                                {% for key,label in edition_choices %}
+                                <option value="{{ key }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Nombre</label><input type="number" class="form-control" name="nombre" required></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Suffixe (ex: +)</label><input type="text" class="form-control" name="suffixe" value="+"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Libellé</label><input type="text" class="form-control" name="label" required></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
+                        <button type="submit" class="btn btn-accent w-100"><i class="bi bi-plus-lg me-1"></i>Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

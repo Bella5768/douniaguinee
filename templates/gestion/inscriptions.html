@@ -1,0 +1,143 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Inscriptions — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1" style="color: var(--primary);">Inscriptions</h2>
+            <p class="text-muted mb-0">{{ total }} inscription{{ total|pluralize }} trouvée{{ total|pluralize }}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Tableau de bord
+            </a>
+            <a href="{% url 'export_inscriptions_csv' %}" class="btn btn-accent btn-sm">
+                <i class="bi bi-download me-1"></i>Export CSV
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="admin-card mb-4">
+        <div class="admin-card-header">
+            <h6 class="mb-0"><i class="bi bi-funnel me-2"></i>Filtres & recherche</h6>
+        </div>
+        <div class="admin-card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Recherche</label>
+                    <input type="text" name="q" class="form-control form-control-sm" placeholder="Nom, email, institution..." value="{{ current_search }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Atelier</label>
+                    <select name="atelier" class="form-select form-select-sm">
+                        <option value="">Tous</option>
+                        {% for value, label in atelier_choices %}
+                        <option value="{{ value }}" {% if current_atelier == value %}selected{% endif %}>{{ label|truncatewords:4 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Profil</label>
+                    <select name="profil" class="form-select form-select-sm">
+                        <option value="">Tous</option>
+                        {% for value, label in profil_choices %}
+                        <option value="{{ value }}" {% if current_profil == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-semibold">Format</label>
+                    <select name="format" class="form-select form-select-sm">
+                        <option value="">Tous</option>
+                        {% for value, label in format_choices %}
+                        <option value="{{ value }}" {% if current_format == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary-custom btn-sm w-100">
+                        <i class="bi bi-search me-1"></i>Filtrer
+                    </button>
+                    <a href="{% url 'admin_inscriptions' %}" class="btn btn-outline-secondary btn-sm" title="Réinitialiser">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-card">
+        <div class="admin-card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover admin-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Nom complet</th>
+                            <th>Email</th>
+                            <th>WhatsApp</th>
+                            <th>Institution</th>
+                            <th>Atelier</th>
+                            <th>Profil</th>
+                            <th>Format</th>
+                            <th class="text-center">Statut</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for insc in inscriptions %}
+                        <tr>
+                            <td class="text-muted small">{{ insc.pk }}</td>
+                            <td><span class="text-muted small">{{ insc.date_inscription|date:"d/m/Y" }}</span></td>
+                            <td class="fw-semibold">
+                                <a href="{% url 'admin_inscription_detail' insc.pk %}" class="text-decoration-none">
+                                    {{ insc.prenom }} {{ insc.nom }}
+                                </a>
+                            </td>
+                            <td><a href="mailto:{{ insc.email }}" class="text-decoration-none small">{{ insc.email }}</a></td>
+                            <td class="small">{{ insc.whatsapp }}</td>
+                            <td class="small">{{ insc.institution|truncatewords:3 }}</td>
+                            <td><span class="badge bg-primary-subtle text-primary small">{{ insc.get_atelier_display|truncatewords:3 }}</span></td>
+                            <td><span class="badge bg-secondary-subtle text-secondary small">{{ insc.get_profil_display|truncatewords:2 }}</span></td>
+                            <td><span class="badge bg-success-subtle text-success small">{{ insc.get_format_preference_display|truncatewords:1 }}</span></td>
+                            <td class="text-center">
+                                {% if insc.valide %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Validée</span>
+                                {% else %}
+                                <a href="{% url 'admin_inscription_detail' insc.pk %}" class="btn btn-sm btn-outline-success" title="Valider + joindre PDF">
+                                    <i class="bi bi-check-circle me-1"></i>Valider
+                                </a>
+                                {% endif %}
+                            </td>
+                            <td class="text-center text-nowrap">
+                                <a href="{% url 'admin_inscription_detail' insc.pk %}" class="btn btn-sm btn-outline-primary" title="Voir">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'admin_inscription_edit' insc.pk %}" class="btn btn-sm btn-outline-warning" title="Modifier">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'admin_inscription_delete' insc.pk %}" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="11" class="text-center text-muted py-4">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                Aucune inscription trouvée
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

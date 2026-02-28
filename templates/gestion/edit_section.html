@@ -1,0 +1,71 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}{{ section_titre }} — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_contenu_page' %}">Contenu de la page</a></li>
+            <li class="breadcrumb-item active">{{ section_titre }}</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">{{ section_titre }}</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in fields_data %}
+                        <div class="mb-3">
+                            <label for="id_{{ field.name }}" class="form-label fw-semibold">{{ field.label }}</label>
+                            {% if field.is_file %}
+                            {% if field.value %}
+                            <div class="mb-2 p-2 rounded" style="background:#f0f7f0;border:1px solid #c3e6cb;">
+                                <i class="bi bi-file-earmark-pdf text-danger me-2"></i>
+                                <a href="{{ field.value.url }}" target="_blank" class="fw-semibold">{{ field.value.name }}</a>
+                                <div class="form-text text-success mb-0"><i class="bi bi-check-circle me-1"></i>Fichier actuel</div>
+                            </div>
+                            {% endif %}
+                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}">
+                            <div class="form-text">Uploadez un fichier PDF. Laisser vide pour garder le fichier actuel.</div>
+                            {% elif field.is_image %}
+                            {% if field.value %}
+                            <div class="mb-2">
+                                <img src="{{ field.value.url }}" alt="Image actuelle" style="max-height:150px;border-radius:12px;border:2px solid #eee;">
+                                <div class="form-text text-success"><i class="bi bi-check-circle me-1"></i>Image actuelle</div>
+                            </div>
+                            {% endif %}
+                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" accept="image/*">
+                            <div class="form-text">Uploadez une image depuis votre ordinateur, tablette ou téléphone. Laisser vide pour garder l'image actuelle.</div>
+                            {% elif field.is_textarea %}
+                            <textarea class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" rows="4">{{ field.value }}</textarea>
+                            {% elif field.is_url %}
+                            <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
+                            {% else %}
+                            <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}">
+                            {% endif %}
+                            {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'admin_contenu_page' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg me-1"></i>Annuler
+                            </a>
+                            <button type="submit" class="btn btn-accent">
+                                <i class="bi bi-check-lg me-1"></i>Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

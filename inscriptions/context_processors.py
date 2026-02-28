@@ -1,0 +1,7 @@
+from .models import SiteConfiguration
+
+
+def site_configuration(request):
+    return {
+        'config': SiteConfiguration.get(),
+    }

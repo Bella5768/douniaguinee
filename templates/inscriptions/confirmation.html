@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Inscription confirmée — DounIA{% endblock %}
+
+{% block content %}
+<div class="confirmation-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="confirmation-card">
+                    <div class="confirmation-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <h2 class="mb-3">Inscription confirmée !</h2>
+                    <p class="text-muted mb-4">
+                        Votre inscription aux ateliers DounIA 2 a bien été enregistrée.
+                        Un email de confirmation vous sera envoyé à l'adresse indiquée.
+                    </p>
+                    <div class="bg-light rounded p-3 mb-4">
+                        <p class="mb-1 small"><strong>Prochaines étapes :</strong></p>
+                        <ul class="list-unstyled small text-muted mb-0">
+                            <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Consultez votre boîte email pour la confirmation</li>
+                            <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Vous serez contacté(e) avec les détails pratiques</li>
+                            <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Préparez-vous pour les ateliers d'octobre 2026</li>
+                        </ul>
+                    </div>
+                    <a href="{% url 'landing_page' %}" class="btn btn-primary-custom">
+                        <i class="bi bi-arrow-left me-2"></i>Retour à l'accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

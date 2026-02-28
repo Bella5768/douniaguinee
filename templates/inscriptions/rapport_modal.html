@@ -1,0 +1,309 @@
+<div class="modal fade" id="rapportModal" tabindex="-1" aria-labelledby="rapportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Header -->
+      <div class="modal-header border-0 bg-primary text-white">
+        <h5 class="modal-title fw-bold" id="rapportModalLabel">
+          <i class="bi bi-file-earmark-pdf me-2"></i>Livrable — Rapport et Recommandations
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body p-4">
+        <!-- Section Lecture -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+              <div class="bg-primary bg-opacity-10 rounded-circle p-3">
+                <i class="bi bi-book text-primary fs-4"></i>
+              </div>
+            </div>
+            <div>
+              <h6 class="mb-1 fw-bold text-primary">Lecture du livrable</h6>
+              <p class="text-muted mb-0 small">Consultez le livrable directement en ligne</p>
+            </div>
+          </div>
+          
+          <!-- Lecteur PDF intégré (PDF.js - sans téléchargement) -->
+          {% if config.rapport_fichier or config.rapport_lien %}
+          <div class="border rounded-3 overflow-hidden position-relative" style="height: 450px; background: #525659;">
+            <div id="pdfViewerContainer" class="w-100 h-100 overflow-auto text-center" style="padding: 10px;">
+              <canvas id="pdfCanvas"></canvas>
+            </div>
+            <div class="position-absolute bottom-0 start-0 end-0 d-flex justify-content-center align-items-center gap-3 py-2" style="background:rgba(0,0,0,0.6);">
+              <button type="button" class="btn btn-sm btn-light" id="pdfPrev" title="Page précédente"><i class="bi bi-chevron-left"></i></button>
+              <span class="text-white small fw-semibold" id="pdfPageInfo">Page 1 / 1</span>
+              <button type="button" class="btn btn-sm btn-light" id="pdfNext" title="Page suivante"><i class="bi bi-chevron-right"></i></button>
+              <button type="button" class="btn btn-sm btn-outline-light ms-2" id="pdfZoomOut" title="Zoom -"><i class="bi bi-zoom-out"></i></button>
+              <button type="button" class="btn btn-sm btn-outline-light" id="pdfZoomIn" title="Zoom +"><i class="bi bi-zoom-in"></i></button>
+            </div>
+          </div>
+          {% else %}
+          <div class="border rounded-3 overflow-hidden" style="height: 400px;">
+            <div class="d-flex flex-column align-items-center justify-content-center h-100 bg-light">
+              <i class="bi bi-file-earmark-pdf text-muted" style="font-size: 3rem;"></i>
+              <p class="text-muted mt-3 mb-1 fw-semibold">Livrable non disponible pour le moment</p>
+              <small class="text-muted">Le lien du livrable n'a pas encore été configuré.</small>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        
+        <!-- Section Formulaire -->
+        <div class="border-top pt-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+              <div class="bg-success bg-opacity-10 rounded-circle p-3">
+                <i class="bi bi-download text-success fs-4"></i>
+              </div>
+            </div>
+            <div>
+              <h6 class="mb-1 fw-bold text-success">Téléchargement du livrable</h6>
+              <p class="text-muted mb-0 small">Remplissez ce formulaire pour télécharger le PDF</p>
+            </div>
+          </div>
+          
+          <form id="downloadForm" method="post" action="{% url 'rapport_download' %}">
+            {% csrf_token %}
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="download_nom" class="form-label fw-semibold text-primary">
+                  Nom <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="download_nom" name="nom" required>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="download_prenom" class="form-label fw-semibold text-primary">
+                  Prénoms <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="download_prenom" name="prenom" required>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="download_email" class="form-label fw-semibold text-primary">
+                  Email <span class="text-danger">*</span>
+                </label>
+                <input type="email" class="form-control" id="download_email" name="email" required>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="download_institution" class="form-label fw-semibold text-primary">
+                  Institution <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="download_institution" name="institution" required>
+              </div>
+              
+              <div class="col-12">
+                <label for="download_usage" class="form-label fw-semibold text-primary">
+                  Objectif de téléchargement <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="download_usage" name="usage" required>
+                  <option value="">Sélectionnez...</option>
+                  <option value="recherche">Recherche académique</option>
+                  <option value="professionnel">Usage professionnel</option>
+                  <option value="formation">Formation/Éducation</option>
+                  <option value="personnel">Intérêt personnel</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+              
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="download_consent" name="consent" required>
+                  <label class="form-check-label" for="download_consent">
+                    J'accepte de recevoir des communications de la part de DounIA concernant les futures publications et événements.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="modal-footer border-0 bg-light">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg me-1"></i>Fermer
+        </button>
+        <button type="submit" form="downloadForm" class="btn btn-primary">
+          <i class="bi bi-download me-2"></i>Télécharger le livrable
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 10px 40px rgba(0, 51, 102, 0.15);
+}
+
+.modal-header {
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-footer {
+  border-radius: 0 0 16px 16px;
+}
+
+.form-label {
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+
+.form-control, .form-select {
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 51, 102, 0.15);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.border {
+  border-color: var(--border-color) !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-success {
+  color: var(--success) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.bg-success {
+  background-color: var(--success) !important;
+}
+
+.bg-primary.bg-opacity-10 {
+  background-color: rgba(0, 51, 102, 0.1) !important;
+}
+
+.bg-success.bg-opacity-10 {
+  background-color: rgba(46, 125, 79, 0.1) !important;
+}
+
+.is-invalid {
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 0.2rem rgba(198, 40, 40, 0.15) !important;
+}
+
+.form-check-input.is-invalid {
+  border-color: var(--danger) !important;
+  background-color: var(--danger) !important;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: var(--danger);
+}
+
+#pdfViewerContainer {
+  user-select: none;
+  -webkit-user-select: none;
+}
+#pdfCanvas {
+  max-width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+</style>
+
+{% if config.rapport_fichier or config.rapport_lien %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function() {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    var pdfUrl = '{% if config.rapport_fichier %}{% url "rapport_view_pdf" %}{% elif config.rapport_lien %}{{ config.rapport_lien }}{% endif %}';
+    var pdfDoc = null;
+    var pageNum = 1;
+    var scale = 1.2;
+    var canvas = document.getElementById('pdfCanvas');
+    var ctx = canvas.getContext('2d');
+    var container = document.getElementById('pdfViewerContainer');
+
+    function renderPage(num) {
+        pdfDoc.getPage(num).then(function(page) {
+            var viewport = page.getViewport({ scale: scale });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            page.render({ canvasContext: ctx, viewport: viewport });
+            document.getElementById('pdfPageInfo').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+        });
+    }
+
+    // Load PDF when modal opens
+    var modal = document.getElementById('rapportModal');
+    var loaded = false;
+    modal.addEventListener('shown.bs.modal', function() {
+        if (loaded) return;
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            pdfDoc = pdf;
+            loaded = true;
+            renderPage(pageNum);
+        }).catch(function(err) {
+            container.innerHTML = '<div class="d-flex flex-column align-items-center justify-content-center h-100"><i class="bi bi-exclamation-triangle text-warning" style="font-size:2rem;"></i><p class="text-white mt-2">Impossible de charger le PDF</p></div>';
+        });
+    });
+
+    document.getElementById('pdfPrev').addEventListener('click', function() {
+        if (pageNum <= 1) return;
+        pageNum--;
+        renderPage(pageNum);
+    });
+    document.getElementById('pdfNext').addEventListener('click', function() {
+        if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        renderPage(pageNum);
+    });
+    document.getElementById('pdfZoomIn').addEventListener('click', function() {
+        scale += 0.2;
+        if (pdfDoc) renderPage(pageNum);
+    });
+    document.getElementById('pdfZoomOut').addEventListener('click', function() {
+        if (scale <= 0.4) return;
+        scale -= 0.2;
+        if (pdfDoc) renderPage(pageNum);
+    });
+
+    // Block right-click on canvas
+    canvas.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+})();
+</script>
+{% endif %}

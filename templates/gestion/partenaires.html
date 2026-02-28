@@ -1,0 +1,104 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Partenaires — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_contenu_page' %}">Contenu de la page</a></li>
+            <li class="breadcrumb-item active">Partenaires</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Partenaires & Institutions</h2>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body p-0">
+                    <table class="table table-hover admin-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Ordre</th>
+                                <th>Logo</th>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Site web</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in partenaires_list %}
+                            <tr>
+                                <td>{{ p.ordre }}</td>
+                                <td>
+                                    {% if p.logo %}
+                                    <img src="{{ p.logo.url }}" alt="{{ p.nom }}" style="max-height:30px;">
+                                    {% else %}
+                                    <span class="text-muted small">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="fw-semibold">{{ p.nom }}</td>
+                                <td><span class="badge {% if p.categorie == 'institutionnel' %}bg-primary{% else %}bg-success{% endif %}">{{ p.get_categorie_display }}</span></td>
+                                <td class="small">{{ p.site_web|default:"—" }}</td>
+                                <td class="text-center text-nowrap">
+                                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editPart{{ p.pk }}"><i class="bi bi-pencil"></i></button>
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Supprimer ce partenaire ?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="pk" value="{{ p.pk }}">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editPart{{ p.pk }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="border-radius:16px;">
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="edit">
+                                            <input type="hidden" name="pk" value="{{ p.pk }}">
+                                            <div class="modal-header border-0"><h5 class="modal-title fw-bold">Modifier le partenaire</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                                            <div class="modal-body">
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" value="{{ p.nom }}" required></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel" {% if p.categorie == 'institutionnel' %}selected{% endif %}>Partenaire institutionnel</option><option value="technique" {% if p.categorie == 'technique' %}selected{% endif %}>Partenaire technique</option></select></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Site web</label><input type="text" class="form-control" name="site_web" value="{{ p.site_web }}" placeholder="https://exemple.com"></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="{{ p.ordre }}"></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Logo (laisser vide pour garder l'actuel)</label><input type="file" class="form-control" name="logo" accept="image/*"></div>
+                                            </div>
+                                            <div class="modal-footer border-0"><button type="submit" class="btn btn-accent">Enregistrer</button></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <tr><td colspan="6" class="text-center text-muted py-4">Aucun partenaire</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Ajouter un partenaire</h6></div>
+                <div class="admin-card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add">
+                        <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" required></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel">Partenaire institutionnel</option><option value="technique">Partenaire technique</option></select></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Site web</label><input type="text" class="form-control" name="site_web" placeholder="https://exemple.com"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Logo</label><input type="file" class="form-control" name="logo" accept="image/*"></div>
+                        <button type="submit" class="btn btn-accent w-100"><i class="bi bi-plus-lg me-1"></i>Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

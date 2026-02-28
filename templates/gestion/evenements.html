@@ -1,0 +1,133 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Événements — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_contenu_page' %}">Contenu de la page</a></li>
+            <li class="breadcrumb-item active">Événements</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Événements (DounIA 1 &amp; DounIA 2)</h2>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA 1</h6></div>
+                <div class="admin-card-body">
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="save_evenement">
+                        <input type="hidden" name="edition" value="dounia1">
+                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev1.titre }}" placeholder="DounIA 1 — Événement"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Sous-titre</label><textarea class="form-control" name="sous_titre" rows="2">{{ ev1.sous_titre }}</textarea></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Objectifs (un par ligne)</label><textarea class="form-control" name="objectifs" rows="6">{{ ev1.objectifs }}</textarea></div>
+                        <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Enregistrer</button>
+                    </form>
+
+                    <h6 class="fw-bold mb-2" style="color: var(--primary);">Images</h6>
+                    <form method="post" enctype="multipart/form-data" class="mb-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add_image">
+                        <input type="hidden" name="edition" value="dounia1">
+                        <div class="mb-2"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="image_titre"></div>
+                        <div class="mb-2"><label class="form-label small fw-semibold">URL (optionnel)</label><input type="text" class="form-control" name="image_url"></div>
+                        <div class="mb-2"><label class="form-label small fw-semibold">Upload (optionnel)</label><input type="file" class="form-control" name="image" accept="image/*"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
+                        <button class="btn btn-outline-primary w-100" type="submit"><i class="bi bi-plus-lg me-1"></i>Ajouter l'image</button>
+                    </form>
+
+                    <div class="list-group">
+                        {% for img in images1 %}
+                        <div class="list-group-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                {% if img.image %}
+                                <img src="{{ img.image.url }}" alt="" style="width:46px;height:32px;object-fit:cover;border-radius:8px;">
+                                {% elif img.image_url %}
+                                <img src="{{ img.image_url }}" alt="" style="width:46px;height:32px;object-fit:cover;border-radius:8px;">
+                                {% else %}
+                                <div style="width:46px;height:32px;background:#eee;border-radius:8px;"></div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-semibold small">{{ img.titre|default:"(sans titre)" }}</div>
+                                    <div class="text-muted small">Ordre: {{ img.ordre }}{% if not img.active %} — inactif{% endif %}</div>
+                                </div>
+                            </div>
+                            <form method="post" class="ms-2" onsubmit="return confirm('Supprimer cette image ?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete_image">
+                                <input type="hidden" name="pk" value="{{ img.pk }}">
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                        {% empty %}
+                        <div class="list-group-item text-muted small">Aucune image</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA 2</h6></div>
+                <div class="admin-card-body">
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="save_evenement">
+                        <input type="hidden" name="edition" value="dounia2">
+                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev2.titre }}" placeholder="DounIA 2 — Événement"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Sous-titre</label><textarea class="form-control" name="sous_titre" rows="2">{{ ev2.sous_titre }}</textarea></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Objectifs (un par ligne)</label><textarea class="form-control" name="objectifs" rows="6">{{ ev2.objectifs }}</textarea></div>
+                        <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Enregistrer</button>
+                    </form>
+
+                    <h6 class="fw-bold mb-2" style="color: var(--primary);">Images</h6>
+                    <form method="post" enctype="multipart/form-data" class="mb-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add_image">
+                        <input type="hidden" name="edition" value="dounia2">
+                        <div class="mb-2"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="image_titre"></div>
+                        <div class="mb-2"><label class="form-label small fw-semibold">URL (optionnel)</label><input type="text" class="form-control" name="image_url"></div>
+                        <div class="mb-2"><label class="form-label small fw-semibold">Upload (optionnel)</label><input type="file" class="form-control" name="image" accept="image/*"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
+                        <button class="btn btn-outline-primary w-100" type="submit"><i class="bi bi-plus-lg me-1"></i>Ajouter l'image</button>
+                    </form>
+
+                    <div class="list-group">
+                        {% for img in images2 %}
+                        <div class="list-group-item d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                {% if img.image %}
+                                <img src="{{ img.image.url }}" alt="" style="width:46px;height:32px;object-fit:cover;border-radius:8px;">
+                                {% elif img.image_url %}
+                                <img src="{{ img.image_url }}" alt="" style="width:46px;height:32px;object-fit:cover;border-radius:8px;">
+                                {% else %}
+                                <div style="width:46px;height:32px;background:#eee;border-radius:8px;"></div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-semibold small">{{ img.titre|default:"(sans titre)" }}</div>
+                                    <div class="text-muted small">Ordre: {{ img.ordre }}{% if not img.active %} — inactif{% endif %}</div>
+                                </div>
+                            </div>
+                            <form method="post" class="ms-2" onsubmit="return confirm('Supprimer cette image ?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete_image">
+                                <input type="hidden" name="pk" value="{{ img.pk }}">
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                        {% empty %}
+                        <div class="list-group-item text-muted small">Aucune image</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

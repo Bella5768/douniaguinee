@@ -1,0 +1,571 @@
+{% extends 'gestion/base_admin.html' %}
+{% load static %}
+
+{% block title %}Gestion Restitution{% endblock %}
+
+{% block extra_css %}
+<style>
+    .section-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .section-title {
+        color: var(--primary);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.2rem rgba(0, 51, 102, 0.15);
+    }
+    
+    .list-group-item {
+        border: 1px solid #e9ecef;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .btn-add-item {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-add-item:hover {
+        background: var(--accent-dark);
+        transform: scale(1.1);
+    }
+    
+    .btn-remove-item {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove-item:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+    
+    .chronologie-item {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--primary);
+    }
+    
+    .file-upload {
+        border: 2px dashed #e9ecef;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .file-upload:hover {
+        border-color: var(--primary);
+        background: #f8f9fa;
+    }
+    
+    .file-info {
+        background: #e7f3ff;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 0.5rem;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .stat-input-group {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-file-earmark-text me-2"></i>Gestion Restitution
+                </h1>
+                <a href="{% url 'restitution_page' %}" class="btn btn-outline-primary" target="_blank">
+                    <i class="bi bi-eye me-1"></i>Voir la page
+                </a>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Section Hero -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-stars"></i>
+                        Section Hero
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="hero_image" class="form-label">Image Hero (upload)</label>
+                                <input type="file" class="form-control" id="hero_image" name="hero_image" accept="image/*">
+                                {% if restitution.hero_image %}
+                                <div class="small text-muted mt-1">Actuel : <a href="{{ restitution.hero_image.url }}" target="_blank" rel="noopener">voir l'image</a></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="hero_image_url" class="form-label">Image Hero URL (fallback)</label>
+                                <input type="url" class="form-control" id="hero_image_url" name="hero_image_url" value="{{ restitution.hero_image_url }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="titre_hero" class="form-label">Titre Hero</label>
+                                <input type="text" class="form-control" id="titre_hero" name="titre_hero" 
+                                       value="{{ restitution.titre_hero }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="description_hero" class="form-label">Description Hero</label>
+                                <textarea class="form-control" id="description_hero" name="description_hero" 
+                                          rows="3" required>{{ restitution.description_hero }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section Objectifs -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-bullseye"></i>
+                        Section Objectifs
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="mission_titre" class="form-label">Titre Mission</label>
+                                <input type="text" class="form-control" id="mission_titre" name="mission_titre" 
+                                       value="{{ restitution.mission_titre }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="mission_description" class="form-label">Description Mission</label>
+                                <textarea class="form-control" id="mission_description" name="mission_description" 
+                                          rows="3" required>{{ restitution.mission_description }}</textarea>
+                            </div>
+                            
+                            <label class="form-label">Points de la Mission</label>
+                            <div id="mission_points_container">
+                                {% for point in restitution.mission_points %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <input type="text" class="form-control me-2" name="mission_points" 
+                                               value="{{ point }}" placeholder="Ajouter un point">
+                                        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn-add-item mt-2" onclick="addMissionPoint()">+</button>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="public_titre" class="form-label">Titre Public</label>
+                                <input type="text" class="form-control" id="public_titre" name="public_titre" 
+                                       value="{{ restitution.public_titre }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="public_description" class="form-label">Description Public</label>
+                                <textarea class="form-control" id="public_description" name="public_description" 
+                                          rows="3" required>{{ restitution.public_description }}</textarea>
+                            </div>
+                            
+                            <label class="form-label">Public Ciblé</label>
+                            <div id="public_points_container">
+                                {% for point in restitution.public_points %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <input type="text" class="form-control me-2" name="public_points" 
+                                               value="{{ point }}" placeholder="Ajouter un public">
+                                        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn-add-item mt-2" onclick="addPublicPoint()">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section Chiffres Clés -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-bar-chart"></i>
+                        Section Chiffres Clés
+                    </h3>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-input-group">
+                            <div class="mb-2">
+                                <label for="participants_nombre" class="form-label">Nombre Participants</label>
+                                <input type="text" class="form-control" id="participants_nombre" name="participants_nombre" 
+                                       value="{{ restitution.participants_nombre }}" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="participants_label" class="form-label">Label Participants</label>
+                                <input type="text" class="form-control" id="participants_label" name="participants_label" 
+                                       value="{{ restitution.participants_label }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-input-group">
+                            <div class="mb-2">
+                                <label for="ateliers_nombre" class="form-label">Nombre Ateliers</label>
+                                <input type="text" class="form-control" id="ateliers_nombre" name="ateliers_nombre" 
+                                       value="{{ restitution.ateliers_nombre }}" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="ateliers_label" class="form-label">Label Ateliers</label>
+                                <input type="text" class="form-control" id="ateliers_label" name="ateliers_label" 
+                                       value="{{ restitution.ateliers_label }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-input-group">
+                            <div class="mb-2">
+                                <label for="recommandations_nombre" class="form-label">Nombre Recommandations</label>
+                                <input type="text" class="form-control" id="recommandations_nombre" name="recommandations_nombre" 
+                                       value="{{ restitution.recommandations_nombre }}" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="recommandations_label" class="form-label">Label Recommandations</label>
+                                <input type="text" class="form-control" id="recommandations_label" name="recommandations_label" 
+                                       value="{{ restitution.recommandations_label }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-input-group">
+                            <div class="mb-2">
+                                <label for="duree_nombre" class="form-label">Durée Nombre</label>
+                                <input type="text" class="form-control" id="duree_nombre" name="duree_nombre" 
+                                       value="{{ restitution.duree_nombre }}" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="duree_label" class="form-label">Label Durée</label>
+                                <input type="text" class="form-control" id="duree_label" name="duree_label" 
+                                       value="{{ restitution.duree_label }}" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section Rapports -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        Section Rapports
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="rapport_synthese_titre" class="form-label">Titre Rapport Synthèse</label>
+                                <input type="text" class="form-control" id="rapport_synthese_titre" name="rapport_synthese_titre" 
+                                       value="{{ restitution.rapport_synthese_titre }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rapport_synthese_description" class="form-label">Description Rapport Synthèse</label>
+                                <textarea class="form-control" id="rapport_synthese_description" name="rapport_synthese_description" 
+                                          rows="3" required>{{ restitution.rapport_synthese_description }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rapport_synthese_fichier" class="form-label">Fichier Rapport Synthèse</label>
+                                <div class="file-upload">
+                                    <input type="file" class="form-control" id="rapport_synthese_fichier" name="rapport_synthese_fichier" 
+                                           accept=".pdf,.doc,.docx" style="display: none;">
+                                    <label for="rapport_synthese_fichier" class="mb-0">
+                                        <i class="bi bi-cloud-upload me-2"></i>
+                                        Cliquez pour télécharger un fichier
+                                    </label>
+                                </div>
+                                {% if restitution.rapport_synthese_fichier %}
+                                    <div class="file-info">
+                                        <i class="bi bi-file-earmark me-1"></i>
+                                        {{ restitution.rapport_synthese_fichier.name }}
+                                        <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-sm btn-outline-primary ms-2" target="_blank">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="rapport_detail_titre" class="form-label">Titre Rapport Détaillé</label>
+                                <input type="text" class="form-control" id="rapport_detail_titre" name="rapport_detail_titre" 
+                                       value="{{ restitution.rapport_detail_titre }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rapport_detail_description" class="form-label">Description Rapport Détaillé</label>
+                                <textarea class="form-control" id="rapport_detail_description" name="rapport_detail_description" 
+                                          rows="3" required>{{ restitution.rapport_detail_description }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rapport_detail_fichier" class="form-label">Fichier Rapport Détaillé</label>
+                                <div class="file-upload">
+                                    <input type="file" class="form-control" id="rapport_detail_fichier" name="rapport_detail_fichier" 
+                                           accept=".pdf,.doc,.docx" style="display: none;">
+                                    <label for="rapport_detail_fichier" class="mb-0">
+                                        <i class="bi bi-cloud-upload me-2"></i>
+                                        Cliquez pour télécharger un fichier
+                                    </label>
+                                </div>
+                                {% if restitution.rapport_detail_fichier %}
+                                    <div class="file-info">
+                                        <i class="bi bi-file-earmark me-1"></i>
+                                        {{ restitution.rapport_detail_fichier.name }}
+                                        <a href="{{ restitution.rapport_detail_fichier.url }}" class="btn btn-sm btn-outline-primary ms-2" target="_blank">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section Chronologie -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-clock-history"></i>
+                        Section Chronologie
+                    </h3>
+                    
+                    <div id="chronologie_container">
+                        {% for item in restitution.chronologie %}
+                            <div class="chronologie-item">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Date</label>
+                                            <input type="text" class="form-control" name="chronologie_date" 
+                                                   value="{{ item.date }}" placeholder="Ex: Janvier 2024">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-label">Titre</label>
+                                            <input type="text" class="form-control" name="chronologie_titre" 
+                                                   value="{{ item.titre }}" placeholder="Titre de l'événement">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-label">Description</label>
+                                            <input type="text" class="form-control" name="chronologie_description" 
+                                                   value="{{ item.description }}" placeholder="Description">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-2">
+                                            <label class="form-label">&nbsp;</label>
+                                            <button type="button" class="btn-remove-item w-100" onclick="removeChronologieItem(this)">×</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary mt-3" onclick="addChronologieItem()">
+                        <i class="bi bi-plus-circle me-1"></i>Ajouter un événement
+                    </button>
+                </div>
+                
+                <!-- Section Call-to-Action -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-megaphone"></i>
+                        Section Call-to-Action
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="cta_titre" class="form-label">Titre CTA</label>
+                                <input type="text" class="form-control" id="cta_titre" name="cta_titre" 
+                                       value="{{ restitution.cta_titre }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="cta_description" class="form-label">Description CTA</label>
+                                <textarea class="form-control" id="cta_description" name="cta_description" 
+                                          rows="3" required>{{ restitution.cta_description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Boutons de sauvegarde -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-save me-2"></i>Sauvegarder toutes les modifications
+                    </button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary btn-lg px-5 ms-2">
+                        <i class="bi bi-arrow-left me-2"></i>Retour au dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function addMissionPoint() {
+    const container = document.getElementById('mission_points_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="mission_points" placeholder="Ajouter un point">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function addPublicPoint() {
+    const container = document.getElementById('public_points_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="public_points" placeholder="Ajouter un public">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function removeItem(button) {
+    button.parentElement.remove();
+}
+
+function addChronologieItem() {
+    const container = document.getElementById('chronologie_container');
+    const newItem = document.createElement('div');
+    newItem.className = 'chronologie-item';
+    newItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-2">
+                    <label class="form-label">Date</label>
+                    <input type="text" class="form-control" name="chronologie_date" placeholder="Ex: Janvier 2024">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Titre</label>
+                    <input type="text" class="form-control" name="chronologie_titre" placeholder="Titre de l'événement">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-control" name="chronologie_description" placeholder="Description">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="mb-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn-remove-item w-100" onclick="removeChronologieItem(this)">×</button>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(newItem);
+}
+
+function removeChronologieItem(button) {
+    button.closest('.chronologie-item').remove();
+}
+
+// File upload preview
+document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.addEventListener('change', function(e) {
+        const fileName = e.target.files[0]?.name;
+        if (fileName) {
+            const label = this.nextElementSibling;
+            label.innerHTML = `<i class="bi bi-check-circle me-2"></i>Fichier sélectionné: ${fileName}`;
+        }
+    });
+});
+</script>
+{% endblock %}

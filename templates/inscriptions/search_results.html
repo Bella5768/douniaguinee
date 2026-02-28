@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recherche : "{{ query }}" - DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+.search-hero {
+    background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+    color: white;
+    padding: 3rem 0 2rem;
+    text-align: center;
+}
+.search-results {
+    padding: 3rem 0;
+}
+.result-item {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-left: 4px solid #0066cc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.result-type {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.result-type.evenement { background: #e3f2fd; color: #1976d2; }
+.result-type.chiffre { background: #f3e5f5; color: #7b1fa2; }
+.result-type.partenaire { background: #e8f5e8; color: #388e3c; }
+.result-type.expert { background: #fff3e0; color: #f57c00; }
+.result-type.page { background: #fce4ec; color: #c2185b; }
+.result-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+.result-subtitle {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+.result-description {
+    color: #555;
+    line-height: 1.6;
+}
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.no-results i {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+.search-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.search-form input {
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    font-size: 1.1rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Recherche -->
+<section class="search-hero">
+    <div class="container">
+        <h1>Recherche</h1>
+        <p class="lead mb-4">Trouvez rapidement ce que vous cherchez sur le site DounIA</p>
+        
+        <form method="get" action="{% url 'search_results' %}" class="search-form">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Rechercher dans tout le site...">
+                <button class="btn btn-light" type="submit">
+                    <i class="bi bi-search"></i> Rechercher
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Résultats -->
+<section class="search-results">
+    <div class="container">
+        {% if query %}
+            <div class="mb-4">
+                <h2>{{ count }} résultat{{ count|pluralize }} pour "{{ query }}"</h2>
+            </div>
+            
+            {% if results %}
+                {% for result in results %}
+                <a href="{{ result.url }}" class="text-decoration-none">
+                    <div class="result-item">
+                        <span class="result-type {{ result.type }}">{{ result.type }}</span>
+                        <h3 class="result-title">{{ result.title }}</h3>
+                        {% if result.subtitle %}
+                        <div class="result-subtitle">{{ result.subtitle }}</div>
+                        {% endif %}
+                        <p class="result-description">{{ result.description }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="no-results">
+                    <i class="bi bi-search"></i>
+                    <h3>Aucun résultat trouvé</h3>
+                    <p class="text-muted">Essayez avec d'autres mots-clés ou vérifiez l'orthographe.</p>
+                    <a href="{% url 'landing_page' %}" class="btn btn-primary mt-3">
+                        <i class="bi bi-house me-2"></i>Retour à l'accueil
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-search" style="font-size: 3rem; color: #ccc;"></i>
+                <h3 class="mt-3">Que cherchez-vous ?</h3>
+                <p class="text-muted">Utilisez la barre de recherche ci-dessus pour trouver du contenu sur le site.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

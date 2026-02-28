@@ -1,0 +1,1148 @@
+{% extends 'gestion/base_admin.html' %}
+{% load static %}
+
+{% block title %}Gestion Événements DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .event-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--primary);
+        transition: all 0.3s ease;
+    }
+    
+    .event-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .event-title {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    
+    .event-status {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .event-status.active {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .event-status.inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .section-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--accent-light);
+    }
+    
+    .section-title {
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.2rem rgba(0, 51, 102, 0.15);
+    }
+    
+    .list-group-item {
+        border: 1px solid #e9ecef;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .btn-add-item {
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-add-item:hover {
+        background: var(--accent-dark);
+        transform: scale(1.1);
+    }
+    
+    .btn-remove-item {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove-item:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+    
+    .session-item {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--primary);
+    }
+    
+    .chiffre-item {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-left: 3px solid var(--accent-light);
+    }
+    
+    .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .tab {
+        padding: 1rem 1.5rem;
+        background: none;
+        border: none;
+        color: #6c757d;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .tab.active {
+        color: var(--primary);
+    }
+    
+    .tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--primary);
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .form-switch .form-check-input {
+        width: 3rem;
+        height: 1.5rem;
+        background-color: #ccc;
+        border: none;
+    }
+    
+    .form-switch .form-check-input:checked {
+        background-color: var(--primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-calendar-event me-2"></i>Gestion Événements DounIA
+                </h1>
+                <div>
+                    <a href="{% url 'event_page' 'dounia1' %}" class="btn btn-outline-primary me-2" target="_blank">
+                        <i class="bi bi-eye me-1"></i>Voir DounIA 1
+                    </a>
+                    <a href="{% url 'event_page' 'dounia2' %}" class="btn btn-outline-primary me-2" target="_blank">
+                        <i class="bi bi-eye me-1"></i>Voir DounIA 2
+                    </a>
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Retour
+                    </a>
+                </div>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('dounia1')">
+                    <i class="bi bi-flag me-1"></i>DounIA 1
+                </button>
+                <button class="tab" onclick="showTab('dounia2')">
+                    <i class="bi bi-rocket-takeoff me-1"></i>DounIA 2
+                </button>
+            </div>
+            
+            <!-- DounIA 1 Tab -->
+            <div id="dounia1-tab" class="tab-content active">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="event_slug" value="dounia1">
+                    
+                    <div class="event-card">
+                        <div class="event-header">
+                            <h2 class="event-title">DounIA 1 - Lancement</h2>
+                            <div class="event-status {% if dounia1.actif %}active{% else %}inactive{% endif %}">
+                                {% if dounia1.actif %}Actif{% else %}Inactif{% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Section Hero -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-stars"></i>
+                                Section Hero
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-hero_image" class="form-label">Image Hero (upload)</label>
+                                        <input type="file" class="form-control" id="dounia1-hero_image" name="hero_image" accept="image/*">
+                                        {% if dounia1.hero_image %}
+                                        <div class="small text-muted mt-1">Actuel : <a href="{{ dounia1.hero_image.url }}" target="_blank" rel="noopener">voir l'image</a></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-hero_image_url" class="form-label">Image Hero URL (fallback)</label>
+                                        <input type="url" class="form-control" id="dounia1-hero_image_url" name="hero_image_url" value="{{ dounia1.hero_image_url }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label for="dounia1-titre_hero" class="form-label">Titre Hero</label>
+                                        <input type="text" class="form-control" id="dounia1-titre_hero" name="titre_hero" 
+                                               value="{{ dounia1.titre_hero }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-description_hero" class="form-label">Description Hero</label>
+                                        <textarea class="form-control" id="dounia1-description_hero" name="description_hero" 
+                                                  rows="3" required>{{ dounia1.description_hero }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-bouton_principal_texte" class="form-label">Bouton Principal Texte</label>
+                                        <input type="text" class="form-control" id="dounia1-bouton_principal_texte" name="bouton_principal_texte" 
+                                               value="{{ dounia1.bouton_principal_texte }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-bouton_principal_lien" class="form-label">Bouton Principal Lien</label>
+                                        <input type="text" class="form-control" id="dounia1-bouton_principal_lien" name="bouton_principal_lien" 
+                                               value="{{ dounia1.bouton_principal_lien }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-bouton_secondaire_texte" class="form-label">Bouton Secondaire Texte</label>
+                                        <input type="text" class="form-control" id="dounia1-bouton_secondaire_texte" name="bouton_secondaire_texte" 
+                                               value="{{ dounia1.bouton_secondaire_texte }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-bouton_secondaire_lien" class="form-label">Bouton Secondaire Lien</label>
+                                        <input type="text" class="form-control" id="dounia1-bouton_secondaire_lien" name="bouton_secondaire_lien" 
+                                               value="{{ dounia1.bouton_secondaire_lien }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Objectifs -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-bullseye"></i>
+                                Section Objectifs
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-objectifs_titre" class="form-label">Titre Objectifs</label>
+                                        <input type="text" class="form-control" id="dounia1-objectifs_titre" name="objectifs_titre" 
+                                               value="{{ dounia1.objectifs_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-objectifs_description" class="form-label">Description Objectifs</label>
+                                        <textarea class="form-control" id="dounia1-objectifs_description" name="objectifs_description" 
+                                                  rows="3">{{ dounia1.objectifs_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Points Objectifs</label>
+                            <div id="dounia1-objectifs_container">
+                                {% for point in dounia1.objectifs_points %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <input type="text" class="form-control me-2" name="objectifs_points" 
+                                               value="{{ point }}" placeholder="Ajouter un objectif">
+                                        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn-add-item mt-2" onclick="addObjectifPoint('dounia1')">+</button>
+                        </div>
+                        
+                        <!-- Section Chiffres -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-bar-chart"></i>
+                                Section Chiffres Clés
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-chiffres_titre" class="form-label">Titre Chiffres</label>
+                                        <input type="text" class="form-control" id="dounia1-chiffres_titre" name="chiffres_titre" 
+                                               value="{{ dounia1.chiffres_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-chiffres_image" class="form-label">Image Statistiques (upload)</label>
+                                        <input type="file" class="form-control" id="dounia1-chiffres_image" name="chiffres_image" accept="image/*">
+                                        {% if dounia1.chiffres_image %}
+                                        <div class="small text-muted mt-1">Actuel : <a href="{{ dounia1.chiffres_image.url }}" target="_blank" rel="noopener">voir l'image</a></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-chiffres_image_url" class="form-label">Image Statistiques URL (fallback)</label>
+                                        <input type="url" class="form-control" id="dounia1-chiffres_image_url" name="chiffres_image_url" value="{{ dounia1.chiffres_image_url }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Chiffres</label>
+                            <div id="dounia1-chiffres_container">
+                                {% for chiffre in dounia1.chiffres %}
+                                    <div class="chiffre-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control" name="chiffres_nombre" 
+                                                           value="{{ chiffre.nombre }}" placeholder="Ex: 150+">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Label</label>
+                                                    <input type="text" class="form-control" name="chiffres_label" 
+                                                           value="{{ chiffre.label }}" placeholder="Ex: Participants">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="mb-2">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn-remove-item w-100" onclick="removeChiffreItem(this)">×</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addChiffreItem('dounia1')">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter un chiffre
+                            </button>
+                        </div>
+                        
+                        <!-- Section Programme -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-calendar3"></i>
+                                Section Programme
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-programme_titre" class="form-label">Titre Programme</label>
+                                        <input type="text" class="form-control" id="dounia1-programme_titre" name="programme_titre" 
+                                               value="{{ dounia1.programme_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-programme_description" class="form-label">Description Programme</label>
+                                        <textarea class="form-control" id="dounia1-programme_description" name="programme_description" 
+                                                  rows="3">{{ dounia1.programme_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Sessions</label>
+                            <div id="dounia1-sessions_container">
+                                {% for session in dounia1.programme_sessions %}
+                                    <div class="session-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Heure</label>
+                                                    <input type="text" class="form-control" name="session_heure" 
+                                                           value="{{ session.heure }}" placeholder="Ex: 09:00">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Titre</label>
+                                                    <input type="text" class="form-control" name="session_titre" 
+                                                           value="{{ session.titre }}" placeholder="Titre de la session">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Description</label>
+                                                    <input type="text" class="form-control" name="session_description" 
+                                                           value="{{ session.description }}" placeholder="Description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="mb-2">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn-remove-item w-100" onclick="removeSessionItem(this)">×</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addSessionItem('dounia1')">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter une session
+                            </button>
+                        </div>
+                        
+                        <!-- Section Inscription -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-person-plus"></i>
+                                Section Inscription
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-inscription_titre" class="form-label">Titre Inscription</label>
+                                        <input type="text" class="form-control" id="dounia1-inscription_titre" name="inscription_titre" 
+                                               value="{{ dounia1.inscription_titre }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-inscription_date_limite" class="form-label">Date Limite</label>
+                                        <input type="date" class="form-control" id="dounia1-inscription_date_limite" name="inscription_date_limite" 
+                                               value="{% if dounia1.inscription_date_limite %}{{ dounia1.inscription_date_limite|date:'Y-m-d' }}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-inscription_lieu" class="form-label">Lieu</label>
+                                        <input type="text" class="form-control" id="dounia1-inscription_lieu" name="inscription_lieu" 
+                                               value="{{ dounia1.inscription_lieu }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-inscription_description" class="form-label">Description Inscription</label>
+                                        <textarea class="form-control" id="dounia1-inscription_description" name="inscription_description" 
+                                                  rows="3">{{ dounia1.inscription_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Contact -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-envelope"></i>
+                                Section Contact
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-contact_titre" class="form-label">Titre Contact</label>
+                                        <input type="text" class="form-control" id="dounia1-contact_titre" name="contact_titre" 
+                                               value="{{ dounia1.contact_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-contact_email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="dounia1-contact_email" name="contact_email" 
+                                               value="{{ dounia1.contact_email }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-contact_telephone" class="form-label">Téléphone</label>
+                                        <input type="text" class="form-control" id="dounia1-contact_telephone" name="contact_telephone" 
+                                               value="{{ dounia1.contact_telephone }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-contact_adresse" class="form-label">Adresse</label>
+                                        <textarea class="form-control" id="dounia1-contact_adresse" name="contact_adresse" 
+                                                  rows="2">{{ dounia1.contact_adresse }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section SEO -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-search"></i>
+                                SEO
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia1-meta_title" class="form-label">Meta Title</label>
+                                        <input type="text" class="form-control" id="dounia1-meta_title" name="meta_title" 
+                                               value="{{ dounia1.meta_title }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia1-meta_description" class="form-label">Meta Description</label>
+                                        <textarea class="form-control" id="dounia1-meta_description" name="meta_description" 
+                                                  rows="2">{{ dounia1.meta_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- État -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-gear"></i>
+                                État
+                            </h3>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="dounia1-actif" name="actif" 
+                                       {% if dounia1.actif %}checked{% endif %}>
+                                <label class="form-check-label" for="dounia1-actif">
+                                    Événement actif
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Boutons -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA 1
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- DounIA 2 Tab -->
+            <div id="dounia2-tab" class="tab-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="event_slug" value="dounia2">
+                    
+                    <div class="event-card">
+                        <div class="event-header">
+                            <h2 class="event-title">DounIA 2 - Continuité</h2>
+                            <div class="event-status {% if dounia2.actif %}active{% else %}inactive{% endif %}">
+                                {% if dounia2.actif %}Actif{% else %}Inactif{% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Section Hero -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-stars"></i>
+                                Section Hero
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-hero_image" class="form-label">Image Hero (upload)</label>
+                                        <input type="file" class="form-control" id="dounia2-hero_image" name="hero_image" accept="image/*">
+                                        {% if dounia2.hero_image %}
+                                        <div class="small text-muted mt-1">Actuel : <a href="{{ dounia2.hero_image.url }}" target="_blank" rel="noopener">voir l'image</a></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-hero_image_url" class="form-label">Image Hero URL (fallback)</label>
+                                        <input type="url" class="form-control" id="dounia2-hero_image_url" name="hero_image_url" value="{{ dounia2.hero_image_url }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label for="dounia2-titre_hero" class="form-label">Titre Hero</label>
+                                        <input type="text" class="form-control" id="dounia2-titre_hero" name="titre_hero" 
+                                               value="{{ dounia2.titre_hero }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-description_hero" class="form-label">Description Hero</label>
+                                        <textarea class="form-control" id="dounia2-description_hero" name="description_hero" 
+                                                  rows="3" required>{{ dounia2.description_hero }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-bouton_principal_texte" class="form-label">Bouton Principal Texte</label>
+                                        <input type="text" class="form-control" id="dounia2-bouton_principal_texte" name="bouton_principal_texte" 
+                                               value="{{ dounia2.bouton_principal_texte }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-bouton_principal_lien" class="form-label">Bouton Principal Lien</label>
+                                        <input type="text" class="form-control" id="dounia2-bouton_principal_lien" name="bouton_principal_lien" 
+                                               value="{{ dounia2.bouton_principal_lien }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-bouton_secondaire_texte" class="form-label">Bouton Secondaire Texte</label>
+                                        <input type="text" class="form-control" id="dounia2-bouton_secondaire_texte" name="bouton_secondaire_texte" 
+                                               value="{{ dounia2.bouton_secondaire_texte }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-bouton_secondaire_lien" class="form-label">Bouton Secondaire Lien</label>
+                                        <input type="text" class="form-control" id="dounia2-bouton_secondaire_lien" name="bouton_secondaire_lien" 
+                                               value="{{ dounia2.bouton_secondaire_lien }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Objectifs -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-bullseye"></i>
+                                Section Objectifs
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-objectifs_titre" class="form-label">Titre Objectifs</label>
+                                        <input type="text" class="form-control" id="dounia2-objectifs_titre" name="objectifs_titre" 
+                                               value="{{ dounia2.objectifs_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-objectifs_description" class="form-label">Description Objectifs</label>
+                                        <textarea class="form-control" id="dounia2-objectifs_description" name="objectifs_description" 
+                                                  rows="3">{{ dounia2.objectifs_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Points Objectifs</label>
+                            <div id="dounia2-objectifs_container">
+                                {% for point in dounia2.objectifs_points %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <input type="text" class="form-control me-2" name="objectifs_points" 
+                                               value="{{ point }}" placeholder="Ajouter un objectif">
+                                        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn-add-item mt-2" onclick="addObjectifPoint('dounia2')">+</button>
+                        </div>
+                        
+                        <!-- Section Chiffres -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-bar-chart"></i>
+                                Section Chiffres Clés
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-chiffres_titre" class="form-label">Titre Chiffres</label>
+                                        <input type="text" class="form-control" id="dounia2-chiffres_titre" name="chiffres_titre" 
+                                               value="{{ dounia2.chiffres_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-chiffres_image" class="form-label">Image Statistiques (upload)</label>
+                                        <input type="file" class="form-control" id="dounia2-chiffres_image" name="chiffres_image" accept="image/*">
+                                        {% if dounia2.chiffres_image %}
+                                        <div class="small text-muted mt-1">Actuel : <a href="{{ dounia2.chiffres_image.url }}" target="_blank" rel="noopener">voir l'image</a></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-chiffres_image_url" class="form-label">Image Statistiques URL (fallback)</label>
+                                        <input type="url" class="form-control" id="dounia2-chiffres_image_url" name="chiffres_image_url" value="{{ dounia2.chiffres_image_url }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Chiffres</label>
+                            <div id="dounia2-chiffres_container">
+                                {% for chiffre in dounia2.chiffres %}
+                                    <div class="chiffre-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control" name="chiffres_nombre" 
+                                                           value="{{ chiffre.nombre }}" placeholder="Ex: 200+">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Label</label>
+                                                    <input type="text" class="form-control" name="chiffres_label" 
+                                                           value="{{ chiffre.label }}" placeholder="Ex: Participants attendus">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="mb-2">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn-remove-item w-100" onclick="removeChiffreItem(this)">×</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addChiffreItem('dounia2')">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter un chiffre
+                            </button>
+                        </div>
+                        
+                        <!-- Section Programme -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-calendar3"></i>
+                                Section Programme
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-programme_titre" class="form-label">Titre Programme</label>
+                                        <input type="text" class="form-control" id="dounia2-programme_titre" name="programme_titre" 
+                                               value="{{ dounia2.programme_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-programme_description" class="form-label">Description Programme</label>
+                                        <textarea class="form-control" id="dounia2-programme_description" name="programme_description" 
+                                                  rows="3">{{ dounia2.programme_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label class="form-label">Sessions</label>
+                            <div id="dounia2-sessions_container">
+                                {% for session in dounia2.programme_sessions %}
+                                    <div class="session-item">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Heure</label>
+                                                    <input type="text" class="form-control" name="session_heure" 
+                                                           value="{{ session.heure }}" placeholder="Ex: 09:00">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Titre</label>
+                                                    <input type="text" class="form-control" name="session_titre" 
+                                                           value="{{ session.titre }}" placeholder="Titre de la session">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-2">
+                                                    <label class="form-label">Description</label>
+                                                    <input type="text" class="form-control" name="session_description" 
+                                                           value="{{ session.description }}" placeholder="Description">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <div class="mb-2">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="button" class="btn-remove-item w-100" onclick="removeSessionItem(this)">×</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" onclick="addSessionItem('dounia2')">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter une session
+                            </button>
+                        </div>
+                        
+                        <!-- Section Inscription -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-person-plus"></i>
+                                Section Inscription
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-inscription_titre" class="form-label">Titre Inscription</label>
+                                        <input type="text" class="form-control" id="dounia2-inscription_titre" name="inscription_titre" 
+                                               value="{{ dounia2.inscription_titre }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-inscription_date_limite" class="form-label">Date Limite</label>
+                                        <input type="date" class="form-control" id="dounia2-inscription_date_limite" name="inscription_date_limite" 
+                                               value="{% if dounia2.inscription_date_limite %}{{ dounia2.inscription_date_limite|date:'Y-m-d' }}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-inscription_lieu" class="form-label">Lieu</label>
+                                        <input type="text" class="form-control" id="dounia2-inscription_lieu" name="inscription_lieu" 
+                                               value="{{ dounia2.inscription_lieu }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-inscription_description" class="form-label">Description Inscription</label>
+                                        <textarea class="form-control" id="dounia2-inscription_description" name="inscription_description" 
+                                                  rows="3">{{ dounia2.inscription_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Contact -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-envelope"></i>
+                                Section Contact
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-contact_titre" class="form-label">Titre Contact</label>
+                                        <input type="text" class="form-control" id="dounia2-contact_titre" name="contact_titre" 
+                                               value="{{ dounia2.contact_titre }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-contact_email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="dounia2-contact_email" name="contact_email" 
+                                               value="{{ dounia2.contact_email }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-contact_telephone" class="form-label">Téléphone</label>
+                                        <input type="text" class="form-control" id="dounia2-contact_telephone" name="contact_telephone" 
+                                               value="{{ dounia2.contact_telephone }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-contact_adresse" class="form-label">Adresse</label>
+                                        <textarea class="form-control" id="dounia2-contact_adresse" name="contact_adresse" 
+                                                  rows="2">{{ dounia2.contact_adresse }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section SEO -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-search"></i>
+                                SEO
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-meta_title" class="form-label">Meta Title</label>
+                                        <input type="text" class="form-control" id="dounia2-meta_title" name="meta_title" 
+                                               value="{{ dounia2.meta_title }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="dounia2-meta_description" class="form-label">Meta Description</label>
+                                        <textarea class="form-control" id="dounia2-meta_description" name="meta_description" 
+                                                  rows="2">{{ dounia2.meta_description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- État -->
+                        <div class="section-card">
+                            <h3 class="section-title">
+                                <i class="bi bi-gear"></i>
+                                État
+                            </h3>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="dounia2-actif" name="actif" 
+                                       {% if dounia2.actif %}checked{% endif %}>
+                                <label class="form-check-label" for="dounia2-actif">
+                                    Événement actif
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Boutons -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA 2
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showTab(tabName) {
+    // Masquer tous les tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Afficher le tab sélectionné
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.target.classList.add('active');
+}
+
+function addObjectifPoint(prefix) {
+    const container = document.getElementById(prefix + '-objectifs_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="objectifs_points" placeholder="Ajouter un objectif">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function removeItem(button) {
+    button.parentElement.remove();
+}
+
+function addChiffreItem(prefix) {
+    const container = document.getElementById(prefix + '-chiffres_container');
+    const newChiffre = document.createElement('div');
+    newChiffre.className = 'chiffre-item';
+    newChiffre.innerHTML = `
+        <div class="row">
+            <div class="col-md-5">
+                <div class="mb-2">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="chiffres_nombre" placeholder="Ex: 150+">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-2">
+                    <label class="form-label">Label</label>
+                    <input type="text" class="form-control" name="chiffres_label" placeholder="Ex: Participants">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="mb-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn-remove-item w-100" onclick="removeChiffreItem(this)">×</button>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(newChiffre);
+}
+
+function removeChiffreItem(button) {
+    button.closest('.chiffre-item').remove();
+}
+
+function addSessionItem(prefix) {
+    const container = document.getElementById(prefix + '-sessions_container');
+    const newSession = document.createElement('div');
+    newSession.className = 'session-item';
+    newSession.innerHTML = `
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-2">
+                    <label class="form-label">Heure</label>
+                    <input type="text" class="form-control" name="session_heure" placeholder="Ex: 09:00">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Titre</label>
+                    <input type="text" class="form-control" name="session_titre" placeholder="Titre de la session">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-control" name="session_description" placeholder="Description">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="mb-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn-remove-item w-100" onclick="removeSessionItem(this)">×</button>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(newSession);
+}
+
+function removeSessionItem(button) {
+    button.closest('.session-item').remove();
+}
+</script>
+{% endblock %}

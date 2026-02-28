@@ -1,0 +1,1157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}{% endblock %}
+
+{% block content %}
+
+<!-- ============ SECTION 1 : HERO ============ -->
+<section class="hero-section" id="hero">
+    <!-- Arrière-plan défilant avec les images de la gestion -->
+    {% if hero_bg_images %}
+    <div class="hero-bg-slideshow">
+        {% for bg_image in hero_bg_images %}
+        <div class="hero-bg-slide" style="background-image: url('{{ bg_image.get_image_url }}?t={{ bg_image.date_ajout|date:'U' }}');"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-7 fade-in-up">
+                <div class="hero-content">
+                    <h1 class="display-3 fw-bold mb-4">
+                        {{ config.hero_titre }} <span>{{ config.hero_titre_span }}</span>
+                    </h1>
+                    <p class="lead mb-4">
+                        {{ config.hero_sous_titre }}
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{% if config.hero_btn1_lien == '#rapport' %}#livrable{% else %}{{ config.hero_btn1_lien }}{% endif %}" class="btn btn-primary btn-lg me-3">
+                            <i class="bi bi-play-circle me-2"></i>{{ config.hero_btn1_texte }}
+                        </a>
+                        <a href="{{ config.hero_btn2_lien }}" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-pencil-square me-2"></i>{{ config.hero_btn2_texte }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 d-flex justify-content-center mt-4 mt-lg-0">
+                <div class="hero-carousel-wrapper animate-fade-in-right">
+                    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                        <div class="carousel-inner">
+                            {% for hero_image in hero_images %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ hero_image.get_image_url }}?t={{ hero_image.date_ajout|date:'U' }}" class="d-block w-100 hero-carousel-image" alt="{{ hero_image.titre|default:'DounIA' }}">
+                            </div>
+                            {% empty %}
+                            <div class="carousel-item active">
+                                <img src="https://via.placeholder.com/600x400/003366/ffffff?text=Images+non+disponibles" class="d-block w-100 hero-carousel-image" alt="Placeholder">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 2 : C'EST QUOI DOUNIA ? ============ -->
+<section id="about" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.about_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.about_sous_titre }}</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon"><i class="bi {% if config.about_card1_icone %}{{ config.about_card1_icone }}{% else %}bi-globe-europe-africa{% endif %}"></i></div>
+                    <h5>{{ config.about_card1_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card1_texte }}</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon"><i class="bi {% if config.about_card2_icone %}{{ config.about_card2_icone }}{% else %}bi-diagram-3{% endif %}"></i></div>
+                    <h5>{{ config.about_card2_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card2_texte }}</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon"><i class="bi {% if config.about_card3_icone %}{{ config.about_card3_icone }}{% else %}bi-lightbulb{% endif %}"></i></div>
+                    <h5>{{ config.about_card3_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card3_texte }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 3 : DOUNIA 1 — CONTEXTE & ENSEIGNEMENTS ============ -->
+<section id="dounia1">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.dounia1_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.dounia1_sous_titre }}</p>
+        </div>
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <h4 class="mb-3">Défis identifiés</h4>
+                <ul class="list-unstyled">
+                    {% for defi in defis %}
+                    <li class="d-flex align-items-start mb-3">
+                        <i class="bi bi-exclamation-triangle text-warning me-3 mt-1" style="font-size: 1.2rem;"></i>
+                        <span>{{ defi }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-6 fade-in-up">
+                <h4 class="mb-3">Opportunités sectorielles</h4>
+                <ul class="list-unstyled">
+                    {% for opp in opportunites %}
+                    <li class="d-flex align-items-start mb-3">
+                        <i class="bi bi-check-circle text-success me-3 mt-1" style="font-size: 1.2rem;"></i>
+                        <span>{{ opp }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 4 : CHIFFRES CLÉS ============ -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            {% for chiffre in chiffres %}
+            <div class="col-6 col-md-3 fade-in-up">
+                <div class="stat-item">
+                    <div class="stat-number">
+                        <span class="counter" data-target="{{ chiffre.nombre }}" data-suffix="{{ chiffre.suffixe }}">0</span>
+                    </div>
+                    <div class="stat-label">{{ chiffre.label }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 5 : LIVRABLE DOUNIA 1 ============ -->
+<section id="livrable" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.rapport_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.rapport_sous_titre }}</p>
+        </div>
+        <div class="row justify-content-center fade-in-up">
+            <div class="col-lg-10">
+                <div class="report-card">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            {% if config.rapport_image %}
+                            <div class="report-preview h-100 p-0" style="overflow:hidden;">
+                                <img src="{{ config.rapport_image.url }}" alt="{{ config.rapport_titre }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px 0 0 12px;">
+                            </div>
+                            {% else %}
+                            <div class="report-preview h-100">
+                                <div class="text-center">
+                                    <i class="bi bi-file-earmark-pdf report-icon-large"></i>
+                                    <p class="text-white mt-3 mb-0 fw-bold">{{ config.rapport_titre }}</p>
+                                    <small class="text-white-50">Format PDF</small>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-7">
+                            <div class="report-body">
+                                <h4>Rapport et Recommandations</h4>
+                                <p class="text-muted mb-3">{{ config.rapport_description }}</p>
+                                <ul class="list-unstyled mb-4">
+                                    {% for point in rapport_points %}
+                                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>{{ point }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <button type="button" class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#rapportModal">
+                                    <i class="bi bi-eye me-2"></i>Consulter le livrable
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
+<section id="evenements" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.evenements_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.evenements_sous_titre }}</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'event_page' 'dounia1' %}" class="text-decoration-none">
+                    <div class="about-card h-100 event-card-hover text-center">
+                        <div class="card-content">
+                            <div class="about-icon"><i class="bi bi-flag"></i></div>
+                            <h5 class="mb-0">
+                                {% if dounia1_event %}
+                                    {{ dounia1_event.titre_hero }}
+                                {% else %}
+                                    {{ evenement_dounia1.evenement.titre|default:"DounIA 1" }}
+                                {% endif %}
+                            </h5>
+                            {% if dounia1_event %}
+                                <p class="small text-muted mt-2">{{ dounia1_event.description_hero|truncatewords:15 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'event_page' 'dounia2' %}" class="text-decoration-none">
+                    <div class="about-card h-100 event-card-hover text-center">
+                        <div class="card-content">
+                            <div class="about-icon"><i class="bi bi-rocket-takeoff"></i></div>
+                            <h5 class="mb-0">
+                                {% if dounia2_event %}
+                                    {{ dounia2_event.titre_hero }}
+                                {% else %}
+                                    {{ evenement_dounia2.evenement.titre|default:"DounIA 2" }}
+                                {% endif %}
+                            </h5>
+                            {% if dounia2_event %}
+                                <p class="small text-muted mt-2">{{ dounia2_event.description_hero|truncatewords:15 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'restitution_page' %}" class="text-decoration-none">
+                    <div class="about-card h-100 restitution-card-hover text-center">
+                        <div class="card-content">
+                            <div class="about-icon"><i class="bi bi-file-earmark-text"></i></div>
+                            <h5 class="mb-0">
+                                {% if restitution_data %}
+                                    {{ restitution_data.titre_hero }}
+                                {% else %}
+                                    Restitution
+                                {% endif %}
+                            </h5>
+                            {% if restitution_data %}
+                                <p class="small text-muted mt-2">{{ restitution_data.description_hero|truncatewords:15 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Événement -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="eventModalContent"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 7 : PODCAST ============ -->
+<section id="podcast" class="podcast-section text-white">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <div class="podcast-icon">
+                    <i class="bi bi-mic"></i>
+                </div>
+                <h2 class="mb-3" style="color: #fff;">{{ config.podcast_titre }}</h2>
+                <p class="mb-4" style="opacity: 0.85; font-size: 1.1rem;">{{ config.podcast_description }}</p>
+                {% if config.podcast_fichier %}
+                <audio controls class="w-100" style="max-width:520px;">
+                    <source src="{{ config.podcast_fichier.url }}">
+                    Votre navigateur ne supporte pas la lecture audio.
+                </audio>
+                {% elif config.podcast_url %}
+                <a href="{{ config.podcast_url }}" class="btn btn-accent btn-lg" target="_blank" rel="noopener">
+                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
+                </a>
+                {% else %}
+                <a href="#" class="btn btn-accent btn-lg disabled" tabindex="-1" aria-disabled="true">
+                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
+                </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 d-none d-lg-flex justify-content-center fade-in-up">
+                <div style="opacity: 0.1;">
+                    <i class="bi bi-soundwave" style="font-size: 14rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION : EXPERTS ============ -->
+{% if experts %}
+<section id="experts" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.experts_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.experts_sous_titre }}</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            {% for expert in experts %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 fade-in-up">
+                <div class="expert-card">
+                    <div class="expert-avatar">
+                        {% if expert.photo %}
+                        <img src="{{ expert.photo.url }}" alt="{{ expert.nom }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/200x200/003366/ffffff?text=Expert" alt="{{ expert.nom }}">
+                        {% endif %}
+                    </div>
+                    <h5 class="mt-3 mb-1" style="color: var(--primary);">{{ expert.nom }}</h5>
+                    <div class="text-muted small">{{ expert.specialite }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
+<section id="dounia2" class="dounia2-section text-white">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <div class="hero-badge">{{ config.dounia2_badge }}</div>
+                <h2 class="mb-3" style="color: #fff;">{{ config.dounia2_titre }}</h2>
+                <p style="opacity: 0.85; font-size: 1.1rem;" class="mb-4">{{ config.dounia2_description }}</p>
+            </div>
+            <div class="col-lg-6 fade-in-up">
+                {% for phase in phases %}
+                <div class="timeline-item">
+                    <h6 style="color: #ffffff; font-weight: 700;">{{ phase.titre }}</h6>
+                    <p style="opacity: 0.92; font-size: 0.95rem; color: #ffffff;">{{ phase.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION : VIDÉO ============ -->
+{% if config.video_fichier or config.video_lien %}
+<section id="video" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.video_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.video_sous_titre }}</p>
+        </div>
+        <div class="row justify-content-center fade-in-up">
+            <div class="col-lg-10">
+                <div class="video-wrapper">
+                    {% if config.video_fichier %}
+                    <video controls playsinline class="w-100" style="border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+                        <source src="{{ config.video_fichier.url }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture vidéo.
+                    </video>
+                    {% elif config.video_lien %}
+                    <div class="ratio ratio-16x9" style="border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+                        <iframe src="{{ config.video_embed_url }}" title="{{ config.video_titre }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============ SECTION 9 : ATELIERS THÉMATIQUES ============ -->
+<section id="ateliers" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.ateliers_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.ateliers_sous_titre|linebreaksbr }}</p>
+        </div>
+        <div class="row g-4">
+            <!-- Les ateliers seront ajoutés dynamiquement depuis la base de données -->
+            {% for atelier in ateliers_db %}
+            <div class="col-md-6 col-lg-4 fade-in-up">
+                <div class="atelier-card">
+                    <div class="atelier-image">
+                        <img src="{{ atelier.get_image_url }}" alt="{{ atelier.label }}">
+                    </div>
+                    <div class="atelier-content">
+                        <div class="atelier-number">{{ forloop.counter }}</div>
+                        <h5>{{ atelier.label }}</h5>
+                        <div class="atelier-description">
+                            <p>{{ atelier.description|default:"Description à ajouter..." }}</p>
+                            <div class="atelier-details">
+                                <span class="badge bg-light text-primary">{{ atelier.code|upper }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Aucun atelier disponible pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 10 : CALENDRIER DES ATELIERS ============ -->
+<section id="calendrier">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.calendrier_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.calendrier_sous_titre }}</p>
+        </div>
+        <div class="calendar-scroll fade-in-up">
+            <div class="calendar-marquee" aria-label="Calendrier des ateliers">
+                <div class="calendar-marquee-group">
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-mortarboard me-2"></i>Éducation, recherche &amp; innovation
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-heart-pulse me-2"></i>Santé &amp; inclusion sociale
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité &amp; défense
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-briefcase me-2"></i>RH, entreprise &amp; secteur informel
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-cash-coin me-2"></i>Finance, banque &amp; assurance
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-marquee-group" aria-hidden="true">
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-mortarboard me-2"></i>Éducation, recherche &amp; innovation
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-heart-pulse me-2"></i>Santé &amp; inclusion sociale
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité &amp; défense
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-briefcase me-2"></i>RH, entreprise &amp; secteur informel
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-cash-coin me-2"></i>Finance, banque &amp; assurance
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 9h00 – 12h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 sessions / semaine</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> 14h00 – 17h00 (GMT)</span></div>
+                                <div class="calendar-detail"><i class="bi bi-hourglass-split"></i><span><strong>Durée :</strong> 4 semaines</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 11 : FORMULAIRE D'INSCRIPTION ============ -->
+<section id="inscription" class="form-section">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">{{ config.inscription_titre }}</h2>
+            <hr class="section-divider">
+            <p class="section-subtitle">{{ config.inscription_sous_titre }}</p>
+        </div>
+        <div class="row justify-content-center fade-in-up">
+            <div class="col-lg-8">
+                <div class="form-container">
+                    {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'inscription' %}" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Identité -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">1</span>
+                                Identité
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                                    {{ form.nom }}
+                                    {% if form.nom.errors %}
+                                    <div class="text-danger small mt-1">{{ form.nom.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_prenom" class="form-label">Prénoms <span class="text-danger">*</span></label>
+                                    {{ form.prenom }}
+                                    {% if form.prenom.errors %}
+                                    <div class="text-danger small mt-1">{{ form.prenom.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">2</span>
+                                Contact
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_whatsapp" class="form-label">Numéro WhatsApp <span class="text-danger">*</span></label>
+                                    {{ form.whatsapp }}
+                                    {% if form.whatsapp.errors %}
+                                    <div class="text-danger small mt-1">{{ form.whatsapp.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profil professionnel -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">3</span>
+                                Profil professionnel
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="id_institution" class="form-label">Institution <span class="text-danger">*</span></label>
+                                    {{ form.institution }}
+                                    {% if form.institution.errors %}
+                                    <div class="text-danger small mt-1">{{ form.institution.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_fonction" class="form-label">Fonction <span class="text-danger">*</span></label>
+                                    {{ form.fonction }}
+                                    {% if form.fonction.errors %}
+                                    <div class="text-danger small mt-1">{{ form.fonction.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_profil" class="form-label">Profil <span class="text-danger">*</span></label>
+                                    {{ form.profil }}
+                                    {% if form.profil.errors %}
+                                    <div class="text-danger small mt-1">{{ form.profil.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12" id="profil_autre_wrapper" style="display:none;">
+                                    <label for="id_profil_autre" class="form-label">Précisez votre profil <span class="text-danger">*</span></label>
+                                    {{ form.profil_autre }}
+                                    {% if form.profil_autre.errors %}
+                                    <div class="text-danger small mt-1">{{ form.profil_autre.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Choix de l'atelier -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">4</span>
+                                Choix de l'atelier
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="id_atelier" class="form-label">Atelier thématique <span class="text-danger">*</span></label>
+                                    {{ form.atelier }}
+                                    {% if form.atelier.errors %}
+                                    <div class="text-danger small mt-1">{{ form.atelier.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_engagement" class="form-label">Engagement souhaité <span class="text-danger">*</span></label>
+                                    {{ form.engagement }}
+                                    {% if form.engagement.errors %}
+                                    <div class="text-danger small mt-1">{{ form.engagement.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="id_format_preference" class="form-label">Format préféré <span class="text-danger">*</span></label>
+                                    {{ form.format_preference }}
+                                    {% if form.format_preference.errors %}
+                                    <div class="text-danger small mt-1">{{ form.format_preference.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label for="id_disponibilite" class="form-label">Disponibilité <span class="text-danger">*</span></label>
+                                    {{ form.disponibilite }}
+                                    {% if form.disponibilite.errors %}
+                                    <div class="text-danger small mt-1">{{ form.disponibilite.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Motivation -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">5</span>
+                                Motivation
+                            </h5>
+                            <div>
+                                <label for="id_motivation" class="form-label">Votre motivation <span class="text-danger">*</span></label>
+                                {{ form.motivation }}
+                                {% if form.motivation.errors %}
+                                <div class="text-danger small mt-1">{{ form.motivation.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Engagement -->
+                        <div class="mb-4">
+                            <div class="form-check p-3 rounded" style="background: var(--light-bg); border: 1px solid var(--border-color);">
+                                {{ form.validation_engagement }}
+                                <label class="form-check-label ms-2" for="id_validation_engagement">
+                                    Je m'engage à participer activement aux travaux de l'atelier choisi <span class="text-danger">*</span>
+                                </label>
+                                {% if form.validation_engagement.errors %}
+                                <div class="text-danger small mt-1">{{ form.validation_engagement.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-accent btn-lg px-5">
+                                <i class="bi bi-send me-2"></i>Valider mon inscription
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 12 : PORTEURS & PARTENAIRES ============ -->
+<section id="partenaires" class="partners-section">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">Porteurs &amp; Partenaires</h2>
+            <hr class="section-divider">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="partner-category text-center fade-in-up">
+                    <h5>Porteurs du processus</h5>
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-6 col-md-4">
+                            <div class="partner-logo">
+                                {% if config.porteur1_logo %}
+                                <img src="{{ config.porteur1_logo.url }}" alt="{{ config.porteur1_nom }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="partner-logo">
+                                {% if config.porteur2_logo %}
+                                <img src="{{ config.porteur2_logo.url }}" alt="{{ config.porteur2_nom }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if partenaires_institutionnels %}
+                <div class="partner-category text-center fade-in-up mt-4">
+                    <h5>Partenaires institutionnels</h5>
+                    <div class="partner-marquee" aria-label="Partenaires institutionnels">
+                        <div class="partner-marquee-track">
+                            {% for partenaire in partenaires_institutionnels %}
+                            {% if partenaire.logo %}
+                            <div class="partner-logo">
+                                {% if partenaire.site_web %}
+                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
+                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                </a>
+                                {% else %}
+                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% for partenaire in partenaires_institutionnels %}
+                            {% if partenaire.logo %}
+                            <div class="partner-logo" aria-hidden="true">
+                                {% if partenaire.site_web %}
+                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
+                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                </a>
+                                {% else %}
+                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if partenaires_techniques %}
+                <div class="partner-category text-center fade-in-up mt-4">
+                    <h5>Partenaires techniques</h5>
+                    <div class="partner-marquee" aria-label="Partenaires techniques">
+                        <div class="partner-marquee-track">
+                            {% for partenaire in partenaires_techniques %}
+                            {% if partenaire.logo %}
+                            <div class="partner-logo">
+                                {% if partenaire.site_web %}
+                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
+                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                </a>
+                                {% else %}
+                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% for partenaire in partenaires_techniques %}
+                            {% if partenaire.logo %}
+                            <div class="partner-logo" aria-hidden="true">
+                                {% if partenaire.site_web %}
+                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
+                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                </a>
+                                {% else %}
+                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal de lecture et téléchargement du livrable -->
+{% include 'inscriptions/rapport_modal.html' %}
+
+<!-- Script pour le formulaire de téléchargement -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show/hide profil_autre field
+    var profilSelect = document.getElementById('id_profil');
+    var profilAutreWrapper = document.getElementById('profil_autre_wrapper');
+    if (profilSelect && profilAutreWrapper) {
+        function toggleProfilAutre() {
+            profilAutreWrapper.style.display = profilSelect.value === 'autre' ? '' : 'none';
+        }
+        profilSelect.addEventListener('change', toggleProfilAutre);
+        toggleProfilAutre();
+    }
+
+    const downloadForm = document.getElementById('downloadForm');
+    if (downloadForm) {
+        downloadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validation simple
+            const requiredFields = ['download_nom', 'download_prenom', 'download_email', 'download_institution', 'download_usage'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            const consentCheckbox = document.getElementById('download_consent');
+            if (!consentCheckbox.checked) {
+                consentCheckbox.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                consentCheckbox.classList.remove('is-invalid');
+            }
+            
+            if (isValid) {
+                // Soumettre le formulaire
+                this.submit();
+            }
+        });
+    }
+
+    // Effets avancés pour les images
+    const heroCarousel = document.querySelector('.hero-carousel-wrapper');
+    const expertCards = document.querySelectorAll('.expert-card');
+    const partnerLogos = document.querySelectorAll('.partner-logo');
+
+    // Effet parallax sur le carrousel au scroll
+    if (heroCarousel) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.3;
+            heroCarousel.style.transform = `translateY(${parallax}px) scale(1.02) rotateY(-5deg)`;
+        });
+
+        // Effet de suivi de souris pour le carrousel
+        heroCarousel.addEventListener('mousemove', (e) => {
+            const rect = heroCarousel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 15;
+            const rotateY = (centerX - x) / 15;
+            
+            heroCarousel.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.05)`;
+        });
+        
+        heroCarousel.addEventListener('mouseleave', () => {
+            heroCarousel.style.transform = 'perspective(1000px) rotateX(0) rotateY(-5deg) translateZ(0) scale(1)';
+        });
+    }
+
+    // Effet de suivi de souris pour les cartes d'experts
+    expertCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.05)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0) scale(1)';
+        });
+    });
+
+    // Animation d'entrée progressive des images au scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    // Observer les images pour l'animation d'entrée
+    document.querySelectorAll('.expert-card, .partner-logo').forEach(el => {
+        imageObserver.observe(el);
+    });
+
+    // Effet de brillance au clic sur les logos partenaires
+    partnerLogos.forEach(logo => {
+        logo.addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'partnerShine 0.6s ease-out';
+            }, 10);
+        });
+    });
+
+    // Ajouter l'animation de brillance
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes partnerShine {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+
+<script>
+function toggleAtelier(card) {
+    // Fermer toutes les autres cartes d'atelier
+    document.querySelectorAll('.atelier-card').forEach(otherCard => {
+        if (otherCard !== card) {
+            otherCard.classList.remove('active');
+        }
+    });
+    
+    // Basculer la carte actuelle
+    card.classList.toggle('active');
+    
+    // Si la carte est maintenant active, scroller vers la description
+    if (card.classList.contains('active')) {
+        setTimeout(() => {
+            const description = card.querySelector('.atelier-description');
+            if (description) {
+                description.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }
+        }, 300);
+    }
+}
+</script>
+
+{{ bg_images_json|json_script:"bg-images-data" }}
+<script>
+(function() {
+    var dataEl = document.getElementById('bg-images-data');
+    if (!dataEl) return;
+    var data = JSON.parse(dataEl.textContent);
+    var heroImages = data.hero || [];
+    var statsImages = data.stats || [];
+    if (!heroImages.length && !statsImages.length) return;
+
+    var preload = function(urls, done) {
+        if (!urls || !urls.length) return done();
+        var remaining = urls.length;
+        var finished = false;
+        var finish = function() {
+            if (finished) return;
+            finished = true;
+            done();
+        };
+        urls.forEach(function(u) {
+            var img = new Image();
+            img.onload = function() {
+                remaining -= 1;
+                if (remaining <= 0) finish();
+            };
+            img.onerror = function() {
+                remaining -= 1;
+                if (remaining <= 0) finish();
+            };
+            img.src = u;
+        });
+        setTimeout(finish, 2500);
+    };
+
+    preload(heroImages.concat(statsImages), function() {
+    var style = document.createElement('style');
+    var css = '';
+    if (heroImages.length) {
+        var heroDuration = heroImages.length * 10;
+        css += '.hero-section { background-color: #003366; background-image: linear-gradient(rgba(0,51,102,0.35),rgba(0,51,102,0.55)), url("' + heroImages[0] + '"); animation: heroBackgroundCycle ' + heroDuration + 's infinite; } ';
+        css += '@keyframes heroBackgroundCycle { ';
+        for (var i = 0; i < heroImages.length; i++) {
+            var startPct = Math.round(i / heroImages.length * 100);
+            var endPct = Math.round((i + 1) / heroImages.length * 100);
+            var bg = 'linear-gradient(rgba(0,51,102,0.35),rgba(0,51,102,0.55)), url("' + heroImages[i] + '")';
+            css += startPct + '% { background-image: ' + bg + '; } ';
+            css += endPct + '% { background-image: ' + bg + '; } ';
+        }
+        css += '} ';
+    }
+    if (statsImages.length) {
+        var statsDuration = statsImages.length * 10;
+        css += '.stats-section { background-color: transparent; background-image: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url("' + statsImages[0] + '"); background-size: cover; background-position: center; background-attachment: fixed; animation: backgroundCycle ' + statsDuration + 's infinite; } ';
+        css += '@keyframes backgroundCycle { ';
+        for (var j = 0; j < statsImages.length; j++) {
+            var sStart = Math.round(j / statsImages.length * 100);
+            var sEnd = Math.round((j + 1) / statsImages.length * 100);
+            var sBg = 'linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url("' + statsImages[j] + '")';
+            css += sStart + '% { background-image: ' + sBg + '; } ';
+            css += sEnd + '% { background-image: ' + sBg + '; } ';
+        }
+        css += '} ';
+    }
+    style.textContent = css;
+    document.head.appendChild(style);
+    });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord — Gestion DounIA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .main-container { background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .header-section { background: linear-gradient(135deg, #003366 0%, #004080 100%); color: white; border-radius: 20px 20px 0 0; }
+        .stat-card { background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s ease; border: none; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .stat-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .stat-number { font-size: 2.5rem; font-weight: bold; }
+        .action-card { background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s ease; border: none; }
+        .action-card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .btn-custom { border-radius: 10px; font-weight: 500; transition: all 0.3s ease; }
+        .btn-custom:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="main-container">
+            <!-- Header -->
+            <div class="header-section p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="mb-2">
+                            <i class="bi bi-speedometer2 me-3"></i>
+                            Doun<span style="color: #ffd700;">IA</span> <small class="fs-5">Gestion</small>
+                        </h1>
+                        <p class="mb-0 opacity-75">Interface de gestion complète du site DounIA</p>
+                    </div>
+                    <div>
+                        <a href="/" class="btn btn-light btn-custom me-2">
+                            <i class="bi bi-house me-2"></i>Retour au site
+                        </a>
+                        <a href="/admin/" class="btn btn-outline-light btn-custom">
+                            <i class="bi bi-gear me-2"></i>Admin Django
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <!-- Statistiques -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-3">
+                        <div class="stat-card h-100 p-4 text-center">
+                            <div class="stat-icon text-primary">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <div class="stat-number text-primary">{{ total_inscriptions|default:"0" }}</div>
+                            <div class="text-muted">Inscriptions totales</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card h-100 p-4 text-center">
+                            <div class="stat-icon text-success">
+                                <i class="bi bi-images"></i>
+                            </div>
+                            <div class="stat-number text-success">∞</div>
+                            <div class="text-muted">Images gérables</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card h-100 p-4 text-center">
+                            <div class="stat-icon text-info">
+                                <i class="bi bi-file-text"></i>
+                            </div>
+                            <div class="stat-number text-info">5</div>
+                            <div class="text-muted">Sections de contenu</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card h-100 p-4 text-center">
+                            <div class="stat-icon text-warning">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <div class="stat-number text-warning">4</div>
+                            <div class="text-muted">Chiffres clés</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions principales -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-images text-primary me-2"></i>
+                                Gestion des Images Hero & Stats
+                            </h4>
+                            <p class="text-muted mb-3">Gérez les images du carousel hero et les images défilantes des statistiques</p>
+                            <a href="/gestion/hero-stats-images/" class="btn btn-primary btn-custom btn-lg">
+                                <i class="bi bi-gear me-2"></i>Gérer les images
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-people text-success me-2"></i>
+                                Gestion des Inscriptions
+                            </h4>
+                            <p class="text-muted mb-3">Consultez et gérez toutes les inscriptions aux ateliers</p>
+                            <a href="/gestion/inscriptions/" class="btn btn-success btn-custom btn-lg">
+                                <i class="bi bi-list me-2"></i>Voir les inscriptions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion du contenu -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-file-text text-info me-2"></i>
+                                Gestion du Contenu
+                            </h4>
+                            <p class="text-muted mb-3">Modifiez les textes et contenus de toutes les sections du site</p>
+                            <a href="/gestion/contenu/" class="btn btn-info btn-custom btn-lg">
+                                <i class="bi bi-pencil me-2"></i>Modifier le contenu
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-bar-chart text-warning me-2"></i>
+                                Gestion des Chiffres Clés
+                            </h4>
+                            <p class="text-muted mb-3">Mettez à jour les statistiques et chiffres importants</p>
+                            <a href="/gestion/chiffres/" class="btn btn-warning btn-custom btn-lg">
+                                <i class="bi bi-graph-up me-2"></i>Modifier les chiffres
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experts et Partenaires -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-person-badge text-secondary me-2"></i>
+                                Gestion des Experts
+                            </h4>
+                            <p class="text-muted mb-3">Ajoutez et modifiez les experts et leurs spécialités</p>
+                            <a href="/gestion/experts/" class="btn btn-secondary btn-custom btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Gérer les experts
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-building text-dark me-2"></i>
+                                Gestion des Partenaires
+                            </h4>
+                            <p class="text-muted mb-3">Gérez les logos et informations des partenaires</p>
+                            <a href="/gestion/partenaires/" class="btn btn-dark btn-custom btn-lg">
+                                <i class="bi bi-building-add me-2"></i>Gérer les partenaires
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Répartition par atelier -->
+                {% if inscriptions_par_atelier %}
+                <div class="row g-4 mt-3">
+                    <div class="col-12">
+                        <div class="action-card p-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-pie-chart text-primary me-2"></i>
+                                Répartition des inscriptions par atelier
+                            </h4>
+                            <div class="row mt-3">
+                                {% for item in inscriptions_par_atelier %}
+                                <div class="col-md-3 col-sm-6 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                        <span class="fw-medium">{{ item.atelier|default:"Non défini" }}</span>
+                                        <span class="badge bg-primary rounded-pill">{{ item.count }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

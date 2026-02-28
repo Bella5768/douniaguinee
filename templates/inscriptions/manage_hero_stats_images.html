@@ -1,0 +1,382 @@
+{% extends 'gestion/base_admin.html' %}
+{% load static %}
+
+{% block title %}Images Hero & Statistiques — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2><i class="bi bi-images me-2" style="color: var(--admin-blue);"></i>Images Hero & Statistiques</h2>
+        <p class="mb-0">Gérer les images d'arrière-plan du hero, des statistiques et du carousel</p>
+    </div>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-admin-outline btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Tableau de bord
+    </a>
+</div>
+
+<!-- Add Forms Row -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-4">
+        <div class="admin-add-form h-100">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="action-icon action-icon-blue" style="width:36px;height:36px;border-radius:10px;font-size:1rem;"><i class="bi bi-image"></i></div>
+                <h6 class="mb-0 fw-bold" style="font-size:0.9rem;">Ajouter Image Hero</h6>
+            </div>
+            <form method="post" enctype="multipart/form-data" action="{% url 'add_hero_image' %}">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" name="titre" class="form-control form-control-sm" required placeholder="Nom de l'image">
+                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col-7">
+                        <label class="form-label">Position</label>
+                        <select name="position" class="form-select form-select-sm">
+                            <option value="gauche">Gauche (carousel)</option>
+                            <option value="arriere">Arrière-plan</option>
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <label class="form-label">Ordre</label>
+                        <input type="number" name="ordre" class="form-control form-control-sm" value="0">
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Image (upload)</label>
+                    <input type="file" name="image" class="form-control form-control-sm" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ou URL</label>
+                    <input type="url" name="image_url" class="form-control form-control-sm" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn btn-admin-primary btn-sm w-100">
+                    <i class="bi bi-plus-circle me-1"></i>Ajouter
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="admin-add-form h-100">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="action-icon action-icon-green" style="width:36px;height:36px;border-radius:10px;font-size:1rem;"><i class="bi bi-bar-chart"></i></div>
+                <h6 class="mb-0 fw-bold" style="font-size:0.9rem;">Ajouter Image Stats</h6>
+            </div>
+            <form method="post" enctype="multipart/form-data" action="{% url 'add_stats_image' %}">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" name="titre" class="form-control form-control-sm" required placeholder="Nom de l'image">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Ordre</label>
+                    <input type="number" name="ordre" class="form-control form-control-sm" value="0">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Image (upload)</label>
+                    <input type="file" name="image" class="form-control form-control-sm" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ou URL</label>
+                    <input type="url" name="image_url" class="form-control form-control-sm" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn btn-sm w-100" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:10px;font-weight:600;">
+                    <i class="bi bi-plus-circle me-1"></i>Ajouter
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="admin-add-form h-100">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <div class="action-icon action-icon-purple" style="width:36px;height:36px;border-radius:10px;font-size:1rem;"><i class="bi bi-collection-play"></i></div>
+                <h6 class="mb-0 fw-bold" style="font-size:0.9rem;">Ajouter Image Carousel</h6>
+            </div>
+            <form method="post" enctype="multipart/form-data" action="{% url 'add_carousel_image' %}">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="form-label">Titre *</label>
+                    <input type="text" name="titre" class="form-control form-control-sm" required placeholder="Nom de l'image">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Ordre</label>
+                    <input type="number" name="ordre" class="form-control form-control-sm" value="0">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Image (upload)</label>
+                    <input type="file" name="image" class="form-control form-control-sm" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ou URL</label>
+                    <input type="url" name="image_url" class="form-control form-control-sm" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn btn-sm w-100" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;border:none;border-radius:10px;font-weight:600;">
+                    <i class="bi bi-plus-circle me-1"></i>Ajouter
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Arrière-plan -->
+<div class="admin-section-header">
+    <div class="section-icon action-icon-blue"><i class="bi bi-image-fill"></i></div>
+    <h3>Images Hero — Arrière-plan</h3>
+    <span class="section-count">{{ hero_images_arriere|length }}</span>
+</div>
+<div class="row g-3 mb-4">
+    {% for image in hero_images_arriere %}
+    <div class="col-sm-6 col-lg-3">
+        <div class="img-manage-card">
+            <img src="{{ image.get_image_url }}" alt="{{ image.titre }}" class="img-preview">
+            <div class="img-body">
+                <div class="img-title">{{ image.titre }}</div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge-status {% if image.active %}badge-active{% else %}badge-inactive{% endif %}">
+                        {% if image.active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    <span class="img-meta">Ordre: {{ image.ordre }}</span>
+                </div>
+            </div>
+            <div class="img-actions">
+                <button class="btn btn-sm btn-toggle {% if image.active %}btn-outline-warning{% else %}btn-outline-success{% endif %}" onclick="toggleHeroImage({{ image.id }})">
+                    <i class="bi bi-toggle-{% if image.active %}on{% else %}off{% endif %} me-1"></i>
+                    {% if image.active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+                <button class="btn btn-sm btn-delete btn-outline-danger" onclick="deleteHeroImage({{ image.id }})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="admin-empty-state"><i class="bi bi-image"></i><p>Aucune image hero arrière-plan</p></div></div>
+    {% endfor %}
+</div>
+
+<!-- Hero Gauche -->
+<div class="admin-section-header">
+    <div class="section-icon action-icon-cyan"><i class="bi bi-layout-sidebar"></i></div>
+    <h3>Images Hero — Gauche (Carousel)</h3>
+    <span class="section-count">{{ hero_images_gauche|length }}</span>
+</div>
+<div class="row g-3 mb-4">
+    {% for image in hero_images_gauche %}
+    <div class="col-sm-6 col-lg-3">
+        <div class="img-manage-card">
+            <img src="{{ image.get_image_url }}" alt="{{ image.titre }}" class="img-preview">
+            <div class="img-body">
+                <div class="img-title">{{ image.titre }}</div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge-status {% if image.active %}badge-active{% else %}badge-inactive{% endif %}">
+                        {% if image.active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    <span class="img-meta">Ordre: {{ image.ordre }}</span>
+                </div>
+            </div>
+            <div class="img-actions">
+                <button class="btn btn-sm btn-toggle {% if image.active %}btn-outline-warning{% else %}btn-outline-success{% endif %}" onclick="toggleHeroImage({{ image.id }})">
+                    <i class="bi bi-toggle-{% if image.active %}on{% else %}off{% endif %} me-1"></i>
+                    {% if image.active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+                <button class="btn btn-sm btn-delete btn-outline-danger" onclick="deleteHeroImage({{ image.id }})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="admin-empty-state"><i class="bi bi-image"></i><p>Aucune image hero gauche</p></div></div>
+    {% endfor %}
+</div>
+
+<!-- Stats Images -->
+<div class="admin-section-header">
+    <div class="section-icon action-icon-green"><i class="bi bi-bar-chart-fill"></i></div>
+    <h3>Images Statistiques</h3>
+    <span class="section-count">{{ stats_images|length }}</span>
+</div>
+<div class="row g-3 mb-4">
+    {% for image in stats_images %}
+    <div class="col-sm-6 col-lg-3">
+        <div class="img-manage-card">
+            <img src="{{ image.get_image_url }}" alt="{{ image.titre }}" class="img-preview">
+            <div class="img-body">
+                <div class="img-title">{{ image.titre }}</div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge-status {% if image.active %}badge-active{% else %}badge-inactive{% endif %}">
+                        {% if image.active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    <span class="img-meta">Ordre: {{ image.ordre }}</span>
+                </div>
+            </div>
+            <div class="img-actions">
+                <button class="btn btn-sm btn-toggle {% if image.active %}btn-outline-warning{% else %}btn-outline-success{% endif %}" onclick="toggleStatsImage({{ image.id }})">
+                    <i class="bi bi-toggle-{% if image.active %}on{% else %}off{% endif %} me-1"></i>
+                    {% if image.active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+                <button class="btn btn-sm btn-delete btn-outline-danger" onclick="deleteStatsImage({{ image.id }})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="admin-empty-state"><i class="bi bi-bar-chart"></i><p>Aucune image statistiques</p></div></div>
+    {% endfor %}
+</div>
+
+<!-- Carousel Images -->
+<div class="admin-section-header">
+    <div class="section-icon action-icon-purple"><i class="bi bi-collection-play-fill"></i></div>
+    <h3>Images Carousel Hero</h3>
+    <span class="section-count">{{ carousel_images|length }}</span>
+</div>
+<div class="row g-3 mb-4">
+    {% for image in carousel_images %}
+    <div class="col-sm-6 col-lg-3">
+        <div class="img-manage-card">
+            <img src="{{ image.get_image_url }}" alt="{{ image.titre }}" class="img-preview">
+            <div class="img-body">
+                <div class="img-title">{{ image.titre }}</div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge-status {% if image.active %}badge-active{% else %}badge-inactive{% endif %}">
+                        {% if image.active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                    <span class="img-meta">Ordre: {{ image.ordre }}</span>
+                </div>
+            </div>
+            <div class="img-actions">
+                <button class="btn btn-sm btn-toggle {% if image.active %}btn-outline-warning{% else %}btn-outline-success{% endif %}" onclick="toggleCarouselImage({{ image.id }})">
+                    <i class="bi bi-toggle-{% if image.active %}on{% else %}off{% endif %} me-1"></i>
+                    {% if image.active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+                <button class="btn btn-sm btn-delete btn-outline-danger" onclick="deleteCarouselImage({{ image.id }})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="admin-empty-state"><i class="bi bi-collection-play"></i><p>Aucune image carousel</p></div></div>
+    {% endfor %}
+</div>
+
+<script>
+function toggleHeroImage(imageId) {
+    fetch(`/gestion/hero-images/toggle/${imageId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function toggleStatsImage(imageId) {
+    fetch(`/gestion/stats-images/toggle/${imageId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function deleteHeroImage(imageId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        fetch(`/gestion/hero-images/delete/${imageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function deleteStatsImage(imageId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        fetch(`/gestion/stats-images/delete/${imageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function toggleCarouselImage(imageId) {
+    fetch(`/gestion/carousel-images/toggle/${imageId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+}
+
+function deleteCarouselImage(imageId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        fetch(`/gestion/carousel-images/delete/${imageId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

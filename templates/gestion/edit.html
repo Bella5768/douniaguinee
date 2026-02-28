@@ -1,0 +1,123 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Modifier — {{ inscription.prenom }} {{ inscription.nom }} — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_inscriptions' %}">Inscriptions</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_inscription_detail' inscription.pk %}">{{ inscription.prenom }} {{ inscription.nom }}</a></li>
+            <li class="breadcrumb-item active">Modifier</li>
+        </ol>
+    </nav>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Modifier l'inscription de {{ inscription.prenom }} {{ inscription.nom }}</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person me-2"></i>Identité</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_nom" class="form-label small fw-semibold">Nom</label>
+                                {{ form.nom }}
+                                {% if form.nom.errors %}<div class="text-danger small mt-1">{{ form.nom.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_prenom" class="form-label small fw-semibold">Prénom</label>
+                                {{ form.prenom }}
+                                {% if form.prenom.errors %}<div class="text-danger small mt-1">{{ form.prenom.errors.0 }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-envelope me-2"></i>Contact</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_email" class="form-label small fw-semibold">Email</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_whatsapp" class="form-label small fw-semibold">WhatsApp</label>
+                                {{ form.whatsapp }}
+                                {% if form.whatsapp.errors %}<div class="text-danger small mt-1">{{ form.whatsapp.errors.0 }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-briefcase me-2"></i>Profil professionnel</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_institution" class="form-label small fw-semibold">Institution</label>
+                                {{ form.institution }}
+                                {% if form.institution.errors %}<div class="text-danger small mt-1">{{ form.institution.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_fonction" class="form-label small fw-semibold">Fonction</label>
+                                {{ form.fonction }}
+                                {% if form.fonction.errors %}<div class="text-danger small mt-1">{{ form.fonction.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="id_profil" class="form-label small fw-semibold">Profil</label>
+                                {{ form.profil }}
+                                {% if form.profil.errors %}<div class="text-danger small mt-1">{{ form.profil.errors.0 }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-journal-text me-2"></i>Choix de l'atelier</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                <label for="id_atelier" class="form-label small fw-semibold">Atelier thématique</label>
+                                {{ form.atelier }}
+                                {% if form.atelier.errors %}<div class="text-danger small mt-1">{{ form.atelier.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_engagement" class="form-label small fw-semibold">Engagement</label>
+                                {{ form.engagement }}
+                                {% if form.engagement.errors %}<div class="text-danger small mt-1">{{ form.engagement.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_format_preference" class="form-label small fw-semibold">Format</label>
+                                {{ form.format_preference }}
+                                {% if form.format_preference.errors %}<div class="text-danger small mt-1">{{ form.format_preference.errors.0 }}</div>{% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_disponibilite" class="form-label small fw-semibold">Disponibilité</label>
+                                {{ form.disponibilite }}
+                                {% if form.disponibilite.errors %}<div class="text-danger small mt-1">{{ form.disponibilite.errors.0 }}</div>{% endif %}
+                            </div>
+                        </div>
+
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-chat-quote me-2"></i>Motivation</h6>
+                        <div class="mb-4">
+                            {{ form.motivation }}
+                            {% if form.motivation.errors %}<div class="text-danger small mt-1">{{ form.motivation.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="form-check mb-4">
+                            {{ form.validation_engagement }}
+                            <label class="form-check-label ms-2" for="id_validation_engagement">
+                                Engagement à participer activement
+                            </label>
+                            {% if form.validation_engagement.errors %}<div class="text-danger small mt-1">{{ form.validation_engagement.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'admin_inscription_detail' inscription.pk %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg me-1"></i>Annuler
+                            </a>
+                            <button type="submit" class="btn btn-accent">
+                                <i class="bi bi-check-lg me-1"></i>Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ evenement.titre_hero }} - DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .event-hero {
+        background: linear-gradient(135deg, #003366 0%, #004080 50%, #0052a3 100%);
+        color: white;
+        padding: 6rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-hero-bg-slideshow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    .page-hero-bg-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        animation: pageHeroSlide 20s infinite;
+        transform: scale(1.05);
+    }
+
+    .page-hero-bg-slide:nth-child(1) { animation-delay: 0s; }
+    .page-hero-bg-slide:nth-child(2) { animation-delay: 5s; }
+    .page-hero-bg-slide:nth-child(3) { animation-delay: 10s; }
+    .page-hero-bg-slide:nth-child(4) { animation-delay: 15s; }
+
+    @keyframes pageHeroSlide {
+        0% { opacity: 0; }
+        10% { opacity: 0.65; }
+        25% { opacity: 0.65; }
+        35% { opacity: 0; }
+        100% { opacity: 0; }
+    }
+    
+    .event-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        z-index: 1;
+    }
+    
+    .event-hero .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .event-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+    
+    .event-subtitle {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+    
+    .event-buttons {
+        margin-top: 2rem;
+    }
+    
+    .event-buttons .btn {
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section-content {
+        padding: 4rem 0;
+    }
+    
+    .section-content h2 {
+        color: #003366;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .section-content h3 {
+        color: #003366;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .objectif-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid #003366;
+    }
+    
+    .objectif-icon {
+        color: #003366;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        margin-top: 0.25rem;
+    }
+    
+    .chiffre-card {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+        margin-bottom: 2rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .chiffre-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .chiffre-nombre {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #003366;
+        margin-bottom: 0.5rem;
+    }
+    
+    .chiffre-label {
+        color: #666;
+        font-weight: 500;
+    }
+    
+    .programme-session {
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #003366;
+    }
+    
+    .programme-heure {
+        color: #003366;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .programme-titre {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .galerie-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .galerie-item {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .galerie-item:hover {
+        transform: scale(1.05);
+    }
+    
+    .galerie-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    
+    .galerie-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        color: white;
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .galerie-caption h4 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="event-hero">
+    {% if hero_images %}
+    <div class="page-hero-bg-slideshow">
+        {% for img in hero_images %}
+        <div class="page-hero-bg-slide" style="background-image: url('{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}');"></div>
+        {% endfor %}
+    </div>
+    {% elif evenement.hero_image or evenement.hero_image_url %}
+    <div class="page-hero-bg-slideshow">
+        <div class="page-hero-bg-slide" style="opacity: 0.65; animation: none; background-image: url('{% if evenement.hero_image %}{{ evenement.hero_image.url }}?t={{ evenement.updated_at|date:'U' }}{% else %}{{ evenement.hero_image_url }}{% endif %}');"></div>
+    </div>
+    {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="event-title">{{ evenement.titre_hero }}</h1>
+                <p class="event-subtitle">{{ evenement.description_hero }}</p>
+                <div class="event-buttons">
+                    <a href="{% url 'landing_page' %}#inscription" class="btn btn-light btn-lg">
+                        <i class="bi bi-play-circle me-2"></i>{{ evenement.bouton_principal_texte }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Objectifs Section -->
+{% if evenement.objectifs_points %}
+<section class="section-content bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>{{ evenement.objectifs_titre }}</h2>
+            <p class="lead">{{ evenement.objectifs_description }}</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% for objectif in evenement.objectifs_points %}
+                <div class="objectif-item">
+                    <div class="objectif-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div>
+                        <h3>Objectif {{ forloop.counter }}</h3>
+                        <p>{{ objectif }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Chiffres Section -->
+{% if evenement.chiffres %}
+    {% if evenement.chiffres_image or evenement.chiffres_image_url %}
+    <section class="chiffres-bandeau" style="background-image: url('{% if evenement.chiffres_image %}{{ evenement.chiffres_image.url }}?t={{ evenement.updated_at|date:'U' }}{% else %}{{ evenement.chiffres_image_url }}?t={{ evenement.updated_at|date:'U' }}{% endif %}');">
+        <div class="chiffres-bandeau-overlay">
+            <div class="container">
+                <div class="row g-0 chiffres-bandeau-row">
+                    {% for chiffre in evenement.chiffres %}
+                    <div class="col-6 col-md-3 chiffres-bandeau-item">
+                        <div class="chiffres-bandeau-nombre">{{ chiffre.nombre }}</div>
+                        <div class="chiffres-bandeau-label">{{ chiffre.label }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="section-content">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>{{ evenement.chiffres_titre }}</h2>
+            </div>
+            <div class="row">
+                {% for chiffre in evenement.chiffres %}
+                <div class="col-md-3 col-6">
+                    <div class="chiffre-card">
+                        <div class="chiffre-nombre">{{ chiffre.nombre }}</div>
+                        <div class="chiffre-label">{{ chiffre.label }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endif %}
+
+<!-- Programme Section -->
+{% if evenement.programme_sessions %}
+<section class="section-content bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>{{ evenement.programme_titre }}</h2>
+            <p class="lead">{{ evenement.programme_description }}</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                {% for session in evenement.programme_sessions %}
+                <div class="programme-session">
+                    <div class="programme-heure">{{ session.heure }}</div>
+                    <div class="programme-titre">{{ session.titre }}</div>
+                    <div class="programme-description">{{ session.description }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Galerie Section -->
+{% if images %}
+<section class="section-content">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Galerie Photos</h2>
+            <p class="lead">Découvrez les moments clés de l'événement</p>
+        </div>
+        <div id="eventGalleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
+            <div class="carousel-indicators">
+                {% for image in images %}
+                <button type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-inner">
+                {% for image in images %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ image.get_image_url }}?t={{ image.date_ajout|date:'U' }}" class="d-block w-100" alt="{{ image.titre|default:'Image' }}" style="height: 520px; object-fit: cover;">
+                    <div class="carousel-caption d-none d-md-block">
+                        {% if image.titre %}<h5>{{ image.titre }}</h5>{% endif %}
+                        {% if image.description %}<p class="mb-0">{{ image.description|truncatewords:18 }}</p>{% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Partenaires Section -->
+{% if evenement.partenaires_description %}
+<section class="section-content bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>{{ evenement.partenaires_titre }}</h2>
+            <p class="lead">{{ evenement.partenaires_description }}</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <p class="mb-4">Merci à tous nos partenaires pour leur soutien précieux</p>
+                <a href="#contact" class="btn btn-primary">Devenir partenaire</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

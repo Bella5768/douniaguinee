@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IDE Validation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+<div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2>Tableau de bord</h2>
+        <p class="mb-0">Vue d'ensemble des inscriptions DounIA 2</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="#" class="btn btn-admin-primary btn-sm">
+            <i class="bi bi-people me-1"></i>Inscriptions
+        </a>
+        <a href="#" class="btn btn-admin-accent btn-sm">
+            <i class="bi bi-download me-1"></i>Export CSV
+        </a>
+    </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-total">
+            <div class="stat-card-icon"><i class="bi bi-people-fill"></i></div>
+            <div>
+                <div class="stat-card-number">150</div>
+                <div class="stat-card-label">Inscriptions totales</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-atelier">
+            <div class="stat-card-icon"><i class="bi bi-journal-text"></i></div>
+            <div>
+                <div class="stat-card-number">5</div>
+                <div class="stat-card-label">Ateliers actifs</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-profil">
+            <div class="stat-card-icon"><i class="bi bi-person-badge"></i></div>
+            <div>
+                <div class="stat-card-number">4</div>
+                <div class="stat-card-label">Types de profils</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-format">
+            <div class="stat-card-icon"><i class="bi bi-laptop"></i></div>
+            <div>
+                <div class="stat-card-number">2</div>
+                <div class="stat-card-label">Formats choisis</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Répartition par atelier</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold text-truncate me-2">Atelier 1</span>
+                        <span class="badge bg-light text-primary">30</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar" style="width: 20%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <h5 class="mb-0"><i class="bi bi-person-lines-fill me-2"></i>Répartition par profil</h5>
+            </div>
+            <div class="admin-card-body">
+                <div class="stat-bar-item">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="small fw-semibold">Profil 1</span>
+                        <span class="badge bg-accent-subtle">25</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar bg-accent-bar" style="width: 17%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
