@@ -169,12 +169,12 @@
     {% if hero_images %}
     <div class="page-hero-bg-slideshow">
         {% for img in hero_images %}
-        <div class="page-hero-bg-slide" style="background-image: url('{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}');"></div>
+        <div class="page-hero-bg-slide" style="background-image: url({{ img.get_image_url }}?t={{ img.date_ajout|date:"U" }});"></div>
         {% endfor %}
     </div>
     {% elif restitution.hero_image or restitution.hero_image_url %}
     <div class="page-hero-bg-slideshow">
-        <div class="page-hero-bg-slide" style="opacity: 0.65; animation: none; background-image: url('{% if restitution.hero_image %}{{ restitution.hero_image.url }}?t={{ restitution.updated_at|date:'U' }}{% else %}{{ restitution.hero_image_url }}{% endif %}');"></div>
+        <div class="page-hero-bg-slide" style="opacity: 0.65; animation: none; background-image: url({% if restitution.hero_image %}{{ restitution.hero_image.url }}?t={{ restitution.updated_at|date:"U" }}{% else %}{{ restitution.hero_image_url }}{% endif %});"></div>
     </div>
     {% endif %}
     <div class="container">
@@ -183,254 +183,91 @@
                 <div class="animate-fade-in-up">
                     <h1 class="display-4 fw-bold mb-4">{{ restitution.titre_hero }}</h1>
                     <p class="lead mb-4">{{ restitution.description_hero }}</p>
-                    <div class="hero-buttons">
-                        <a href="#rapports" class="btn btn-light btn-lg me-3">
-                            <i class="bi bi-file-earmark-text me-2"></i>Voir les rapports
-                        </a>
-                        <a href="#inscription" class="btn btn-outline-light btn-lg">
-                            <i class="bi bi-person-plus me-2"></i>S'inscrire
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Objectifs Section -->
+<!-- Restitution Section -->
 <section class="restitution-section bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title">Objectifs de la Restitution</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">Partager les résultats et coconstruire l'avenir de la gouvernance des données en Guinée</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="restitution-card animate-fade-in-left">
-                    <h3><i class="bi bi-bullseye me-2"></i>{{ restitution.mission_titre }}</h3>
-                    <p>{{ restitution.mission_description }}</p>
-                    <ul class="list-unstyled">
-                        {% for point in restitution.mission_points %}
-                            <li><i class="bi bi-check-circle text-success me-2"></i>{{ point }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="restitution-card animate-fade-in-right">
-                    <h3><i class="bi bi-people me-2"></i>{{ restitution.public_titre }}</h3>
-                    <p>{{ restitution.public_description }}</p>
-                    <ul class="list-unstyled">
-                        {% for point in restitution.public_points %}
-                            <li><i class="bi bi-check-circle text-success me-2"></i>{{ point }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Statistiques Section -->
-<section class="restitution-section">
-    {% if stats_images and stats_images.0 %}
-    <section class="chiffres-bandeau" style="background-image: url('{{ stats_images.0.get_image_url }}?t={{ stats_images.0.date_ajout|date:'U' }}');">
-        <div class="chiffres-bandeau-overlay">
-            <div class="container">
-                <div class="row g-0 chiffres-bandeau-row">
-                    <div class="col-6 col-md-3 chiffres-bandeau-item">
-                        <div class="chiffres-bandeau-nombre">{{ restitution.participants_nombre }}</div>
-                        <div class="chiffres-bandeau-label">{{ restitution.participants_label }}</div>
-                    </div>
-                    <div class="col-6 col-md-3 chiffres-bandeau-item">
-                        <div class="chiffres-bandeau-nombre">{{ restitution.ateliers_nombre }}</div>
-                        <div class="chiffres-bandeau-label">{{ restitution.ateliers_label }}</div>
-                    </div>
-                    <div class="col-6 col-md-3 chiffres-bandeau-item">
-                        <div class="chiffres-bandeau-nombre">{{ restitution.recommandations_nombre }}</div>
-                        <div class="chiffres-bandeau-label">{{ restitution.recommandations_label }}</div>
-                    </div>
-                    <div class="col-6 col-md-3 chiffres-bandeau-item">
-                        <div class="chiffres-bandeau-nombre">{{ restitution.duree_nombre }}</div>
-                        <div class="chiffres-bandeau-label">{{ restitution.duree_label }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% else %}
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Chiffres Clés</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">L'impact de DounIA en chiffres</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card animate-scale-in">
-                <div class="stat-number">{{ restitution.participants_nombre }}</div>
-                <div class="stat-label">{{ restitution.participants_label }}</div>
-            </div>
-            <div class="stat-card animate-scale-in" style="animation-delay: 0.1s;">
-                <div class="stat-number">{{ restitution.ateliers_nombre }}</div>
-                <div class="stat-label">{{ restitution.ateliers_label }}</div>
-            </div>
-            <div class="stat-card animate-scale-in" style="animation-delay: 0.2s;">
-                <div class="stat-number">{{ restitution.recommandations_nombre }}</div>
-                <div class="stat-label">{{ restitution.recommandations_label }}</div>
-            </div>
-            <div class="stat-card animate-scale-in" style="animation-delay: 0.3s;">
-                <div class="stat-number">{{ restitution.duree_nombre }}</div>
-                <div class="stat-label">{{ restitution.duree_label }}</div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-</section>
-
-<!-- Rapports Section -->
-<section class="restitution-section bg-light" id="rapports">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Rapports et Documents</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">Téléchargez l'ensemble des documents de restitution</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="restitution-card animate-fade-in-up">
-                    <h3><i class="bi bi-file-earmark-pdf me-2"></i>{{ restitution.rapport_synthese_titre }}</h3>
-                    <p>{{ restitution.rapport_synthese_description }}</p>
-                    <div class="mt-3">
-                        {% if restitution.rapport_synthese_fichier %}
-                            <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-primary" target="_blank">
-                                <i class="bi bi-download me-2"></i>Télécharger PDF
-                            </a>
-                        {% else %}
-                            <button class="btn btn-primary" disabled>
-                                <i class="bi bi-download me-2"></i>Bientôt disponible
-                            </button>
-                        {% endif %}
-                        <a href="#" class="btn btn-outline-secondary">
-                            <i class="bi bi-eye me-2"></i>Aperçu
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="restitution-card animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <h3><i class="bi bi-file-earmark-text me-2"></i>{{ restitution.rapport_detail_titre }}</h3>
-                    <p>{{ restitution.rapport_detail_description }}</p>
-                    <div class="mt-3">
-                        {% if restitution.rapport_detail_fichier %}
-                            <a href="{{ restitution.rapport_detail_fichier.url }}" class="btn btn-primary" target="_blank">
-                                <i class="bi bi-download me-2"></i>Télécharger PDF
-                            </a>
-                        {% else %}
-                            <button class="btn btn-primary" disabled>
-                                <i class="bi bi-download me-2"></i>Bientôt disponible
-                            </button>
-                        {% endif %}
-                        <a href="#" class="btn btn-outline-secondary">
-                            <i class="bi bi-eye me-2"></i>Aperçu
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% if images %}
-<section class="restitution-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Galerie</h2>
+            <h2 class="section-title">Restitution DounIA 1</h2>
             <hr class="section-divider">
         </div>
 
-        <div class="row g-4">
-            {% for image in images %}
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="restitution-card h-100">
-                    <img src="{{ image.get_image_url }}?t={{ image.date_ajout|date:'U' }}" class="img-fluid" alt="{{ image.titre|default:'Image' }}">
-                    <div class="mt-3">
-                        {% if image.titre %}<h5 class="mb-2">{{ image.titre }}</h5>{% endif %}
-                        {% if image.description %}<p class="mb-0 text-muted">{{ image.description }}</p>{% endif %}
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+        <div class="restitution-card">
+            <h3>1. Contexte et justification</h3>
+            <p>
+                L’Afrique entre progressivement dans l’ère du numérique, des données et de l’intelligence artificielle (IA). Toutefois, le continent demeure encore largement en position de consommateur de technologies conçues ailleurs, avec une appropriation limitée des cadres de gouvernance, des modèles d’innovation et des usages stratégiques de ces technologies.
+            </p>
+            <p>
+                Consciente de ces enjeux, la Cité des Sciences et de l’Innovation de Guinée (CSIG), en partenariat avec l’Académie des Sciences de Guinée (ASG), a initié la Conférence DounIA – Données Numériques et Intelligence Artificielle comme un espace scientifique, indépendant et collaboratif de réflexion, d’échange et de cocréation autour des données numériques et de l’IA.
+            </p>
+            <p>
+                La première édition, DounIA 1, s’est inscrite dans le cadre des orientations stratégiques nationales, notamment celles portées par le programme Simandou 2040, qui ambitionne une transformation structurelle du pays à travers la montée en compétences, la valorisation des talents locaux, la modernisation des secteurs productifs et le renforcement de la souveraineté technologique.
+            </p>
+            <p>
+                Les travaux de DounIA 1 ont permis de mettre en évidence plusieurs défis structurants : déficit d’infrastructures numériques robustes, faible maturité en compétences digitales, absence de cadres clairs de gouvernance des données, et difficultés d’accès aux données publiques stratégiques. Ces contraintes limitent encore l’appropriation nationale de l’intelligence artificielle et son potentiel de contribution aux priorités de développement, notamment dans les domaines de l’éducation, de la santé, de l’agriculture, de la gestion publique et des zones à forte activité minière.
+            </p>
+            <p>
+                À l’issue de cette première édition, un rapport de synthèse a été élaboré, consolidant les analyses, constats et premières pistes de réflexion issues des échanges entre chercheurs, experts, institutions publiques, acteurs du secteur privé et société civile.
+            </p>
+            <p>
+                Dans une logique de redevabilité scientifique, de transparence et de continuité, la CSIG organise une cérémonie officielle de restitution de DounIA 1, couplée à une conférence de presse, afin de :
+            </p>
+            <ul>
+                <li>Partager les principaux enseignements du rapport,</li>
+                <li>Informer les parties prenantes des suites du processus,</li>
+                <li>Procéder à la signature collective du Manifeste de Conkary sur les Données Numériques et IA</li>
+                <li>Et effectuer le lancement sollenel de la plateforme www.dounia.org, l’arrive de DounIA 2, ainsi que la tenue d’ateliers thématiques préparatoires autour des six axes prioritaires.</li>
+            </ul>
+            <p>
+                Cette cérémonie marque ainsi le passage de DounIA comme événement à DounIA comme processus structuré, visant à alimenter, de manière progressive et inclusive, la réflexion nationale sur les données numériques et l’intelligence artificielle, en cohérence avec les ambitions de développement de la Guinée à l’horizon 2040 et au-delà.
+            </p>
         </div>
+
+        <div class="restitution-card">
+            <h3>2. Objectif de la cérémonie</h3>
+            <p><strong>Objectif général :</strong> Organiser une cérémonie officielle de restitution des résultats de DounIA 1, couplée à une conférence de presse, afin de partager les enseignements issus des travaux, d’annoncer la poursuite du processus avec DounIA 2, et de mobiliser les parties prenantes autour des prochaines étapes.</p>
+            <p><strong>Objectifs spécifiques :</strong></p>
+            <ul>
+                <li>Présenter officiellement le rapport de synthèse de DounIA 1 ;</li>
+                <li>Valoriser la démarche scientifique, collaborative et multi-acteurs portée par DounIA ;</li>
+                <li>Annoncer les six (6) thématiques prioritaires alignées aux piliers stratégiques du programme de Simandou 2040 pour la suite du processus ;</li>
+                <li>Présenter le calendrier et les modalités d’organisation des ateliers thématiques à venir;</li>
+                <li>Annoncer officiellement la tenue de DounIA 2 en octobre 2026 ;</li>
+                <li>Informer et mobiliser les institutions, la communauté scientifique, les partenaires et les médias.</li>
+            </ul>
+        </div>
+
+        <div class="restitution-card">
+            <h3>3. Résultats attendus</h3>
+            <p>À l’issue de la cérémonie :</p>
+            <ul>
+                <li>Le rapport final de DounIA 1 est officiellement restitué et mis à disposition du public ;</li>
+                <li>Les six thématiques et le cadre des ateliers préparatoires sont clairement présentés ;</li>
+                <li>La date et les orientations générales de DounIA 2 sont officiellement annoncées ;</li>
+                <li>Une couverture médiatique nationale est assurée ;</li>
+                <li>Les parties prenantes clés sont engagées dans la dynamique de préparation de DounIA 2.</li>
+            </ul>
+        </div>
+
+        <div class="restitution-card">
+            <h3>4. Public cible</h3>
+            <ul>
+                <li><strong>Secteur public :</strong> Ministères clés, Conseil Nationale de la Transition, autorités de régulation, agences techniques nationales.</li>
+                <li><strong>Secteur privé :</strong> Entreprises technologiques (locales et internationales), opérateurs télécoms, startups, PME innovantes, incubateurs, accélérateurs.</li>
+                <li><strong>Monde académique et recherche :</strong> Universités, centres de recherche, chercheurs, enseignants-chercheurs, experts en IA et sciences des données, étudiants (notamment en Master et Doctorat).</li>
+                <li><strong>Professionnels sectoriels :</strong> Acteurs de la santé, de l'éducation, de l'agriculture, de la finance, des mines, de l'environnement, de la culture, etc., intéressés par l'application de l'IA.</li>
+                <li><strong>Société civile :</strong> Organisations œuvrant pour l'inclusion numérique, la protection des données, l'éthique, la vulgarisation scientifique et la participation citoyenne.</li>
+                <li><strong>Médias et créateurs :</strong> Journalistes, médias spécialisés, créateurs de contenu, artistes et designers explorant les usages et impacts de l'IA.</li>
+                <li><strong>Partenaires techniques et financiers :</strong> Organisations internationales, bailleurs de fonds intéressés par le développement numérique et l'innovation en Guinée.</li>
+            </ul>
+        </div>
+
     </div>
 </section>
-{% endif %}
 
-<!-- Timeline Section -->
-<section class="restitution-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Chronologie du Projet</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">Les étapes clés de la démarche DounIA</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="timeline">
-                    {% for item in restitution.chronologie %}
-                        <div class="timeline-item animate-fade-in-up" {% if forloop.counter0 > 0 %}style="animation-delay: {{ forloop.counter0|add:0 }}00ms;"{% endif %}>
-                            <div class="timeline-date">{{ item.date }}</div>
-                            <h5>{{ item.titre }}</h5>
-                            <p>{{ item.description }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Add animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.animate-fade-in-up, .animate-fade-in-left, .animate-fade-in-right, .animate-scale-in').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    observer.observe(el);
-});
-</script>
 {% endblock %}
