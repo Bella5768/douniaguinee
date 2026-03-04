@@ -353,13 +353,12 @@
 </section>
 
 <!-- ============ SECTION : VIDÉO ============ -->
-{% if config.video_fichier or config.video_lien %}
 <section id="video" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
-            <h2 class="section-title">{{ config.video_titre }}</h2>
+            <h2 class="section-title">{{ config.video_titre|default:"Vidéo de présentation" }}</h2>
             <hr class="section-divider">
-            <p class="section-subtitle">{{ config.video_sous_titre }}</p>
+            <p class="section-subtitle">{{ config.video_sous_titre|default:"Découvrez DounIA en vidéo" }}</p>
         </div>
         <div class="row justify-content-center fade-in-up">
             <div class="col-lg-10">
@@ -373,13 +372,16 @@
                     <div class="ratio ratio-16x9" style="border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
                         <iframe src="{{ config.video_embed_url }}" title="{{ config.video_titre }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <p class="text-muted">Vidéo de présentation bientôt disponible.</p>
+                    </div>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </section>
-{% endif %}
 
 <!-- ============ SECTION 9 : ATELIERS THÉMATIQUES ============ -->
 <section id="ateliers" class="bg-light-custom">
