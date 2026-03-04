@@ -346,6 +346,20 @@ class AtelierAdmin(admin.ModelAdmin):
     search_fields = ('code', 'label', 'description')
     list_editable = ('ordre', 'active')
     ordering = ('ordre', 'label')
+    
+    fieldsets = (
+        ('Informations générales', {
+            'fields': ('code', 'label', 'description', 'ordre', 'active')
+        }),
+        ('Image', {
+            'fields': ('image', 'image_url'),
+            'classes': ('collapse',)
+        }),
+        ('Détails pour la page "À propos"', {
+            'fields': ('contexte', 'objectif', 'questions_cles', 'intervenants', 'lien_inscription'),
+            'classes': ('collapse',)
+        }),
+    )
 
     def image_preview(self, obj):
         url = obj.get_image_url()
