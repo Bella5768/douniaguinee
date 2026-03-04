@@ -324,29 +324,13 @@ class RestitutionAdmin(admin.ModelAdmin):
         ('Section Hero', {
             'fields': ('titre_hero', 'description_hero', 'hero_image', 'hero_image_url')
         }),
-        ('Section Mission', {
-            'fields': ('mission_titre', 'mission_description', 'mission_points'),
-            'classes': ('collapse',)
-        }),
-        ('Section Public', {
-            'fields': ('public_titre', 'public_description', 'public_points'),
-            'classes': ('collapse',)
-        }),
-        ('Section Chiffres', {
-            'fields': ('participants_nombre', 'participants_label', 'ateliers_nombre', 'ateliers_label', 'recommandations_nombre', 'recommandations_label', 'duree_nombre', 'duree_label'),
-            'classes': ('collapse',)
-        }),
-        ('Section Rapports', {
-            'fields': ('rapport_synthese_titre', 'rapport_synthese_description', 'rapport_synthese_fichier', 'rapport_detail_titre', 'rapport_detail_description', 'rapport_detail_fichier'),
-            'classes': ('collapse',)
-        }),
-        ('Section Chronologie', {
-            'fields': ('chronologie',),
-            'classes': ('collapse',)
-        }),
-        ('Section CTA', {
-            'fields': ('cta_titre', 'cta_description'),
-            'classes': ('collapse',)
+        ('Cérémonie', {
+            'fields': (
+                'contexte_titre', 'contexte_texte', 'contexte_points',
+                'objectif_titre', 'objectif_general', 'objectifs_specifiques',
+                'resultats_titre', 'resultats_attendus',
+                'public_titre_ceremonie', 'public_cible',
+            ),
         }),
         ('Métadonnées', {
             'fields': ('created_at', 'updated_at'),

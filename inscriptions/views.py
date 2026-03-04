@@ -211,45 +211,41 @@ def restitution_page(request):
     from .models import Restitution, RestitutionImage
     from django.db.models import Q
     
-    try:
-        restitution = Restitution.objects.get(pk=1)
-    except Restitution.DoesNotExist:
-        # Créer une instance par défaut si elle n'existe pas
-        restitution = Restitution.objects.create(
-            mission_points=[
-                'Partager les connaissances acquises',
-                'Présenter les recommandations concrètes',
-                'Faciliter la prise de décision'
+    restitution, _created = Restitution.objects.get_or_create(
+        pk=1,
+        defaults={
+            'contexte_points': [
+                'Partager les principaux enseignements du rapport,',
+                'Informer les parties prenantes des suites du processus,',
+                'Procéder à la signature collective du Manifeste de Conkary sur les Données Numériques et IA',
+                'Et effectuer le lancement sollenel de la plateforme www.dounia.org, l’arrive de DounIA 2, ainsi que la tenue d’ateliers thématiques préparatoires autour des six axes prioritaires.',
             ],
-            public_points=[
-                'Décideurs politiques',
-                'Experts techniques',
-                'Société civile',
-                'Secteur privé'
+            'objectifs_specifiques': [
+                'Présenter officiellement le rapport de synthèse de DounIA 1 ;',
+                'Valoriser la démarche scientifique, collaborative et multi-acteurs portée par DounIA ;',
+                'Annoncer les six (6) thématiques prioritaires alignées aux piliers stratégiques du programme de Simandou 2040 pour la suite du processus ;',
+                'Présenter le calendrier et les modalités d’organisation des ateliers thématiques à venir;', 
+                'Annoncer officiellement la tenue de DounIA 2 en octobre 2026 ;',
+                'Informer et mobiliser les institutions, la communauté scientifique, les partenaires et les médias.',
             ],
-            chronologie=[
-                {
-                    'date': 'Janvier 2024',
-                    'titre': 'Lancement de DounIA 1',
-                    'description': 'Démarrage du processus de concertation et des premiers ateliers thématiques.'
-                },
-                {
-                    'date': 'Février - Mars 2024',
-                    'titre': 'Ateliers Thématiques',
-                    'description': 'Réalisation de 8 ateliers sectoriels avec plus de 150 participants.'
-                },
-                {
-                    'date': 'Avril 2024',
-                    'titre': 'Analyse et Synthèse',
-                    'description': 'Compilation des résultats et élaboration des recommandations stratégiques.'
-                },
-                {
-                    'date': 'Mai 2024',
-                    'titre': 'Restitution Officielle',
-                    'description': 'Présentation des résultats et lancement de DounIA 2.'
-                }
-            ]
-        )
+            'resultats_attendus': [
+                'Le rapport final de DounIA 1 est officiellement restitué et mis à disposition du public ;',
+                'Les six thématiques et le cadre des ateliers préparatoires sont clairement présentés ;',
+                'La date et les orientations générales de DounIA 2 sont officiellement annoncées ;',
+                'Une couverture médiatique nationale est assurée ;',
+                'Les parties prenantes clés sont engagées dans la dynamique de préparation de DounIA 2.',
+            ],
+            'public_cible': [
+                'Secteur Public : Ministères clés, Conseil Nationale de la Transition, autorités de régulation, agences techniques nationales.',
+                'Secteur Privé : Entreprises technologiques (locales et internationales), opérateurs télécoms, startups, PME innovantes, incubateurs, accélérateurs.',
+                'Monde Académique et Recherche : Universités, centres de recherche, chercheurs, enseignants-chercheurs, experts en IA et sciences des données, étudiants (notamment en Master et Doctorat).',
+                "Professionnels Sectoriels : Acteurs de la santé, de l'éducation, de l'agriculture, de la finance, des mines, de l'environnement, de la culture, etc., intéressés par l'application de l'IA.",
+                "Société Civile : Organisations œuvrant pour l'inclusion numérique, la protection des données, l'éthique, la vulgarisation scientifique et la participation citoyenne.",
+                "Médias et Créateurs : Journalistes, médias spécialisés, créateurs de contenu, artistes et designers explorant les usages et impacts de l'IA.",
+                'Partenaires Techniques et Financiers : Organisations internationales, bailleurs de fonds intéressés par le développement numérique et l\'innovation en Guinée.',
+            ],
+        },
+    )
     
     stats_images = list(StatsImage.objects.filter(active=True).order_by('ordre', 'date_ajout'))
 

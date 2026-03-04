@@ -146,6 +146,29 @@ class Restitution(models.Model):
     description_hero = models.TextField(default="Découvrez les résultats, recommandations et conclusions des ateliers de concertation sur la gouvernance des données et l'intelligence artificielle en Guinée.")
     hero_image = models.ImageField(upload_to='restitution/hero/', blank=True, null=True, verbose_name='Image Hero (upload)')
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
+
+    contexte_titre = models.CharField(max_length=200, default="Contexte et justification")
+    contexte_texte = models.TextField(default=(
+        "L’Afrique entre progressivement dans l’ère du numérique, des données et de l’intelligence artificielle (IA). Toutefois, le continent demeure encore largement en position de consommateur de technologies conçues ailleurs, avec une appropriation limitée des cadres de gouvernance, des modèles d’innovation et des usages stratégiques de ces technologies.\n\n"
+        "Consciente de ces enjeux, la Cité des Sciences et de l’Innovation de Guinée (CSIG), en partenariat avec l’Académie des Sciences de Guinée (ASG), a initié la Conférence DounIA – Données Numériques et Intelligence Artificielle comme un espace scientifique, indépendant et collaboratif de réflexion, d’échange et de cocréation autour des données numériques et de l’IA.\n\n"
+        "La première édition, DounIA 1, s’est inscrite dans le cadre des orientations stratégiques nationales, notamment celles portées par le programme Simandou 2040, qui ambitionne une transformation structurelle du pays à travers la montée en compétences, la valorisation des talents locaux, la modernisation des secteurs productifs et le renforcement de la souveraineté technologique.\n\n"
+        "Les travaux de DounIA 1 ont permis de mettre en évidence plusieurs défis structurants : déficit d’infrastructures numériques robustes, faible maturité en compétences digitales, absence de cadres clairs de gouvernance des données, et difficultés d’accès aux données publiques stratégiques. Ces contraintes limitent encore l’appropriation nationale de l’intelligence artificielle et son potentiel de contribution aux priorités de développement, notamment dans les domaines de l’éducation, de la santé, de l’agriculture, de la gestion publique et des zones à forte activité minière.\n\n"
+        "À l’issue de cette première édition, un rapport de synthèse a été élaboré, consolidant les analyses, constats et premières pistes de réflexion issues des échanges entre chercheurs, experts, institutions publiques, acteurs du secteur privé et société civile.\n\n"
+        "Dans une logique de redevabilité scientifique, de transparence et de continuité, la CSIG organise une cérémonie officielle de restitution de DounIA 1, couplée à une conférence de presse, afin de :"
+    ))
+    contexte_points = models.JSONField(default=list, blank=True)
+
+    objectif_titre = models.CharField(max_length=200, default="Objectif de la cérémonie")
+    objectif_general = models.TextField(default=(
+        "Organiser une cérémonie officielle de restitution des résultats de DounIA 1, couplée à une conférence de presse, afin de partager les enseignements issus des travaux, d’annoncer la poursuite du processus avec DounIA 2, et de mobiliser les parties prenantes autour des prochaines étapes."
+    ))
+    objectifs_specifiques = models.JSONField(default=list, blank=True)
+
+    resultats_titre = models.CharField(max_length=200, default="Résultats attendus")
+    resultats_attendus = models.JSONField(default=list, blank=True)
+
+    public_titre_ceremonie = models.CharField(max_length=200, default="Public cible")
+    public_cible = models.JSONField(default=list, blank=True)
     
     # Section objectifs
     mission_titre = models.CharField(max_length=200, default="Mission Principale")

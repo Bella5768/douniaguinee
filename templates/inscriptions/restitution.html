@@ -198,73 +198,51 @@
         </div>
 
         <div class="restitution-card">
-            <h3>1. Contexte et justification</h3>
-            <p>
-                L’Afrique entre progressivement dans l’ère du numérique, des données et de l’intelligence artificielle (IA). Toutefois, le continent demeure encore largement en position de consommateur de technologies conçues ailleurs, avec une appropriation limitée des cadres de gouvernance, des modèles d’innovation et des usages stratégiques de ces technologies.
-            </p>
-            <p>
-                Consciente de ces enjeux, la Cité des Sciences et de l’Innovation de Guinée (CSIG), en partenariat avec l’Académie des Sciences de Guinée (ASG), a initié la Conférence DounIA – Données Numériques et Intelligence Artificielle comme un espace scientifique, indépendant et collaboratif de réflexion, d’échange et de cocréation autour des données numériques et de l’IA.
-            </p>
-            <p>
-                La première édition, DounIA 1, s’est inscrite dans le cadre des orientations stratégiques nationales, notamment celles portées par le programme Simandou 2040, qui ambitionne une transformation structurelle du pays à travers la montée en compétences, la valorisation des talents locaux, la modernisation des secteurs productifs et le renforcement de la souveraineté technologique.
-            </p>
-            <p>
-                Les travaux de DounIA 1 ont permis de mettre en évidence plusieurs défis structurants : déficit d’infrastructures numériques robustes, faible maturité en compétences digitales, absence de cadres clairs de gouvernance des données, et difficultés d’accès aux données publiques stratégiques. Ces contraintes limitent encore l’appropriation nationale de l’intelligence artificielle et son potentiel de contribution aux priorités de développement, notamment dans les domaines de l’éducation, de la santé, de l’agriculture, de la gestion publique et des zones à forte activité minière.
-            </p>
-            <p>
-                À l’issue de cette première édition, un rapport de synthèse a été élaboré, consolidant les analyses, constats et premières pistes de réflexion issues des échanges entre chercheurs, experts, institutions publiques, acteurs du secteur privé et société civile.
-            </p>
-            <p>
-                Dans une logique de redevabilité scientifique, de transparence et de continuité, la CSIG organise une cérémonie officielle de restitution de DounIA 1, couplée à une conférence de presse, afin de :
-            </p>
+            <h3>1. {{ restitution.contexte_titre }}</h3>
+            <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
+            {% if restitution.contexte_points %}
             <ul>
-                <li>Partager les principaux enseignements du rapport,</li>
-                <li>Informer les parties prenantes des suites du processus,</li>
-                <li>Procéder à la signature collective du Manifeste de Conkary sur les Données Numériques et IA</li>
-                <li>Et effectuer le lancement sollenel de la plateforme www.dounia.org, l’arrive de DounIA 2, ainsi que la tenue d’ateliers thématiques préparatoires autour des six axes prioritaires.</li>
+                {% for point in restitution.contexte_points %}
+                <li>{{ point }}</li>
+                {% endfor %}
             </ul>
-            <p>
-                Cette cérémonie marque ainsi le passage de DounIA comme événement à DounIA comme processus structuré, visant à alimenter, de manière progressive et inclusive, la réflexion nationale sur les données numériques et l’intelligence artificielle, en cohérence avec les ambitions de développement de la Guinée à l’horizon 2040 et au-delà.
-            </p>
+            {% endif %}
         </div>
 
         <div class="restitution-card">
-            <h3>2. Objectif de la cérémonie</h3>
-            <p><strong>Objectif général :</strong> Organiser une cérémonie officielle de restitution des résultats de DounIA 1, couplée à une conférence de presse, afin de partager les enseignements issus des travaux, d’annoncer la poursuite du processus avec DounIA 2, et de mobiliser les parties prenantes autour des prochaines étapes.</p>
+            <h3>2. {{ restitution.objectif_titre }}</h3>
+            <p><strong>Objectif général :</strong> {{ restitution.objectif_general }}</p>
+            {% if restitution.objectifs_specifiques %}
             <p><strong>Objectifs spécifiques :</strong></p>
             <ul>
-                <li>Présenter officiellement le rapport de synthèse de DounIA 1 ;</li>
-                <li>Valoriser la démarche scientifique, collaborative et multi-acteurs portée par DounIA ;</li>
-                <li>Annoncer les six (6) thématiques prioritaires alignées aux piliers stratégiques du programme de Simandou 2040 pour la suite du processus ;</li>
-                <li>Présenter le calendrier et les modalités d’organisation des ateliers thématiques à venir;</li>
-                <li>Annoncer officiellement la tenue de DounIA 2 en octobre 2026 ;</li>
-                <li>Informer et mobiliser les institutions, la communauté scientifique, les partenaires et les médias.</li>
+                {% for point in restitution.objectifs_specifiques %}
+                <li>{{ point }}</li>
+                {% endfor %}
             </ul>
+            {% endif %}
         </div>
 
         <div class="restitution-card">
-            <h3>3. Résultats attendus</h3>
+            <h3>3. {{ restitution.resultats_titre }}</h3>
+            {% if restitution.resultats_attendus %}
             <p>À l’issue de la cérémonie :</p>
             <ul>
-                <li>Le rapport final de DounIA 1 est officiellement restitué et mis à disposition du public ;</li>
-                <li>Les six thématiques et le cadre des ateliers préparatoires sont clairement présentés ;</li>
-                <li>La date et les orientations générales de DounIA 2 sont officiellement annoncées ;</li>
-                <li>Une couverture médiatique nationale est assurée ;</li>
-                <li>Les parties prenantes clés sont engagées dans la dynamique de préparation de DounIA 2.</li>
+                {% for point in restitution.resultats_attendus %}
+                <li>{{ point }}</li>
+                {% endfor %}
             </ul>
+            {% endif %}
         </div>
 
         <div class="restitution-card">
-            <h3>4. Public cible</h3>
+            <h3>4. {{ restitution.public_titre_ceremonie }}</h3>
+            {% if restitution.public_cible %}
             <ul>
-                <li><strong>Secteur public :</strong> Ministères clés, Conseil Nationale de la Transition, autorités de régulation, agences techniques nationales.</li>
-                <li><strong>Secteur privé :</strong> Entreprises technologiques (locales et internationales), opérateurs télécoms, startups, PME innovantes, incubateurs, accélérateurs.</li>
-                <li><strong>Monde académique et recherche :</strong> Universités, centres de recherche, chercheurs, enseignants-chercheurs, experts en IA et sciences des données, étudiants (notamment en Master et Doctorat).</li>
-                <li><strong>Professionnels sectoriels :</strong> Acteurs de la santé, de l'éducation, de l'agriculture, de la finance, des mines, de l'environnement, de la culture, etc., intéressés par l'application de l'IA.</li>
-                <li><strong>Société civile :</strong> Organisations œuvrant pour l'inclusion numérique, la protection des données, l'éthique, la vulgarisation scientifique et la participation citoyenne.</li>
-                <li><strong>Médias et créateurs :</strong> Journalistes, médias spécialisés, créateurs de contenu, artistes et designers explorant les usages et impacts de l'IA.</li>
-                <li><strong>Partenaires techniques et financiers :</strong> Organisations internationales, bailleurs de fonds intéressés par le développement numérique et l'innovation en Guinée.</li>
+                {% for point in restitution.public_cible %}
+                <li>{{ point }}</li>
+                {% endfor %}
             </ul>
+            {% endif %}
         </div>
 
     </div>
