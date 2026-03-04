@@ -24,7 +24,10 @@
     {% block header %}
     <nav class="navbar navbar-expand-lg navbar-dounia fixed-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-baseline gap-2" href="{% url 'landing_page' %}">Doun<span>IA</span> <small style="font-size:0.45em;font-weight:500;opacity:0.7;letter-spacing:0.5px;">Données Numériques &amp; l'Intelligence Artificielle</small></a>
+            <a class="navbar-brand d-flex flex-column align-items-start" href="{% url 'landing_page' %}" style="line-height: 1.1;">
+                <span class="fw-bold">DounIA</span>
+                <small style="font-size:0.5em;font-weight:500;opacity:0.8;letter-spacing:0.3px;">Données Numériques et Intelligence Artificielle</small>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -67,7 +70,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <h5>Doun<span style="color: var(--accent);">IA</span></h5>
+                    <h5>DounIA</h5>
                     <p class="small">{{ config.footer_description }}</p>
                 </div>
                 <div class="col-lg-4">
