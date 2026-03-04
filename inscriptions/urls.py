@@ -8,6 +8,7 @@ urlpatterns = [
     path('merci/', views.merci, name='merci'),
     path('rapport-download/', views.rapport_download, name='rapport_download'),
     path('rapport-view/', views.rapport_view_pdf, name='rapport_view_pdf'),
+    path('atelier/<int:atelier_id>/', views.atelier_detail, name='atelier_detail'),
 
     # Dashboard de gestion
     path('gestion/', views.admin_dashboard, name='admin_dashboard'),

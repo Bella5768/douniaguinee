@@ -28,8 +28,23 @@ def staff_login_url(request):
 
 def staff_required(view_func):
     """Require an authenticated staff user for custom gestion views."""
-    wrapped = login_required(view_func, login_url=staff_login_url)
-    return user_passes_test(is_staff_user, login_url=staff_login_url)(wrapped)
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_staff:
+            return redirect(staff_login_url(request))
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+def atelier_detail(request, atelier_id):
+    """Vue pour afficher les détails d'un atelier"""
+    atelier = get_object_or_404(Atelier, id=atelier_id, active=True)
+    
+    context = {
+        'page_title': f'{atelier.label} — DounIA',
+        'meta_description': atelier.description[:200] if atelier.description else f'Découvrez l\'atelier {atelier.label} de la conférence DounIA',
+        'atelier': atelier,
+    }
+    return render(request, 'inscriptions/atelier_detail.html', context)
 
 
 @staff_required

@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ atelier.label }} — DounIA{% endblock %}
+
+{% block content %}
+<section class="bg-light-custom py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- En-tête de l'atelier -->
+                <div class="text-center mb-5">
+                    <div class="atelier-number mb-3">{{ atelier.code|upper }}</div>
+                    <h1 class="display-5 fw-bold mb-3">{{ atelier.label }}</h1>
+                    <p class="lead text-muted">{{ atelier.description|default:"Description à ajouter..." }}</p>
+                </div>
+
+                <!-- Image de l'atelier -->
+                {% if atelier.image %}
+                <div class="text-center mb-5">
+                    <img src="{{ atelier.image.url }}" alt="{{ atelier.label }}" class="img-fluid rounded-3 shadow" style="max-height: 400px; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Onglets pour les sections -->
+                <ul class="nav nav-tabs nav-fill mb-4" id="atelierTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="context-tab" data-bs-toggle="tab" data-bs-target="#context" type="button" role="tab" aria-controls="context" aria-selected="true">
+                            <i class="bi bi-info-circle me-2"></i>Contexte
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="objectif-tab" data-bs-toggle="tab" data-bs-target="#objectif" type="button" role="tab" aria-controls="objectif" aria-selected="false">
+                            <i class="bi bi-bullseye me-2"></i>Objectif
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="questions-tab" data-bs-toggle="tab" data-bs-target="#questions" type="button" role="tab" aria-controls="questions" aria-selected="false">
+                            <i class="bi bi-question-circle me-2"></i>Questions Clés
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="intervenants-tab" data-bs-toggle="tab" data-bs-target="#intervenants" type="button" role="tab" aria-controls="intervenants" aria-selected="false">
+                            <i class="bi bi-people me-2"></i>Intervenants
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="atelierTabsContent">
+                    <!-- Contexte -->
+                    <div class="tab-pane fade show active" id="context" role="tabpanel" aria-labelledby="context-tab">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Contexte</h4>
+                                <div class="prose">
+                                    {% if atelier.contexte %}
+                                        {{ atelier.contexte|safe }}
+                                    {% else %}
+                                        <p class="text-muted">Le contexte de cet atelier sera bientôt détaillé.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Objectif -->
+                    <div class="tab-pane fade" id="objectif" role="tabpanel" aria-labelledby="objectif-tab">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="mb-3"><i class="bi bi-bullseye text-success me-2"></i>Objectif</h4>
+                                <div class="prose">
+                                    {% if atelier.objectif %}
+                                        {{ atelier.objectif|safe }}
+                                    {% else %}
+                                        <p class="text-muted">L'objectif de cet atelier sera bientôt détaillé.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Clés -->
+                    <div class="tab-pane fade" id="questions" role="tabpanel" aria-labelledby="questions-tab">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="mb-3"><i class="bi bi-question-circle text-warning me-2"></i>Questions Clés à traiter</h4>
+                                <div class="prose">
+                                    {% if atelier.questions_cles %}
+                                        {{ atelier.questions_cles|safe }}
+                                    {% else %}
+                                        <p class="text-muted">Les questions clés de cet atelier seront bientôt détaillées.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intervenants -->
+                    <div class="tab-pane fade" id="intervenants" role="tabpanel" aria-labelledby="intervenants-tab">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="mb-3"><i class="bi bi-people text-info me-2"></i>Intervenants</h4>
+                                <div class="prose">
+                                    {% if atelier.intervenants %}
+                                        {{ atelier.intervenants|safe }}
+                                    {% else %}
+                                        <p class="text-muted">La liste des intervenants sera bientôt disponible.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="text-center mt-5">
+                    <a href="{% url 'landing_page' %}#ateliers" class="btn btn-outline-secondary me-3">
+                        <i class="bi bi-arrow-left me-2"></i>Retour aux ateliers
+                    </a>
+                    {% if atelier.lien_inscription %}
+                    <a href="{{ atelier.lien_inscription }}" class="btn btn-primary" target="_blank">
+                        <i class="bi bi-pencil-square me-2"></i>S'inscrire à cet atelier
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.prose {
+    line-height: 1.7;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.prose ul, .prose ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+}
+
+.prose p {
+    margin-bottom: 1rem;
+}
+
+.atelier-number {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.nav-tabs .nav-link {
+    font-weight: 500;
+    color: var(--primary);
+    border-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+    background-color: rgba(0, 51, 102, 0.1);
+}
+</style>
+{% endblock %}

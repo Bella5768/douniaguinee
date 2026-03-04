@@ -308,6 +308,13 @@ class Atelier(models.Model):
     image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='URL de l\'image')
     ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
     active = models.BooleanField(default=True, verbose_name='Actif')
+    
+    # Champs pour la page de détail
+    contexte = models.TextField(blank=True, default='', verbose_name='Contexte', help_text='Texte décrivant le contexte de l\'atelier')
+    objectif = models.TextField(blank=True, default='', verbose_name='Objectif', help_text='Objectif principal de l\'atelier')
+    questions_cles = models.TextField(blank=True, default='', verbose_name='Questions clés', help_text='Questions clés à traiter lors de l\'atelier')
+    intervenants = models.TextField(blank=True, default='', verbose_name='Intervenants', help_text='Liste des intervenants prévus')
+    lien_inscription = models.URLField(max_length=500, blank=True, default='', verbose_name='Lien d\'inscription')
 
     class Meta:
         verbose_name = 'Atelier'
