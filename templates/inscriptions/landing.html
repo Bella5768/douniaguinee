@@ -18,8 +18,8 @@
     
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
-            <div class="col-lg-7 fade-in-up">
-                <div class="hero-content">
+            <div class="col-lg-12 fade-in-up">
+                <div class="hero-content text-center">
                     <h1 class="display-3 fw-bold mb-4">
                         {{ config.hero_titre }} <span>{{ config.hero_titre_span }}</span>
                     </h1>
@@ -33,31 +33,6 @@
                         <a href="{{ config.hero_btn2_lien }}" class="btn btn-outline-light btn-lg">
                             <i class="bi bi-pencil-square me-2"></i>{{ config.hero_btn2_texte }}
                         </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 d-flex justify-content-center mt-4 mt-lg-0">
-                <div class="hero-carousel-wrapper animate-fade-in-right">
-                    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                        <div class="carousel-inner">
-                            {% for hero_image in hero_images %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <img src="{{ hero_image.get_image_url }}?t={{ hero_image.date_ajout|date:'U' }}" class="d-block w-100 hero-carousel-image" alt="{{ hero_image.titre|default:'DounIA' }}">
-                            </div>
-                            {% empty %}
-                            <div class="carousel-item active">
-                                <img src="https://via.placeholder.com/600x400/003366/ffffff?text=Images+non+disponibles" class="d-block w-100 hero-carousel-image" alt="Placeholder">
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
                 </div>
             </div>
