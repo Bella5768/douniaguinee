@@ -77,6 +77,26 @@
                                                         <textarea class="form-control" name="description" rows="3" placeholder="Description de l'atelier...">{{ a.description }}</textarea>
                                                     </div>
                                                     <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Contexte (À propos)</label>
+                                                        <textarea class="form-control" name="contexte" rows="4" placeholder="Contexte...">{{ a.contexte }}</textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Objectif (À propos)</label>
+                                                        <textarea class="form-control" name="objectif" rows="4" placeholder="Objectif...">{{ a.objectif }}</textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Questions clés (À propos)</label>
+                                                        <textarea class="form-control" name="questions_cles" rows="6" placeholder="Questions clés...">{{ a.questions_cles }}</textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Intervenants (À propos)</label>
+                                                        <textarea class="form-control" name="intervenants" rows="4" placeholder="Intervenants...">{{ a.intervenants }}</textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label class="form-label small fw-semibold">Lien d'inscription</label>
+                                                        <input type="text" class="form-control" name="lien_inscription" value="{{ a.lien_inscription }}" placeholder="https://...">
+                                                    </div>
+                                                    <div class="col-12">
                                                         <label class="form-label small fw-semibold">Image URL</label>
                                                         <input type="text" class="form-control" name="image_url" value="{{ a.image_url }}" placeholder="https://...">
                                                     </div>
@@ -145,6 +165,26 @@
                         <div class="mb-3">
                             <label class="form-label small fw-semibold">Description</label>
                             <textarea class="form-control" name="description" rows="3" placeholder="Description de l'atelier..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Contexte (À propos)</label>
+                            <textarea class="form-control" name="contexte" rows="4" placeholder="Contexte..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Objectif (À propos)</label>
+                            <textarea class="form-control" name="objectif" rows="4" placeholder="Objectif..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Questions clés (À propos)</label>
+                            <textarea class="form-control" name="questions_cles" rows="6" placeholder="Questions clés..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Intervenants (À propos)</label>
+                            <textarea class="form-control" name="intervenants" rows="4" placeholder="Intervenants..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Lien d'inscription</label>
+                            <input type="text" class="form-control" name="lien_inscription" placeholder="https://...">
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-semibold">Image URL</label>

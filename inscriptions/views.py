@@ -1590,6 +1590,11 @@ def admin_ateliers(request):
             code = (request.POST.get('code') or '').strip()
             label = (request.POST.get('label') or '').strip()
             description = (request.POST.get('description') or '').strip()
+            contexte = (request.POST.get('contexte') or '').strip()
+            objectif = (request.POST.get('objectif') or '').strip()
+            questions_cles = (request.POST.get('questions_cles') or '').strip()
+            intervenants = (request.POST.get('intervenants') or '').strip()
+            lien_inscription = (request.POST.get('lien_inscription') or '').strip()
             image_url = (request.POST.get('image_url') or '').strip()
             ordre = int(request.POST.get('ordre') or 0)
             active = request.POST.get('active') == 'on'
@@ -1599,7 +1604,19 @@ def admin_ateliers(request):
                 return redirect('admin_ateliers')
 
             try:
-                a = Atelier.objects.create(code=code, label=label, description=description, ordre=ordre, active=active, image_url=image_url)
+                a = Atelier.objects.create(
+                    code=code,
+                    label=label,
+                    description=description,
+                    contexte=contexte,
+                    objectif=objectif,
+                    questions_cles=questions_cles,
+                    intervenants=intervenants,
+                    lien_inscription=lien_inscription,
+                    ordre=ordre,
+                    active=active,
+                    image_url=image_url,
+                )
                 
                 # Gérer l'upload de l'image
                 if 'image' in request.FILES:
@@ -1630,6 +1647,11 @@ def admin_ateliers(request):
                 a.code = (request.POST.get('code') or '').strip()
                 a.label = (request.POST.get('label') or '').strip()
                 a.description = (request.POST.get('description') or '').strip()
+                a.contexte = (request.POST.get('contexte') or '').strip()
+                a.objectif = (request.POST.get('objectif') or '').strip()
+                a.questions_cles = (request.POST.get('questions_cles') or '').strip()
+                a.intervenants = (request.POST.get('intervenants') or '').strip()
+                a.lien_inscription = (request.POST.get('lien_inscription') or '').strip()
                 a.image_url = (request.POST.get('image_url') or '').strip()
                 a.ordre = int(request.POST.get('ordre') or 0)
                 a.active = request.POST.get('active') == 'on'
