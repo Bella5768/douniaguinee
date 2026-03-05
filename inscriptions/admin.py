@@ -332,6 +332,12 @@ class RestitutionAdmin(admin.ModelAdmin):
                 'public_titre_ceremonie', 'public_cible',
             ),
         }),
+        ('Agenda', {
+            'fields': (
+                'agenda_titre', 'agenda_date', 'agenda_duree', 'agenda_invites', 'agenda_sessions',
+            ),
+            'classes': ('collapse',)
+        }),
         ('Métadonnées', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)

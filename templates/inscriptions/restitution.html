@@ -245,6 +245,48 @@
             {% endif %}
         </div>
 
+        <div class="restitution-card">
+            <h3>5. {{ restitution.agenda_titre }}</h3>
+            {% if restitution.agenda_date or restitution.agenda_duree or restitution.agenda_invites %}
+            <div class="row g-3 mb-3">
+                {% if restitution.agenda_duree %}
+                <div class="col-md-4">
+                    <div class="small text-muted">Durée</div>
+                    <div class="fw-semibold">{{ restitution.agenda_duree }}</div>
+                </div>
+                {% endif %}
+                {% if restitution.agenda_date %}
+                <div class="col-md-4">
+                    <div class="small text-muted">Date</div>
+                    <div class="fw-semibold">{{ restitution.agenda_date }}</div>
+                </div>
+                {% endif %}
+                {% if restitution.agenda_invites %}
+                <div class="col-md-4">
+                    <div class="small text-muted">Nombre total d'invités</div>
+                    <div class="fw-semibold">{{ restitution.agenda_invites }}</div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if restitution.agenda_sessions %}
+            <div class="timeline">
+                {% for s in restitution.agenda_sessions %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ s.heure|default:"" }}</div>
+                    <div class="fw-bold">{{ s.titre|default:"" }}</div>
+                    {% if s.details %}
+                    <div class="text-muted mt-1">{{ s.details|linebreaksbr }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted mb-0">Le programme sera bientôt publié.</p>
+            {% endif %}
+        </div>
+
     </div>
 </section>
 

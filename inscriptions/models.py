@@ -169,6 +169,12 @@ class Restitution(models.Model):
 
     public_titre_ceremonie = models.CharField(max_length=200, default="Public cible")
     public_cible = models.JSONField(default=list, blank=True)
+
+    agenda_titre = models.CharField(max_length=200, default="Programme (Agenda)")
+    agenda_date = models.CharField(max_length=200, blank=True, default='')
+    agenda_duree = models.CharField(max_length=200, blank=True, default='')
+    agenda_invites = models.CharField(max_length=200, blank=True, default='')
+    agenda_sessions = models.JSONField(default=list, blank=True)
     
     # Section objectifs
     mission_titre = models.CharField(max_length=200, default="Mission Principale")
