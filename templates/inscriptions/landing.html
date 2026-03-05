@@ -8,15 +8,6 @@
 
 <!-- ============ SECTION 1 : HERO ============ -->
 <section class="hero-section" id="hero">
-    <!-- Arrière-plan défilant avec les images de la gestion -->
-    {% if hero_bg_images %}
-    <div class="hero-bg-slideshow">
-        {% for bg_image in hero_bg_images %}
-        <div class="hero-bg-slide" style="background-image: url('{{ bg_image.get_image_url }}?t={{ bg_image.date_ajout|date:'U' }}');"></div>
-        {% endfor %}
-    </div>
-    {% endif %}
-    
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
             <div class="col-lg-12 fade-in-up">
