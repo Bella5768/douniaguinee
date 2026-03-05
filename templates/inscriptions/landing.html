@@ -1066,9 +1066,9 @@ function toggleAtelier(card) {
     var dataEl = document.getElementById('bg-images-data');
     if (!dataEl) return;
     var data = JSON.parse(dataEl.textContent);
-    var heroImages = data.hero || [];
+    var heroImages = [];
     var statsImages = data.stats || [];
-    if (!heroImages.length && !statsImages.length) return;
+    if (!statsImages.length) return;
 
     var preload = function(urls, done) {
         if (!urls || !urls.length) return done();
@@ -1094,22 +1094,9 @@ function toggleAtelier(card) {
         setTimeout(finish, 2500);
     };
 
-    preload(heroImages.concat(statsImages), function() {
+    preload(statsImages, function() {
     var style = document.createElement('style');
     var css = '';
-    if (heroImages.length) {
-        var heroDuration = heroImages.length * 10;
-        css += '.hero-section { background-color: #003366; background-image: linear-gradient(rgba(0,51,102,0.35),rgba(0,51,102,0.55)), url("' + heroImages[0] + '"); animation: heroBackgroundCycle ' + heroDuration + 's infinite; } ';
-        css += '@keyframes heroBackgroundCycle { ';
-        for (var i = 0; i < heroImages.length; i++) {
-            var startPct = Math.round(i / heroImages.length * 100);
-            var endPct = Math.round((i + 1) / heroImages.length * 100);
-            var bg = 'linear-gradient(rgba(0,51,102,0.35),rgba(0,51,102,0.55)), url("' + heroImages[i] + '")';
-            css += startPct + '% { background-image: ' + bg + '; } ';
-            css += endPct + '% { background-image: ' + bg + '; } ';
-        }
-        css += '} ';
-    }
     if (statsImages.length) {
         var statsDuration = statsImages.length * 10;
         css += '.stats-section { background-color: transparent; background-image: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url("' + statsImages[0] + '"); background-size: cover; background-position: center; background-attachment: fixed; animation: backgroundCycle ' + statsDuration + 's infinite; } ';
