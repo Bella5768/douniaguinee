@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block extra_css %}{% endblock %}
 
@@ -192,9 +193,9 @@
                             <div class="about-icon"><i class="bi bi-flag"></i></div>
                             <h5 class="mb-0">
                                 {% if dounia1_event %}
-                                    {{ dounia1_event.titre_hero }}
+                                    {{ dounia1_event.titre_hero|dounia_exposant }}
                                 {% else %}
-                                    {{ evenement_dounia1.evenement.titre|default:"DounIA 1" }}
+                                    {{ evenement_dounia1.evenement.titre|default:"DounIA 1"|dounia_exposant }}
                                 {% endif %}
                             </h5>
                             {% if dounia1_event %}
@@ -212,9 +213,9 @@
                             <div class="about-icon"><i class="bi bi-rocket-takeoff"></i></div>
                             <h5 class="mb-0">
                                 {% if dounia2_event %}
-                                    {{ dounia2_event.titre_hero }}
+                                    {{ dounia2_event.titre_hero|dounia_exposant }}
                                 {% else %}
-                                    {{ evenement_dounia2.evenement.titre|default:"DounIA 2" }}
+                                    {{ evenement_dounia2.evenement.titre|default:"DounIA 2"|dounia_exposant }}
                                 {% endif %}
                             </h5>
                             {% if dounia2_event %}

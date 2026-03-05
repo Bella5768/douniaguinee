@@ -1,5 +1,6 @@
 from django import template
 import re
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -15,3 +16,14 @@ def slugify(value):
     value = re.sub(r'[-\s]+', '-', value)
     # Mettre en minuscules
     return value.strip().lower()
+
+
+@register.filter
+def dounia_exposant(value):
+    value = str(value or '')
+
+    def _repl(m):
+        return f"DounIA<sup>{m.group(1)}</sup>"
+
+    value = re.sub(r"DounIA\s*([12])", _repl, value)
+    return mark_safe(value)
