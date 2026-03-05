@@ -488,20 +488,6 @@ section {
     overflow: hidden;
 }
 
-.hero-bg-slideshow::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(0, 51, 102, 0.75) 0%,
-        rgba(0, 51, 102, 0.55) 50%,
-        rgba(0, 51, 102, 0.70) 100%
-    );
-    z-index: 1;
-    pointer-events: none;
-}
-
 .hero-bg-slide {
     position: absolute;
     top: 0;
@@ -513,8 +499,6 @@ section {
     background-repeat: no-repeat;
     opacity: 0;
     animation: heroBgSlideshow 15s infinite;
-    filter: brightness(0.75) contrast(1.05);
-    z-index: 0;
 }
 
 .hero-bg-slide:nth-child(1) {
@@ -538,17 +522,25 @@ section {
 }
 
 @keyframes heroBgSlideshow {
-    0%, 20% {
+    0% {
         opacity: 0;
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
-    25%, 45% {
+    5% {
         opacity: 1;
         transform: scale(1);
     }
-    50%, 100% {
+    25% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    30% {
         opacity: 0;
-        transform: scale(1.1);
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.05);
     }
 }
 
