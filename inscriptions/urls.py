@@ -49,10 +49,9 @@ urlpatterns = [
     path('gestion/hero-images/update-order/', views.update_hero_image_order, name='update_hero_image_order'),
     path('gestion/stats-images/update-order/', views.update_stats_image_order, name='update_stats_image_order'),
 
-    # Carousel images (legacy - removed)
-    # path('gestion/carousel-images/', views.manage_hero_images, name='manage_carousel_images'),
-    # path('gestion/carousel-images/add/', views.add_carousel_image, name='add_carousel_image'),
-    # path('gestion/carousel-images/toggle/<int:image_id>/', views.toggle_carousel_image, name='toggle_carousel_image'),
-    # path('gestion/carousel-images/delete/<int:image_id>/', views.delete_carousel_image, name='delete_carousel_image'),
-    # path('gestion/carousel-images/order/', views.update_image_order, name='update_carousel_image_order'),
+    # Carousel images
+    path('gestion/carousel-images/add/', views.add_carousel_image, name='add_carousel_image'),
+    path('gestion/carousel-images/toggle/<int:image_id>/', views.toggle_carousel_image, name='toggle_carousel_image'),
+    path('gestion/carousel-images/delete/<int:image_id>/', views.delete_carousel_image, name='delete_carousel_image'),
+    path('gestion/carousel-images/order/', views.update_image_order, name='update_carousel_image_order'),
 ]
