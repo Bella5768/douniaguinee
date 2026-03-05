@@ -252,7 +252,7 @@ section {
 /* ---- Hero Enhanced ---- */
 .hero-section {
     position: relative;
-    background: transparent;
+    background: #003366;
     color: #ffffff !important;
     padding: 8rem 0 6rem;
     overflow: hidden;
@@ -527,7 +527,7 @@ section {
         transform: scale(1.1);
     }
     25%, 45% {
-        opacity: 0.7;
+        opacity: 1;
         transform: scale(1);
     }
     50%, 100% {
