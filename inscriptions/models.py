@@ -147,6 +147,8 @@ class Restitution(models.Model):
     hero_image = models.ImageField(upload_to='restitution/hero/', blank=True, null=True, verbose_name='Image Hero (upload)')
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
 
+    section_titre = models.CharField(max_length=200, default="Restitution DounIA 1")
+
     contexte_titre = models.CharField(max_length=200, default="Contexte et justification")
     contexte_texte = models.TextField(default=(
         "L’Afrique entre progressivement dans l’ère du numérique, des données et de l’intelligence artificielle (IA). Toutefois, le continent demeure encore largement en position de consommateur de technologies conçues ailleurs, avec une appropriation limitée des cadres de gouvernance, des modèles d’innovation et des usages stratégiques de ces technologies.\n\n"
@@ -165,16 +167,21 @@ class Restitution(models.Model):
     objectifs_specifiques = models.JSONField(default=list, blank=True)
 
     resultats_titre = models.CharField(max_length=200, default="Résultats attendus")
+    resultats_intro = models.CharField(max_length=200, default="À l’issue de la cérémonie :")
     resultats_attendus = models.JSONField(default=list, blank=True)
 
     public_titre_ceremonie = models.CharField(max_length=200, default="Public cible")
     public_cible = models.JSONField(default=list, blank=True)
 
     agenda_titre = models.CharField(max_length=200, default="Programme (Agenda)")
+    agenda_label_duree = models.CharField(max_length=100, default="Durée")
+    agenda_label_date = models.CharField(max_length=100, default="Date")
+    agenda_label_invites = models.CharField(max_length=200, default="Nombre total d'invités")
     agenda_date = models.CharField(max_length=200, blank=True, default='')
     agenda_duree = models.CharField(max_length=200, blank=True, default='')
     agenda_invites = models.CharField(max_length=200, blank=True, default='')
     agenda_sessions = models.JSONField(default=list, blank=True)
+    agenda_empty_message = models.CharField(max_length=200, default="Le programme sera bientôt publié.")
     
     # Section objectifs
     mission_titre = models.CharField(max_length=200, default="Mission Principale")

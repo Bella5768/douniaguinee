@@ -326,15 +326,18 @@ class RestitutionAdmin(admin.ModelAdmin):
         }),
         ('Cérémonie', {
             'fields': (
+                'section_titre',
                 'contexte_titre', 'contexte_texte', 'contexte_points',
                 'objectif_titre', 'objectif_general', 'objectifs_specifiques',
-                'resultats_titre', 'resultats_attendus',
+                'resultats_titre', 'resultats_intro', 'resultats_attendus',
                 'public_titre_ceremonie', 'public_cible',
             ),
         }),
         ('Agenda', {
             'fields': (
+                'agenda_label_duree', 'agenda_label_date', 'agenda_label_invites',
                 'agenda_titre', 'agenda_date', 'agenda_duree', 'agenda_invites', 'agenda_sessions',
+                'agenda_empty_message',
             ),
             'classes': ('collapse',)
         }),
