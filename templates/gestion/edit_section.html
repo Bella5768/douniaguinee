@@ -14,13 +14,13 @@
     <h2 class="fw-bold mb-4" style="color: var(--primary);">{{ section_titre }}</h2>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10 col-xl-9">
             <div class="admin-card">
                 <div class="admin-card-body">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in fields_data %}
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="id_{{ field.name }}" class="form-label fw-semibold">{{ field.label }}</label>
                             {% if field.is_file %}
                             {% if field.value %}
@@ -42,7 +42,7 @@
                             <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" accept="image/*">
                             <div class="form-text">Uploadez une image depuis votre ordinateur, tablette ou téléphone. Laisser vide pour garder l'image actuelle.</div>
                             {% elif field.is_textarea %}
-                            <textarea class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" rows="4">{{ field.value }}</textarea>
+                            <textarea class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" rows="{% if 'about_' in field.name %}{% if '_texte' in field.name %}8{% else %}6{% endif %}{% else %}4{% endif %}">{{ field.value }}</textarea>
                             {% elif field.is_url %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
                             {% else %}
