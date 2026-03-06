@@ -210,36 +210,6 @@
             <hr class="section-divider">
         </div>
 
-        {% if images %}
-        <div class="restitution-card restitution-galerie">
-            <h3>Galerie DounIA 1</h3>
-            <div id="restitutionGalerie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-pause="false">
-                <div class="carousel-inner">
-                    {% for img in images %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}">
-                        {% if img.titre or img.description %}
-                        <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.35); border-radius: 12px;">
-                            {% if img.titre %}<h5 class="mb-1">{{ img.titre }}</h5>{% endif %}
-                            {% if img.description %}<p class="mb-0">{{ img.description }}</p>{% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </div>
-        {% endif %}
-
         <div class="restitution-card">
             <h3>1. {{ restitution.contexte_titre }}</h3>
             <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
@@ -329,6 +299,36 @@
             <p class="text-muted mb-0">{{ restitution.agenda_empty_message }}</p>
             {% endif %}
         </div>
+
+        {% if images %}
+        <div class="restitution-card restitution-galerie">
+            <h3>Galerie DounIA 1</h3>
+            <div id="restitutionGalerie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-pause="false">
+                <div class="carousel-inner">
+                    {% for img in images %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}">
+                        {% if img.titre or img.description %}
+                        <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.35); border-radius: 12px;">
+                            {% if img.titre %}<h5 class="mb-1">{{ img.titre }}</h5>{% endif %}
+                            {% if img.description %}<p class="mb-0">{{ img.description }}</p>{% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 </section>
