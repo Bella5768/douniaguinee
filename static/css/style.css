@@ -252,7 +252,7 @@ section {
 /* ---- Hero Enhanced ---- */
 .hero-section {
     position: relative;
-    background: #003366;
+    background: transparent;
     color: #ffffff !important;
     padding: 8rem 0 6rem;
     overflow: hidden;
@@ -498,46 +498,11 @@ section {
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    animation: heroBgSlideshow 15s infinite;
+    transition: opacity 1.2s ease-in-out;
 }
 
-.hero-bg-slide:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.hero-bg-slide:nth-child(2) {
-    animation-delay: 3s;
-}
-
-.hero-bg-slide:nth-child(3) {
-    animation-delay: 6s;
-}
-
-.hero-bg-slide:nth-child(4) {
-    animation-delay: 9s;
-}
-
-.hero-bg-slide:nth-child(5) {
-    animation-delay: 12s;
-}
-
-@keyframes heroBgSlideshow {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    18% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    22% {
-        opacity: 0;
-        transform: scale(1.05);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(1.05);
-    }
+.hero-bg-slide.is-active {
+    opacity: 1;
 }
 
 /* ---- Hero Buttons ---- */

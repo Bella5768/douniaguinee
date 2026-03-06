@@ -17,6 +17,42 @@
     </div>
     {% endif %}
 
+    <script>
+    (function() {
+        function initHeroBgCrossfade() {
+            var hero = document.getElementById('hero');
+            if (!hero) return;
+            var slides = hero.querySelectorAll('.hero-bg-slide');
+            if (!slides || !slides.length) return;
+
+            var idx = 0;
+            for (var i = 0; i < slides.length; i++) {
+                slides[i].classList.toggle('is-active', i === 0);
+            }
+
+            if (slides.length === 1) return;
+
+            var fadeMs = 1200;
+            var holdMs = 8000;
+            setInterval(function() {
+                var prev = slides[idx];
+                idx = (idx + 1) % slides.length;
+                var next = slides[idx];
+                next.classList.add('is-active');
+                setTimeout(function() {
+                    prev.classList.remove('is-active');
+                }, fadeMs);
+            }, holdMs);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHeroBgCrossfade);
+        } else {
+            initHeroBgCrossfade();
+        }
+    })();
+    </script>
+
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
             <div class="col-lg-12 fade-in-up">
