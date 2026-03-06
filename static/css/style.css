@@ -1687,9 +1687,8 @@ html {
 
 /* ---- Loading Animations ---- */
 .fade-in-up {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 0.8s ease forwards;
+    opacity: 1;
+    transform: none;
 }
 
 .fade-in-left {
@@ -1934,13 +1933,13 @@ html {
 }
 
 /* ---- Animations ---- */
-.fade-in-up {
+.js .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.fade-in-up.visible {
+.js .fade-in-up.visible {
     opacity: 1;
     transform: translateY(0);
 }

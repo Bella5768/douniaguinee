@@ -4,6 +4,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+    document.documentElement.classList.add('js');
+
     /* ---- Navbar scroll effect ---- */
     const navbar = document.querySelector('.navbar-dounia');
     window.addEventListener('scroll', function () {
