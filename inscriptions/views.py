@@ -1650,11 +1650,14 @@ def admin_restitution(request):
         new_desc = (request.POST.get('galerie_new_description') or '').strip()
         new_url = (request.POST.get('galerie_new_image_url') or '').strip()
         new_file = request.FILES.get('galerie_new_image')
-        if new_titre and (new_file or new_url):
+        if new_file or new_url:
             try:
                 new_ordre = int(request.POST.get('galerie_new_ordre') or 0)
             except (TypeError, ValueError):
                 new_ordre = 0
+
+            if not new_titre:
+                new_titre = f"Image galerie #{new_ordre}"
 
             RestitutionImage.objects.create(
                 restitution=restitution,
@@ -1666,6 +1669,8 @@ def admin_restitution(request):
                 active=request.POST.get('galerie_new_active') == 'on',
                 position='galerie',
             )
+        elif request.POST.get('galerie_new_titre') is not None:
+            messages.error(request, "Pour ajouter une image à la galerie, uploadez un fichier ou renseignez une URL.")
         
         restitution.save()
         messages.success(request, 'Les informations de restitution ont été mises à jour avec succès.')
