@@ -24,9 +24,9 @@
     {% block header %}
     <nav class="navbar navbar-expand-lg navbar-dounia fixed-top">
         <div class="container">
-            <a class="navbar-brand d-flex flex-row align-items-baseline gap-2" href="{% url 'landing_page' %}" style="line-height: 1.1; flex-wrap: wrap;">
+            <a class="navbar-brand d-flex flex-row align-items-baseline gap-2" href="{% url 'landing_page' %}" style="line-height: 1.1; flex-wrap: nowrap; white-space: nowrap;">
                 <span class="fw-bold">DounIA</span>
-                <small style="font-size:0.65em;font-weight:500;opacity:0.8;letter-spacing:0.3px; white-space: nowrap;">Données Numériques et Intelligence Artificielle</small>
+                <small style="font-size:0.65em;font-weight:500;opacity:0.8;letter-spacing:0.3px; white-space: nowrap; display: inline-block;">Données Numériques et Intelligence Artificielle</small>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                 <span class="navbar-toggler-icon"></span>
