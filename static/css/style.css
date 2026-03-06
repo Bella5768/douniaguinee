@@ -815,7 +815,7 @@ section {
 
 /* ---- Stats Section ---- */
 .stats-section {
-    background: transparent;
+    background-color: var(--primary);
     padding: 4rem 0;
 }
 
