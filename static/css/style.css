@@ -201,6 +201,11 @@ section {
     letter-spacing: -0.5px;
 }
 
+.navbar-dounia .navbar-brand .fw-bold {
+    font-size: 1.9rem;
+    line-height: 1;
+}
+
 .navbar-dounia .navbar-brand span {
     color: var(--accent);
     font-weight: 800;
