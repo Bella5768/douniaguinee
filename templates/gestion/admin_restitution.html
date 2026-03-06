@@ -411,6 +411,109 @@
                         <i class="bi bi-plus-circle me-1"></i>Ajouter une session
                     </button>
                 </div>
+
+                <!-- Galerie d'images (défilement) -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-images"></i>
+                        Galerie d’images (défilement)
+                    </h3>
+
+                    {% if galerie_images %}
+                    <div class="mb-3">
+                        <div class="small text-muted">Modifiez l’ordre, l’état (actif) ou supprimez une image. L’upload est prioritaire sur l’URL.</div>
+                    </div>
+                    {% for img in galerie_images %}
+                    <div class="chronologie-item">
+                        <input type="hidden" name="galerie_id" value="{{ img.id }}">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="mb-2">
+                                    <label class="form-label">Aperçu</label>
+                                    <div class="rounded" style="border:1px solid #e9ecef; background:#fff; overflow:hidden;">
+                                        <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}" style="width:100%; height:110px; object-fit:cover; display:block;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-2">
+                                    <label class="form-label">Titre</label>
+                                    <input type="text" class="form-control" name="galerie_titre_{{ img.id }}" value="{{ img.titre }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Description (optionnel)</label>
+                                    <textarea class="form-control" name="galerie_description_{{ img.id }}" rows="2">{{ img.description }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label class="form-label">Ordre</label>
+                                        <input type="number" class="form-control" name="galerie_ordre_{{ img.id }}" value="{{ img.ordre }}">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">Actif</label>
+                                        <div class="form-check" style="margin-top: 0.35rem;">
+                                            <input class="form-check-input" type="checkbox" name="galerie_active_{{ img.id }}" id="galerie_active_{{ img.id }}" {% if img.active %}checked{% endif %}>
+                                            <label class="form-check-label" for="galerie_active_{{ img.id }}">Afficher</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Upload (remplacer)</label>
+                                        <input type="file" class="form-control" name="galerie_image_{{ img.id }}" accept="image/*">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">URL (fallback)</label>
+                                        <input type="url" class="form-control" name="galerie_image_url_{{ img.id }}" value="{{ img.image_url }}" placeholder="https://...">
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="galerie_delete_{{ img.id }}" id="galerie_delete_{{ img.id }}" value="1">
+                                            <label class="form-check-label" for="galerie_delete_{{ img.id }}">Supprimer cette image</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted mb-3">Aucune image dans la galerie pour l’instant.</p>
+                    {% endif %}
+
+                    <hr class="my-4">
+
+                    <h5 class="fw-bold mb-3">Ajouter une nouvelle image</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Titre</label>
+                            <input type="text" class="form-control" name="galerie_new_titre" placeholder="Ex: DounIA 1 — Atelier">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Ordre</label>
+                            <input type="number" class="form-control" name="galerie_new_ordre" value="0">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Actif</label>
+                            <div class="form-check" style="margin-top: 0.35rem;">
+                                <input class="form-check-input" type="checkbox" name="galerie_new_active" id="galerie_new_active" checked>
+                                <label class="form-check-label" for="galerie_new_active">Afficher</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Upload</label>
+                            <input type="file" class="form-control" name="galerie_new_image" accept="image/*">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">URL (fallback)</label>
+                            <input type="url" class="form-control" name="galerie_new_image_url" placeholder="https://...">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Description (optionnel)</label>
+                            <textarea class="form-control" name="galerie_new_description" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Section Objectifs -->
                 <div class="section-card">

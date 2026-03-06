@@ -1463,7 +1463,7 @@ def admin_dounia_events(request):
 @staff_required
 def admin_restitution(request):
     """Interface de gestion de la page restitution"""
-    from .models import Restitution
+    from .models import Restitution, RestitutionImage
     
     # Récupérer ou créer l'instance de restitution
     restitution, created = Restitution.objects.get_or_create(
@@ -1613,6 +1613,59 @@ def admin_restitution(request):
                     'description': chronologie_descriptions[i]
                 })
         restitution.chronologie = chronologie
+
+        # Galerie d'images (RestitutionImage position='galerie')
+        galerie_ids = request.POST.getlist('galerie_id')
+        for raw_id in galerie_ids:
+            try:
+                img_id = int(raw_id)
+            except (TypeError, ValueError):
+                continue
+
+            try:
+                img = RestitutionImage.objects.get(pk=img_id)
+            except RestitutionImage.DoesNotExist:
+                continue
+
+            if request.POST.get(f'galerie_delete_{img_id}') == '1':
+                img.delete()
+                continue
+
+            img.position = 'galerie'
+            img.restitution = restitution
+            img.titre = request.POST.get(f'galerie_titre_{img_id}', img.titre)
+            img.description = request.POST.get(f'galerie_description_{img_id}', img.description)
+            try:
+                img.ordre = int(request.POST.get(f'galerie_ordre_{img_id}', img.ordre) or 0)
+            except (TypeError, ValueError):
+                pass
+            img.active = request.POST.get(f'galerie_active_{img_id}') == 'on'
+            img.image_url = request.POST.get(f'galerie_image_url_{img_id}', img.image_url)
+            uploaded = request.FILES.get(f'galerie_image_{img_id}')
+            if uploaded:
+                img.image = uploaded
+            img.save()
+
+        new_titre = (request.POST.get('galerie_new_titre') or '').strip()
+        new_desc = (request.POST.get('galerie_new_description') or '').strip()
+        new_url = (request.POST.get('galerie_new_image_url') or '').strip()
+        new_file = request.FILES.get('galerie_new_image')
+        if new_titre and (new_file or new_url):
+            try:
+                new_ordre = int(request.POST.get('galerie_new_ordre') or 0)
+            except (TypeError, ValueError):
+                new_ordre = 0
+
+            RestitutionImage.objects.create(
+                restitution=restitution,
+                titre=new_titre,
+                description=new_desc,
+                image=new_file,
+                image_url=new_url,
+                ordre=new_ordre,
+                active=request.POST.get('galerie_new_active') == 'on',
+                position='galerie',
+            )
         
         restitution.save()
         messages.success(request, 'Les informations de restitution ont été mises à jour avec succès.')
@@ -1621,6 +1674,9 @@ def admin_restitution(request):
     context = {
         'restitution': restitution,
         'page_title': 'Gestion Restitution',
+        'galerie_images': list(
+            RestitutionImage.objects.filter(restitution=restitution, position='galerie').order_by('ordre', 'date_ajout')
+        ),
     }
     return render(request, 'gestion/admin_restitution.html', context)
 
