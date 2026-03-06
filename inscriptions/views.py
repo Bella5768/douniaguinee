@@ -1511,8 +1511,53 @@ def admin_restitution(request):
         restitution.description_hero = request.POST.get('description_hero', restitution.description_hero)
         restitution.hero_image_url = request.POST.get('hero_image_url', restitution.hero_image_url)
 
+        restitution.section_titre = request.POST.get('section_titre', restitution.section_titre)
+
         if 'hero_image' in request.FILES:
             restitution.hero_image = request.FILES['hero_image']
+
+        # Section cérémonie (Contexte / Objectif / Résultats / Public)
+        restitution.contexte_titre = request.POST.get('contexte_titre', restitution.contexte_titre)
+        restitution.contexte_texte = request.POST.get('contexte_texte', restitution.contexte_texte)
+        restitution.objectif_titre = request.POST.get('objectif_titre', restitution.objectif_titre)
+        restitution.objectif_general = request.POST.get('objectif_general', restitution.objectif_general)
+        restitution.resultats_titre = request.POST.get('resultats_titre', restitution.resultats_titre)
+        restitution.resultats_intro = request.POST.get('resultats_intro', restitution.resultats_intro)
+        restitution.public_titre_ceremonie = request.POST.get('public_titre_ceremonie', restitution.public_titre_ceremonie)
+
+        contexte_points = request.POST.getlist('contexte_points')
+        objectifs_specifiques = request.POST.getlist('objectifs_specifiques')
+        resultats_attendus = request.POST.getlist('resultats_attendus')
+        public_cible = request.POST.getlist('public_cible')
+
+        restitution.contexte_points = [p for p in contexte_points if p.strip()]
+        restitution.objectifs_specifiques = [p for p in objectifs_specifiques if p.strip()]
+        restitution.resultats_attendus = [p for p in resultats_attendus if p.strip()]
+        restitution.public_cible = [p for p in public_cible if p.strip()]
+
+        # Section agenda
+        restitution.agenda_titre = request.POST.get('agenda_titre', restitution.agenda_titre)
+        restitution.agenda_label_duree = request.POST.get('agenda_label_duree', restitution.agenda_label_duree)
+        restitution.agenda_label_date = request.POST.get('agenda_label_date', restitution.agenda_label_date)
+        restitution.agenda_label_invites = request.POST.get('agenda_label_invites', restitution.agenda_label_invites)
+        restitution.agenda_date = request.POST.get('agenda_date', restitution.agenda_date)
+        restitution.agenda_duree = request.POST.get('agenda_duree', restitution.agenda_duree)
+        restitution.agenda_invites = request.POST.get('agenda_invites', restitution.agenda_invites)
+        restitution.agenda_empty_message = request.POST.get('agenda_empty_message', restitution.agenda_empty_message)
+
+        agenda_heures = request.POST.getlist('agenda_session_heure')
+        agenda_titres = request.POST.getlist('agenda_session_titre')
+        agenda_details = request.POST.getlist('agenda_session_details')
+
+        agenda_sessions = []
+        max_len = max(len(agenda_heures), len(agenda_titres), len(agenda_details))
+        for i in range(max_len):
+            h = (agenda_heures[i] if i < len(agenda_heures) else '').strip()
+            t = (agenda_titres[i] if i < len(agenda_titres) else '').strip()
+            d = (agenda_details[i] if i < len(agenda_details) else '').strip()
+            if h or t or d:
+                agenda_sessions.append({'heure': h, 'titre': t, 'details': d})
+        restitution.agenda_sessions = agenda_sessions
         
         # Section objectifs
         restitution.mission_titre = request.POST.get('mission_titre', restitution.mission_titre)

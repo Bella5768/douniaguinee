@@ -190,6 +190,12 @@
                                        value="{{ restitution.titre_hero }}" required>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="section_titre" class="form-label">Titre de section (page)</label>
+                                <input type="text" class="form-control" id="section_titre" name="section_titre" value="{{ restitution.section_titre }}" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
@@ -200,6 +206,210 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Cérémonie (Contexte / Objectif / Résultats / Public) -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-journal-text"></i>
+                        Cérémonie
+                    </h3>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">1. Contexte et justification</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="contexte_titre" class="form-label">Titre Contexte</label>
+                                    <input type="text" class="form-control" id="contexte_titre" name="contexte_titre" value="{{ restitution.contexte_titre }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contexte_texte" class="form-label">Texte Contexte</label>
+                            <textarea class="form-control" id="contexte_texte" name="contexte_texte" rows="6" required>{{ restitution.contexte_texte }}</textarea>
+                        </div>
+                        <label class="form-label">Points Contexte</label>
+                        <div id="contexte_points_container">
+                            {% for point in restitution.contexte_points %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="text" class="form-control me-2" name="contexte_points" value="{{ point }}" placeholder="Ajouter un point">
+                                    <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn-add-item mt-2" onclick="addContextePoint()">+</button>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">2. Objectif de la cérémonie</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="objectif_titre" class="form-label">Titre Objectif</label>
+                                    <input type="text" class="form-control" id="objectif_titre" name="objectif_titre" value="{{ restitution.objectif_titre }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="objectif_general" class="form-label">Objectif général</label>
+                            <textarea class="form-control" id="objectif_general" name="objectif_general" rows="4" required>{{ restitution.objectif_general }}</textarea>
+                        </div>
+                        <label class="form-label">Objectifs spécifiques</label>
+                        <div id="objectifs_specifiques_container">
+                            {% for point in restitution.objectifs_specifiques %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="text" class="form-control me-2" name="objectifs_specifiques" value="{{ point }}" placeholder="Ajouter un objectif spécifique">
+                                    <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn-add-item mt-2" onclick="addObjectifSpecifique()">+</button>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">3. Résultats attendus</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="resultats_titre" class="form-label">Titre Résultats</label>
+                                    <input type="text" class="form-control" id="resultats_titre" name="resultats_titre" value="{{ restitution.resultats_titre }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="resultats_intro" class="form-label">Phrase d’intro</label>
+                                    <input type="text" class="form-control" id="resultats_intro" name="resultats_intro" value="{{ restitution.resultats_intro }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="form-label">Liste des résultats attendus</label>
+                        <div id="resultats_attendus_container">
+                            {% for point in restitution.resultats_attendus %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="text" class="form-control me-2" name="resultats_attendus" value="{{ point }}" placeholder="Ajouter un résultat">
+                                    <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn-add-item mt-2" onclick="addResultatAttendu()">+</button>
+                    </div>
+
+                    <div class="mb-0">
+                        <h5 class="fw-bold mb-3">4. Public cible</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="public_titre_ceremonie" class="form-label">Titre Public (cérémonie)</label>
+                                    <input type="text" class="form-control" id="public_titre_ceremonie" name="public_titre_ceremonie" value="{{ restitution.public_titre_ceremonie }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="form-label">Liste du public cible</label>
+                        <div id="public_cible_container">
+                            {% for point in restitution.public_cible %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="text" class="form-control me-2" name="public_cible" value="{{ point }}" placeholder="Ajouter un public">
+                                    <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn-add-item mt-2" onclick="addPublicCible()">+</button>
+                    </div>
+                </div>
+
+                <!-- Programme (Agenda) -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-calendar-event"></i>
+                        Programme (Agenda)
+                    </h3>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="agenda_titre" class="form-label">Titre Programme</label>
+                                <input type="text" class="form-control" id="agenda_titre" name="agenda_titre" value="{{ restitution.agenda_titre }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="agenda_empty_message" class="form-label">Message si vide</label>
+                                <input type="text" class="form-control" id="agenda_empty_message" name="agenda_empty_message" value="{{ restitution.agenda_empty_message }}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="agenda_label_duree" class="form-label">Label Durée</label>
+                                <input type="text" class="form-control" id="agenda_label_duree" name="agenda_label_duree" value="{{ restitution.agenda_label_duree }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="agenda_duree" class="form-label">Durée (valeur)</label>
+                                <input type="text" class="form-control" id="agenda_duree" name="agenda_duree" value="{{ restitution.agenda_duree }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="agenda_label_date" class="form-label">Label Date</label>
+                                <input type="text" class="form-control" id="agenda_label_date" name="agenda_label_date" value="{{ restitution.agenda_label_date }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="agenda_date" class="form-label">Date (valeur)</label>
+                                <input type="text" class="form-control" id="agenda_date" name="agenda_date" value="{{ restitution.agenda_date }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="agenda_label_invites" class="form-label">Label Invités</label>
+                                <input type="text" class="form-control" id="agenda_label_invites" name="agenda_label_invites" value="{{ restitution.agenda_label_invites }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="agenda_invites" class="form-label">Invités (valeur)</label>
+                                <input type="text" class="form-control" id="agenda_invites" name="agenda_invites" value="{{ restitution.agenda_invites }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="form-label">Sessions (heure / titre / détails)</label>
+                    <div id="agenda_sessions_container">
+                        {% for s in restitution.agenda_sessions %}
+                            <div class="chronologie-item">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Heure</label>
+                                            <input type="text" class="form-control" name="agenda_session_heure" value="{{ s.heure }}" placeholder="Ex: 09h00 – 09h30">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-label">Titre</label>
+                                            <input type="text" class="form-control" name="agenda_session_titre" value="{{ s.titre }}" placeholder="Titre de la session">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-2">
+                                            <label class="form-label">Détails</label>
+                                            <input type="text" class="form-control" name="agenda_session_details" value="{{ s.details }}" placeholder="Détails (optionnel)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="mb-2">
+                                            <label class="form-label">&nbsp;</label>
+                                            <button type="button" class="btn-remove-item w-100" onclick="removeAgendaSession(this)">×</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="button" class="btn btn-primary mt-3" onclick="addAgendaSession()">
+                        <i class="bi bi-plus-circle me-1"></i>Ajouter une session
+                    </button>
                 </div>
                 
                 <!-- Section Objectifs -->
@@ -512,6 +722,89 @@ function addPublicPoint() {
         <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
     `;
     container.appendChild(newPoint);
+}
+
+function addContextePoint() {
+    const container = document.getElementById('contexte_points_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="contexte_points" placeholder="Ajouter un point">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function addObjectifSpecifique() {
+    const container = document.getElementById('objectifs_specifiques_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="objectifs_specifiques" placeholder="Ajouter un objectif spécifique">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function addResultatAttendu() {
+    const container = document.getElementById('resultats_attendus_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="resultats_attendus" placeholder="Ajouter un résultat">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function addPublicCible() {
+    const container = document.getElementById('public_cible_container');
+    const newPoint = document.createElement('div');
+    newPoint.className = 'd-flex align-items-center mb-2';
+    newPoint.innerHTML = `
+        <input type="text" class="form-control me-2" name="public_cible" placeholder="Ajouter un public">
+        <button type="button" class="btn-remove-item" onclick="removeItem(this)">×</button>
+    `;
+    container.appendChild(newPoint);
+}
+
+function addAgendaSession() {
+    const container = document.getElementById('agenda_sessions_container');
+    const newItem = document.createElement('div');
+    newItem.className = 'chronologie-item';
+    newItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-2">
+                    <label class="form-label">Heure</label>
+                    <input type="text" class="form-control" name="agenda_session_heure" placeholder="Ex: 09h00 – 09h30">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Titre</label>
+                    <input type="text" class="form-control" name="agenda_session_titre" placeholder="Titre de la session">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-2">
+                    <label class="form-label">Détails</label>
+                    <input type="text" class="form-control" name="agenda_session_details" placeholder="Détails (optionnel)">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="mb-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn-remove-item w-100" onclick="removeAgendaSession(this)">×</button>
+                </div>
+            </div>
+        </div>
+    `;
+    container.appendChild(newItem);
+}
+
+function removeAgendaSession(button) {
+    button.closest('.chronologie-item').remove();
 }
 
 function removeItem(button) {
