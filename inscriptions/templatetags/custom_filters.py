@@ -49,3 +49,19 @@ def strip_leading_dash(value):
     if s.startswith('-'):
         s = s[1:].lstrip()
     return s
+
+
+@register.filter
+def before_em_dash(value):
+    s = str(value or '')
+    if '—' in s:
+        return s.split('—', 1)[0].rstrip()
+    return s
+
+
+@register.filter
+def after_em_dash(value):
+    s = str(value or '')
+    if '—' in s:
+        return s.split('—', 1)[1].lstrip()
+    return ''
