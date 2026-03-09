@@ -64,7 +64,7 @@
 /* ---- Global ---- */
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
+    scroll-padding-top: var(--navbar-offset, 96px);
 }
 
 body {
@@ -73,7 +73,17 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     font-size: 16px;
-    padding-top: 80px;
+    padding-top: var(--navbar-offset, 96px);
+}
+
+:root {
+    --navbar-offset: 96px;
+}
+
+@media (max-width: 991px) {
+    :root {
+        --navbar-offset: 112px;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
