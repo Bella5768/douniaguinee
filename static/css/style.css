@@ -277,6 +277,13 @@ section {
     margin-bottom: 1rem !important;
 }
 
+.hero-section .hero-content .display-3 span {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.9em;
+    font-weight: 700;
+}
+
 .hero-section .hero-content .lead {
     font-size: clamp(0.95rem, 1.6vw, 1.15rem);
     line-height: 1.35;
