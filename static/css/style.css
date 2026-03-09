@@ -271,6 +271,18 @@ section {
     z-index: 2;
 }
 
+.hero-section .hero-content .display-3 {
+    font-size: clamp(1.9rem, 4.2vw, 3.2rem);
+    line-height: 1.05;
+    margin-bottom: 1rem !important;
+}
+
+.hero-section .hero-content .lead {
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    line-height: 1.35;
+    margin-bottom: 1.25rem !important;
+}
+
 .hero-title {
     font-size: clamp(3rem, 8vw, 5rem);
     font-weight: 900;
@@ -1810,6 +1822,14 @@ html {
     .hero-title {
         font-size: clamp(2.5rem, 10vw, 3.5rem);
     }
+
+    .hero-section .hero-content .display-3 {
+        font-size: clamp(1.6rem, 7vw, 2.4rem);
+    }
+
+    .hero-section .hero-content .lead {
+        font-size: clamp(0.95rem, 3.6vw, 1.15rem);
+    }
     
     .hero-buttons {
         flex-direction: column;
@@ -2198,12 +2218,20 @@ html {
 }
 @media (max-width: 991px) {
     .hero-section {
-        padding: 6rem 0 4rem;
-        min-height: auto;
+        padding: 7rem 0 5rem;
+        text-align: center;
     }
 
     .hero-section h1 {
-        font-size: 2.4rem;
+        font-size: clamp(1.5rem, 5vw, 2.4rem);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+
+    .hero-section .lead {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+        line-height: 1.5;
+        margin-bottom: 2rem;
     }
 
     .section-title {
