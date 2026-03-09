@@ -27,3 +27,25 @@ def dounia_exposant(value):
 
     value = re.sub(r"DounIA\s*([12])", _repl, value)
     return mark_safe(value)
+
+
+@register.filter
+def strip_trailing_dash(value):
+    s = str(value or '')
+    s = s.rstrip()
+    if s.endswith('—'):
+        s = s[:-1].rstrip()
+    if s.endswith('-'):
+        s = s[:-1].rstrip()
+    return s
+
+
+@register.filter
+def strip_leading_dash(value):
+    s = str(value or '')
+    s = s.lstrip()
+    if s.startswith('—'):
+        s = s[1:].lstrip()
+    if s.startswith('-'):
+        s = s[1:].lstrip()
+    return s
