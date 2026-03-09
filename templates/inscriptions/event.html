@@ -61,10 +61,14 @@
     }
     
     .event-title {
-        font-size: 3rem;
+        font-size: clamp(1.8rem, 4.2vw, 3rem);
         font-weight: 800;
         margin-bottom: 1.5rem;
-        line-height: 1.2;
+        line-height: 1.15;
+        margin-top: 0.75rem;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        hyphens: auto;
     }
     
     .event-subtitle {
