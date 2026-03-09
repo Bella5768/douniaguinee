@@ -61,9 +61,9 @@
                         {% with first=config.hero_titre|before_em_dash second=config.hero_titre|after_em_dash %}
                             {{ first|strip_trailing_dash }}
                             {% if second %}
-                                <span class="d-block">— {{ second|strip_leading_dash }}</span>
+                                <span class="d-block">{{ second|strip_leading_dash }}</span>
                             {% elif config.hero_titre_span %}
-                                <span class="d-block">— {{ config.hero_titre_span|strip_leading_dash }}</span>
+                                <span class="d-block">{{ config.hero_titre_span|strip_leading_dash }}</span>
                             {% endif %}
                         {% endwith %}
                     </h1>

@@ -290,6 +290,10 @@ section {
     margin-bottom: 1.25rem !important;
 }
 
+.hero-section .hero-content {
+    margin-top: 2.25rem;
+}
+
 .hero-title {
     font-size: clamp(3rem, 8vw, 5rem);
     font-weight: 900;
