@@ -272,14 +272,98 @@
         font-size: .85rem;
     }
     .rest-card p { color: #444; line-height: 1.7; }
-    .contexte-text {
-        max-height: 100px;
+    /* ===== CONTEXTE SECTION DESIGN ===== */
+    .contexte-section {
+        background: linear-gradient(135deg, #f8fafd 0%, #eef3f9 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .contexte-section::before {
+        content: '';
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(0,51,102,.04);
+    }
+    .contexte-section::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        left: -60px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(0,51,102,.03);
+    }
+    .contexte-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(0,51,102,.08);
+        padding: 0;
         overflow: hidden;
         position: relative;
-        transition: max-height .4s ease;
+        z-index: 1;
+    }
+    .contexte-card-header {
+        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+        padding: 1.8rem 2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .contexte-card-header .ctx-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: rgba(255,255,255,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .contexte-card-header h3 {
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    .contexte-card-header p {
+        color: rgba(255,255,255,.75);
+        font-size: .9rem;
+        margin: .25rem 0 0;
+    }
+    .contexte-card-body {
+        padding: 2rem 2.5rem 1.5rem;
+        position: relative;
+    }
+    .contexte-card-body::before {
+        content: '\201C';
+        position: absolute;
+        top: .5rem;
+        right: 2rem;
+        font-size: 6rem;
+        line-height: 1;
+        color: rgba(0,51,102,.05);
+        font-family: Georgia, serif;
+    }
+    .contexte-text {
+        max-height: 120px;
+        overflow: hidden;
+        position: relative;
+        transition: max-height .5s ease;
     }
     .contexte-text.expanded {
         max-height: 3000px;
+    }
+    .contexte-text p {
+        color: #444;
+        line-height: 1.8;
+        font-size: 1rem;
     }
     .contexte-text:not(.expanded)::after {
         content: '';
@@ -287,19 +371,56 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 60px;
+        height: 70px;
         background: linear-gradient(transparent, #fff);
     }
-    .btn-lire-suite {
-        border: none;
-        background: none;
-        color: var(--primary);
-        font-weight: 600;
-        cursor: pointer;
-        padding: .5rem 0;
-        font-size: .95rem;
+    .contexte-text ul {
+        padding-left: 0;
+        list-style: none;
     }
-    .btn-lire-suite:hover { text-decoration: underline; }
+    .contexte-text ul li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: .7rem;
+        line-height: 1.6;
+        color: #444;
+    }
+    .contexte-text ul li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: .55rem;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #003366, #004d99);
+    }
+    .btn-lire-suite {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        border: 2px solid #003366;
+        background: transparent;
+        color: #003366;
+        font-weight: 700;
+        cursor: pointer;
+        padding: .6rem 1.5rem;
+        font-size: .9rem;
+        border-radius: 50px;
+        transition: all .25s ease;
+        margin-top: .5rem;
+    }
+    .btn-lire-suite:hover {
+        background: #003366;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,51,102,.2);
+    }
+    @media (max-width: 768px) {
+        .contexte-card-header { padding: 1.3rem 1.5rem; }
+        .contexte-card-body { padding: 1.5rem; }
+        .contexte-card-header .ctx-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+    }
 
     /* ===== RESULTAT CARDS GRADIENT ===== */
     .result-card {
@@ -640,33 +761,37 @@
 
 
 <!-- ==================== CONTEXTE ==================== -->
-<section class="rest-section" id="contexte">
+<section class="rest-section contexte-section" id="contexte">
     <div class="container">
-        <div class="text-center">
+        <div class="text-center mb-5">
             <span class="section-badge">Contexte</span>
             <h2 class="section-heading">{{ restitution.contexte_titre }}</h2>
             <hr class="section-divider-sm">
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <div class="rest-card fade-up">
-                    <div class="d-flex gap-3 align-items-start mb-3">
-                        <div class="card-icon"><i class="bi bi-info-circle-fill"></i></div>
-                        <div style="flex:1;">
-                            <div class="contexte-text" id="contexteText">
-                                <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
-                                {% if restitution.contexte_points %}
-                                <ul>
-                                    {% for point in restitution.contexte_points %}
-                                    <li>{{ point }}</li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                            <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.classList.contains('expanded')){t.classList.remove('expanded');b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.classList.add('expanded');b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>Réduire';}">
-                                <i class="bi bi-chevron-down me-1"></i>Lire la suite
-                            </button>
+                <div class="contexte-card fade-up">
+                    <div class="contexte-card-header">
+                        <div class="ctx-icon"><i class="bi bi-book"></i></div>
+                        <div>
+                            <h3>Comprendre le projet</h3>
+                            <p>Le contexte et les enjeux de DounIA</p>
                         </div>
+                    </div>
+                    <div class="contexte-card-body">
+                        <div class="contexte-text" id="contexteText">
+                            <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
+                            {% if restitution.contexte_points %}
+                            <ul>
+                                {% for point in restitution.contexte_points %}
+                                <li>{{ point }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.classList.contains('expanded')){t.classList.remove('expanded');b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.classList.add('expanded');b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>R\u00e9duire';}">
+                            <i class="bi bi-chevron-down me-1"></i>Lire la suite
+                        </button>
                     </div>
                 </div>
             </div>
