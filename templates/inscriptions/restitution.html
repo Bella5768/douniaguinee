@@ -51,18 +51,18 @@
         font-weight: 800;
         letter-spacing: -0.5px;
         line-height: 1.15;
-        color: #fff !important;
+        color: var(--primary) !important;
     }
     .rest-hero p,
     .rest-hero span,
     .rest-hero .lead {
-        color: #fff !important;
+        color: var(--primary) !important;
     }
     .rest-hero .lead {
         font-size: clamp(1rem, 2vw, 1.2rem);
         opacity: .92;
         max-width: 700px;
-        color: rgba(255,255,255,.92) !important;
+        color: var(--primary-dark) !important;
     }
 
     /* ===== COUNTDOWN ===== */
@@ -73,9 +73,9 @@
         flex-wrap: wrap;
     }
     .countdown-box {
-        background: rgba(255,255,255,.14);
+        background: rgba(11,74,154,.08);
         backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,.2);
+        border: 1px solid rgba(11,74,154,.15);
         border-radius: 14px;
         padding: 1rem 1.2rem;
         text-align: center;
@@ -84,13 +84,13 @@
     .countdown-box .cd-num {
         font-size: 2rem;
         font-weight: 800;
-        color: #fff;
+        color: var(--primary);
         line-height: 1;
         display: block;
     }
     .countdown-box .cd-label {
         font-size: .75rem;
-        color: rgba(255,255,255,.75);
+        color: var(--primary-dark);
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-top: .25rem;
@@ -99,20 +99,21 @@
     .countdown-passed {
         margin-top: 1.5rem;
         padding: .75rem 1.5rem;
-        background: rgba(255,255,255,.15);
+        background: rgba(11,74,154,.1);
         border-radius: 50px;
         display: inline-block;
         font-weight: 600;
         font-size: .95rem;
+        color: var(--primary);
     }
     @media (max-width: 575px) {
         .countdown-box { min-width: 65px; padding: .75rem .8rem; }
         .countdown-box .cd-num { font-size: 1.5rem; }
     }
     .rest-hero .badge-pill {
-        background: rgba(255,255,255,.18);
+        background: rgba(11,74,154,.1);
         backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.25);
+        border: 1px solid rgba(11,74,154,.2);
         font-size: .85rem;
         font-weight: 600;
         padding: .45rem 1.1rem;
@@ -539,10 +540,10 @@
                 <h1 class="mb-3">{{ restitution.titre_hero }}</h1>
                 <p class="lead mb-4">{{ restitution.description_hero }}</p>
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="#contexte" class="btn btn-light btn-lg px-4 fw-semibold">
+                    <a href="#contexte" class="btn btn-primary btn-lg px-4 fw-semibold">
                         <i class="bi bi-arrow-down-circle me-2"></i>Voir le contenu
                     </a>
-                    <a href="{% url 'landing_page' %}#livrable" class="btn btn-outline-light btn-lg px-4">
+                    <a href="{% url 'landing_page' %}#livrable" class="btn btn-outline-primary btn-lg px-4">
                         <i class="bi bi-file-earmark-text me-2"></i>Rapport
                     </a>
                 </div>
