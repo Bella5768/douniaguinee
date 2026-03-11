@@ -545,12 +545,13 @@
 
     /* ===== CTA ===== */
     .rest-cta {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #f0f4f8 0%, #e8edf3 100%);
         padding: 5rem 0;
-        color: #fff;
+        color: #003366;
         text-align: center;
         position: relative;
         overflow: hidden;
+        border-top: 4px solid #003366;
     }
     .rest-cta::before {
         content: '';
@@ -560,7 +561,7 @@
         width: 280px;
         height: 280px;
         border-radius: 50%;
-        background: rgba(255,255,255,.06);
+        background: rgba(0,51,102,.04);
     }
     .rest-cta::after {
         content: '';
@@ -570,10 +571,11 @@
         width: 200px;
         height: 200px;
         border-radius: 50%;
-        background: rgba(255,255,255,.04);
+        background: rgba(0,51,102,.03);
     }
     .rest-cta .container { position: relative; z-index: 1; }
     .rest-cta h2 {
+        color: #003366;
         font-size: clamp(1.6rem, 3.5vw, 2.4rem);
         font-weight: 800;
     }
@@ -855,7 +857,7 @@
     <div class="container">
         <h2 class="mb-3">{{ restitution.cta_titre }}</h2>
         <p class="mb-4">{{ restitution.cta_description }}</p>
-        <a href="{% url 'landing_page' %}#inscription" class="btn btn-light btn-lg px-5 fw-semibold">
+        <a href="{% url 'landing_page' %}#inscription" class="btn btn-lg px-5 fw-semibold" style="background:#003366;color:#fff;">
             <i class="bi bi-pencil-square me-2"></i>S'inscrire
         </a>
     </div>
