@@ -16,6 +16,16 @@
         display: flex;
         align-items: center;
     }
+    .rest-hero.has-bg {
+        background: transparent;
+    }
+    .rest-hero.has-bg::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(6,47,100,.75) 0%, rgba(11,74,154,.55) 100%);
+        z-index: 1;
+    }
     .page-hero-bg-slideshow {
         position: absolute;
         inset: 0;
@@ -517,7 +527,7 @@
 {% block content %}
 
 <!-- ==================== HERO ==================== -->
-<section class="rest-hero">
+<section class="rest-hero {% if hero_images or restitution.hero_image or restitution.hero_image_url %}has-bg{% endif %}">
     {% if hero_images %}
     <div class="page-hero-bg-slideshow">
         {% for img in hero_images %}
