@@ -303,6 +303,13 @@ section {
 
 .hero-section .hero-content {
     margin-top: 2.25rem;
+    background: rgba(0, 30, 60, .45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    padding: 2.5rem 2.5rem 2rem;
+    max-width: 650px;
 }
 
 .hero-title {
@@ -543,7 +550,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 100%);
+    background: linear-gradient(to right, rgba(0,20,50,.88) 0%, rgba(0,20,50,.7) 45%, rgba(0,20,50,.3) 75%, transparent 100%);
     z-index: 1;
 }
 
@@ -2250,6 +2257,11 @@ html {
     .hero-section {
         padding: 7rem 0 5rem;
         text-align: center;
+    }
+    .hero-section .hero-content {
+        max-width: 100%;
+        margin: 2rem auto 0;
+        padding: 2rem 1.5rem 1.5rem;
     }
 
     .hero-section h1 {
