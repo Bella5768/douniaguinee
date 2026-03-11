@@ -48,11 +48,63 @@
         font-weight: 800;
         letter-spacing: -0.5px;
         line-height: 1.15;
+        color: #fff !important;
+    }
+    .rest-hero p,
+    .rest-hero span,
+    .rest-hero .lead {
+        color: #fff !important;
     }
     .rest-hero .lead {
         font-size: clamp(1rem, 2vw, 1.2rem);
         opacity: .92;
         max-width: 700px;
+        color: rgba(255,255,255,.92) !important;
+    }
+
+    /* ===== COUNTDOWN ===== */
+    .countdown-wrap {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .countdown-box {
+        background: rgba(255,255,255,.14);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        text-align: center;
+        min-width: 80px;
+    }
+    .countdown-box .cd-num {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        display: block;
+    }
+    .countdown-box .cd-label {
+        font-size: .75rem;
+        color: rgba(255,255,255,.75);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: .25rem;
+        display: block;
+    }
+    .countdown-passed {
+        margin-top: 1.5rem;
+        padding: .75rem 1.5rem;
+        background: rgba(255,255,255,.15);
+        border-radius: 50px;
+        display: inline-block;
+        font-weight: 600;
+        font-size: .95rem;
+    }
+    @media (max-width: 575px) {
+        .countdown-box { min-width: 65px; padding: .75rem .8rem; }
+        .countdown-box .cd-num { font-size: 1.5rem; }
     }
     .rest-hero .badge-pill {
         background: rgba(255,255,255,.18);
@@ -455,6 +507,15 @@
                         <i class="bi bi-file-earmark-text me-2"></i>Rapport
                     </a>
                 </div>
+                <!-- Compte à rebours -->
+                <div id="countdown-container">
+                    <div class="countdown-wrap" id="countdown">
+                        <div class="countdown-box"><span class="cd-num" id="cd-days">--</span><span class="cd-label">Jours</span></div>
+                        <div class="countdown-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">Heures</span></div>
+                        <div class="countdown-box"><span class="cd-num" id="cd-mins">--</span><span class="cd-label">Minutes</span></div>
+                        <div class="countdown-box"><span class="cd-num" id="cd-secs">--</span><span class="cd-label">Secondes</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -726,21 +787,52 @@
 {% block extra_js %}
 <script>
 (function() {
+    /* ---- Fade-up animations ---- */
     var items = document.querySelectorAll('.fade-up');
-    if (!items.length) return;
-    if ('IntersectionObserver' in window) {
-        var obs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    obs.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.12 });
-        items.forEach(function(el) { obs.observe(el); });
-    } else {
-        items.forEach(function(el) { el.classList.add('visible'); });
+    if (items.length) {
+        if ('IntersectionObserver' in window) {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            items.forEach(function(el) { obs.observe(el); });
+        } else {
+            items.forEach(function(el) { el.classList.add('visible'); });
+        }
     }
+
+    /* ---- Countdown : 1er Avril 2025 ---- */
+    var target = new Date('2025-04-01T09:00:00').getTime();
+    var container = document.getElementById('countdown-container');
+    var daysEl  = document.getElementById('cd-days');
+    var hoursEl = document.getElementById('cd-hours');
+    var minsEl  = document.getElementById('cd-mins');
+    var secsEl  = document.getElementById('cd-secs');
+
+    function pad(n) { return n < 10 ? '0' + n : n; }
+
+    function tick() {
+        var now  = Date.now();
+        var diff = target - now;
+        if (diff <= 0) {
+            container.innerHTML = '<div class="countdown-passed"><i class="bi bi-check-circle me-2"></i>La restitution a eu lieu !</div>';
+            return;
+        }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        daysEl.textContent  = pad(d);
+        hoursEl.textContent = pad(h);
+        minsEl.textContent  = pad(m);
+        secsEl.textContent  = pad(s);
+        requestAnimationFrame(function() { setTimeout(tick, 1000); });
+    }
+    if (container) tick();
 })();
 </script>
 {% endblock %}
