@@ -135,35 +135,53 @@
     .rest-section { padding: 5rem 0; }
     .rest-section.bg-alt { background: var(--light-bg); }
     .section-badge {
-        display: inline-block;
-        background: rgba(11,74,154,.08);
-        color: var(--primary);
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        background: linear-gradient(135deg, rgba(0,51,102,.08), rgba(0,51,102,.14));
+        color: #003366;
         font-weight: 700;
-        font-size: .8rem;
+        font-size: .78rem;
         text-transform: uppercase;
-        letter-spacing: 1.5px;
-        padding: .35rem 1rem;
+        letter-spacing: 2px;
+        padding: .45rem 1.2rem;
         border-radius: 50px;
         margin-bottom: .75rem;
+        border: 1px solid rgba(0,51,102,.08);
     }
     .section-heading {
         font-size: clamp(1.6rem, 3.5vw, 2.4rem);
         font-weight: 800;
-        color: var(--text-dark);
+        color: #1a1a2e;
         margin-bottom: .5rem;
+        letter-spacing: -.5px;
     }
     .section-sub {
-        color: var(--text-muted);
+        color: #666;
         max-width: 640px;
         margin: 0 auto 2.5rem;
+        font-size: 1.05rem;
+        line-height: 1.7;
     }
     .section-divider-sm {
-        width: 60px;
-        height: 3px;
-        background: var(--primary);
+        width: 50px;
+        height: 4px;
+        background: linear-gradient(to right, #003366, #004d99);
         border: none;
         margin: 1rem auto 2rem;
-        border-radius: 2px;
+        border-radius: 4px;
+    }
+    .section-wave {
+        position: relative;
+        height: 60px;
+        overflow: hidden;
+        margin-top: -1px;
+    }
+    .section-wave svg {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
     }
 
     /* ===== STATS ===== */
@@ -422,40 +440,86 @@
         .contexte-card-header .ctx-icon { width: 44px; height: 44px; font-size: 1.2rem; }
     }
 
-    /* ===== RESULTAT CARDS GRADIENT ===== */
+    /* ===== RESULTAT CARDS ===== */
+    .resultats-section {
+        background: linear-gradient(135deg, #f8fafd 0%, #eef3f9 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .resultats-section::before {
+        content: '';
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        width: 350px;
+        height: 350px;
+        border-radius: 50%;
+        background: rgba(0,51,102,.03);
+    }
     .result-card {
-        background: #003366;
-        border-radius: 16px;
-        box-shadow: 0 4px 24px rgba(11,74,154,.18);
-        padding: 2rem;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 4px 24px rgba(0,51,102,.07);
+        padding: 0;
         margin-bottom: 0;
         height: 100%;
-        transition: transform .25s ease, box-shadow .25s ease;
-        border: none;
-        color: #fff;
-        text-align: center;
+        transition: transform .3s ease, box-shadow .3s ease;
+        border: 1px solid rgba(0,51,102,.06);
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+    }
+    .result-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(to right, #003366, #004d99);
     }
     .result-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 14px 40px rgba(11,74,154,.28);
+        transform: translateY(-6px);
+        box-shadow: 0 14px 40px rgba(0,51,102,.15);
+    }
+    .result-card-body {
+        padding: 2rem 1.5rem 1.5rem;
+        text-align: center;
+    }
+    .result-card .result-num {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #003366, #004d99);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 800;
+        margin: 0 auto 1rem;
     }
     .result-card .card-icon {
         width: 52px;
         height: 52px;
         border-radius: 14px;
-        background: rgba(255,255,255,.18);
+        background: rgba(0,51,102,.08);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         font-size: 1.4rem;
-        color: #fff;
+        color: #003366;
         margin: 0 auto 1rem;
     }
     .result-card p {
-        color: rgba(255,255,255,.92);
-        line-height: 1.6;
+        color: #444;
+        line-height: 1.65;
         margin: 0;
         font-size: .95rem;
+    }
+    .result-card:hover .result-num {
+        transform: scale(1.1);
+        transition: transform .3s ease;
     }
 
     /* ===== OBJECTIFS SECTION ===== */
@@ -790,22 +854,81 @@
     }
 
     /* ===== GALERIE ===== */
+    .galerie-section {
+        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .galerie-section::before {
+        content: '';
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.04);
+    }
+    .galerie-section .section-badge {
+        background: rgba(255,255,255,.12);
+        color: #fff;
+        border-color: rgba(255,255,255,.15);
+    }
+    .galerie-section .section-heading { color: #fff; }
+    .galerie-section .section-divider-sm {
+        background: linear-gradient(to right, rgba(255,255,255,.6), rgba(255,255,255,.2));
+    }
+    .rest-galerie {
+        position: relative;
+        z-index: 1;
+    }
     .rest-galerie .carousel-item img {
         width: 100%;
         height: 480px;
         object-fit: cover;
-        border-radius: 16px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,.3);
     }
     .rest-galerie .carousel-caption {
-        background: linear-gradient(transparent, rgba(0,0,0,.55));
-        border-radius: 0 0 16px 16px;
+        background: linear-gradient(transparent, rgba(0,0,0,.65));
+        border-radius: 0 0 20px 20px;
         left: 0;
         right: 0;
         bottom: 0;
-        padding: 2rem 1.5rem 1.5rem;
+        padding: 2.5rem 2rem 1.5rem;
+    }
+    .rest-galerie .carousel-control-prev,
+    .rest-galerie .carousel-control-next {
+        width: 48px;
+        height: 48px;
+        background: rgba(255,255,255,.15);
+        backdrop-filter: blur(6px);
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 1;
+        margin: 0 1rem;
+        transition: background .2s ease;
+    }
+    .rest-galerie .carousel-control-prev:hover,
+    .rest-galerie .carousel-control-next:hover {
+        background: rgba(255,255,255,.3);
+    }
+    .rest-galerie .carousel-indicators [data-bs-target] {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0 4px;
+        opacity: .5;
+    }
+    .rest-galerie .carousel-indicators .active {
+        opacity: 1;
+        background: #fff;
     }
     @media (max-width: 768px) {
         .rest-galerie .carousel-item img { height: 280px; }
+        .rest-galerie .carousel-control-prev,
+        .rest-galerie .carousel-control-next { width: 36px; height: 36px; }
     }
 
     /* ===== CTA ===== */
@@ -983,10 +1106,10 @@
 </section>
 
 <!-- ==================== RESULTATS ATTENDUS ==================== -->
-<section class="rest-section">
+<section class="rest-section resultats-section" id="resultats">
     <div class="container">
-        <div class="text-center">
-            <span class="section-badge">R&eacute;sultats</span>
+        <div class="text-center mb-5">
+            <span class="section-badge">Résultats</span>
             <h2 class="section-heading">{{ restitution.resultats_titre }}</h2>
             <hr class="section-divider-sm">
             {% if restitution.resultats_intro %}
@@ -994,12 +1117,14 @@
             {% endif %}
         </div>
         {% if restitution.resultats_attendus %}
-        <div class="row g-3 justify-content-center">
+        <div class="row g-4 justify-content-center">
             {% for point in restitution.resultats_attendus %}
             <div class="col-md-6 col-lg-4">
                 <div class="result-card fade-up">
-                    <div class="card-icon"><i class="bi bi-check-circle-fill"></i></div>
-                    <p>{{ point }}</p>
+                    <div class="result-card-body">
+                        <div class="result-num">{{ forloop.counter }}</div>
+                        <p>{{ point }}</p>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -1045,7 +1170,7 @@
 {% endif %}
 
 <!-- ==================== AGENDA / PROGRAMME ==================== -->
-<section class="rest-section">
+<section class="rest-section" id="agenda" style="background:#fff;">
     <div class="container">
         <div class="text-center">
             <span class="section-badge">Programme</span>
@@ -1093,7 +1218,7 @@
 
 <!-- ==================== GALERIE ==================== -->
 {% if images %}
-<section class="rest-section">
+<section class="rest-section galerie-section">
     <div class="container">
         <div class="text-center">
             <span class="section-badge">Galerie</span>
