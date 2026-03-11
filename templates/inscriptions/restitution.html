@@ -5,21 +5,29 @@
 
 {% block extra_css %}
 <style>
-    .restitution-hero {
+    /* ===== HERO ===== */
+    .rest-hero {
         background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        color: white;
-        padding: 6rem 0 4rem;
+        color: #fff;
+        padding: 7rem 0 5rem;
         position: relative;
         overflow: hidden;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
     }
-
+    .rest-hero .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(6,47,100,.82) 0%, rgba(11,74,154,.65) 100%);
+        z-index: 1;
+    }
     .page-hero-bg-slideshow {
         position: absolute;
         inset: 0;
         z-index: 0;
         overflow: hidden;
     }
-
     .page-hero-bg-slide {
         position: absolute;
         inset: 0;
@@ -29,156 +37,405 @@
         animation: pageHeroSlide 20s infinite;
         transform: scale(1.05);
     }
-
     .page-hero-bg-slide:nth-child(1) { animation-delay: 0s; }
     .page-hero-bg-slide:nth-child(2) { animation-delay: 5s; }
     .page-hero-bg-slide:nth-child(3) { animation-delay: 10s; }
     .page-hero-bg-slide:nth-child(4) { animation-delay: 15s; }
-
     @keyframes pageHeroSlide {
-        0% { opacity: 0; }
-        10% { opacity: 0.65; }
-        25% { opacity: 0.65; }
-        35% { opacity: 0; }
+        0%   { opacity: 0; }
+        10%  { opacity: 0.7; }
+        25%  { opacity: 0.7; }
+        35%  { opacity: 0; }
         100% { opacity: 0; }
     }
-    
-    .restitution-hero::before {
+    .rest-hero .container { position: relative; z-index: 2; }
+    .rest-hero h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        line-height: 1.15;
+    }
+    .rest-hero .lead {
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        opacity: .92;
+        max-width: 700px;
+    }
+    .rest-hero .badge-pill {
+        background: rgba(255,255,255,.18);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.25);
+        font-size: .85rem;
+        font-weight: 600;
+        padding: .45rem 1.1rem;
+        border-radius: 50px;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    /* ===== SECTION SHARED ===== */
+    .rest-section { padding: 5rem 0; }
+    .rest-section.bg-alt { background: var(--light-bg); }
+    .section-badge {
+        display: inline-block;
+        background: rgba(11,74,154,.08);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: .8rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: .35rem 1rem;
+        border-radius: 50px;
+        margin-bottom: .75rem;
+    }
+    .section-heading {
+        font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: .5rem;
+    }
+    .section-sub {
+        color: var(--text-muted);
+        max-width: 640px;
+        margin: 0 auto 2.5rem;
+    }
+    .section-divider-sm {
+        width: 60px;
+        height: 3px;
+        background: var(--primary);
+        border: none;
+        margin: 1rem auto 2rem;
+        border-radius: 2px;
+    }
+
+    /* ===== STATS ===== */
+    .rest-stats {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        padding: 3.5rem 0;
+        position: relative;
+    }
+    .stat-box {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        position: relative;
+    }
+    .stat-box + .stat-box::before {
         content: '';
         position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: rgba(255,255,255,.2);
+    }
+    .stat-box .stat-icon {
+        width: 52px;
+        height: 52px;
+        background: rgba(255,255,255,.15);
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #fff;
+        margin-bottom: .75rem;
+    }
+    .stat-box .stat-num {
+        font-size: 2.6rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        margin-bottom: .25rem;
+    }
+    .stat-box .stat-lbl {
+        font-size: .9rem;
+        color: rgba(255,255,255,.8);
+        font-weight: 500;
+    }
+
+    @media (max-width: 767px) {
+        .stat-box + .stat-box::before { display: none; }
+        .stat-box { padding: 1rem .5rem; }
+        .stat-box .stat-num { font-size: 2rem; }
+    }
+
+    /* ===== CONTENT CARD ===== */
+    .rest-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,.06);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        transition: transform .25s ease, box-shadow .25s ease;
+        border: 1px solid rgba(0,0,0,.04);
+    }
+    .rest-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px rgba(0,0,0,.1);
+    }
+    .rest-card .card-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(11,74,154,.08);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        flex-shrink: 0;
+    }
+    .rest-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+    .rest-card ul {
+        padding-left: 0;
+        list-style: none;
+        margin-bottom: 0;
+    }
+    .rest-card ul li {
+        position: relative;
+        padding-left: 1.6rem;
+        margin-bottom: .6rem;
+        line-height: 1.55;
+        color: #444;
+    }
+    .rest-card ul li::before {
+        content: '\F26A';
+        font-family: 'bootstrap-icons';
+        position: absolute;
+        left: 0;
+        top: 1px;
+        color: var(--primary);
+        font-size: .85rem;
+    }
+    .rest-card p { color: #444; line-height: 1.7; }
+
+    /* ===== OBJECTIFS ===== */
+    .obj-general {
+        background: linear-gradient(135deg, rgba(11,74,154,.04) 0%, rgba(11,74,154,.09) 100%);
+        border-radius: 14px;
+        padding: 1.5rem 2rem;
+        border-left: 4px solid var(--primary);
+        margin-bottom: 1.5rem;
+    }
+    .obj-general p { margin: 0; font-size: 1.05rem; color: #333; }
+
+    /* ===== PUBLIC CIBLE ===== */
+    .public-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 1.5rem;
+        height: 100%;
+        box-shadow: 0 2px 16px rgba(0,0,0,.05);
+        border: 1px solid rgba(0,0,0,.04);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .public-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 28px rgba(0,0,0,.1);
+    }
+    .public-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        color: #fff;
+        margin-bottom: .75rem;
+        flex-shrink: 0;
+    }
+    .public-card p {
+        font-size: .92rem;
+        color: #555;
+        margin: 0;
+        line-height: 1.55;
+    }
+    .public-card .fw-bold {
+        color: var(--text-dark);
+        font-size: .95rem;
+    }
+
+    /* ===== TIMELINE ===== */
+    .rest-timeline {
+        position: relative;
+        padding-left: 3rem;
+    }
+    .rest-timeline::before {
+        content: '';
+        position: absolute;
+        left: 14px;
         top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+        border-radius: 3px;
+    }
+    .tl-item {
+        position: relative;
+        margin-bottom: 2rem;
+        padding: 1.25rem 1.5rem;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0,0,0,.05);
+        border: 1px solid rgba(0,0,0,.04);
+    }
+    .tl-item::before {
+        content: '';
+        position: absolute;
+        left: -2.35rem;
+        top: 1.5rem;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 3px rgba(11,74,154,.18);
+    }
+    .tl-item .tl-time {
+        font-size: .85rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: .25rem;
+    }
+    .tl-item .tl-title {
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: .25rem;
+    }
+    .tl-item .tl-details {
+        color: var(--text-muted);
+        font-size: .92rem;
+        line-height: 1.55;
+    }
+
+    /* ===== AGENDA INFO PILLS ===== */
+    .agenda-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        background: rgba(11,74,154,.06);
+        border-radius: 50px;
+        padding: .5rem 1.2rem;
+        font-size: .92rem;
+        color: var(--text-dark);
+    }
+    .agenda-pill i { color: var(--primary); font-size: 1.1rem; }
+
+    /* ===== RAPPORTS ===== */
+    .rapport-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 24px rgba(0,0,0,.06);
+        border: 1px solid rgba(0,0,0,.04);
+        height: 100%;
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .rapport-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 36px rgba(0,0,0,.1);
+    }
+    .rapport-card .rapport-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin-bottom: 1.25rem;
+    }
+    .rapport-card h4 {
+        font-weight: 700;
+        font-size: 1.15rem;
+        margin-bottom: .75rem;
+    }
+    .rapport-card p {
+        color: var(--text-muted);
+        font-size: .92rem;
+        line-height: 1.55;
+    }
+
+    /* ===== GALERIE ===== */
+    .rest-galerie .carousel-item img {
+        width: 100%;
+        height: 480px;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+    .rest-galerie .carousel-caption {
+        background: linear-gradient(transparent, rgba(0,0,0,.55));
+        border-radius: 0 0 16px 16px;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        opacity: 0.2;
+        padding: 2rem 1.5rem 1.5rem;
     }
-    
-    .restitution-hero .container {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .restitution-section {
-        padding: 4rem 0;
-    }
-    
-    .restitution-card {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        margin-bottom: 2rem;
-        transition: all 0.3s ease;
-        border-left: 4px solid var(--primary);
-    }
-    
-    .restitution-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-    
-    .restitution-card h3 {
-        color: var(--primary);
-        margin-bottom: 1.5rem;
-        font-weight: 700;
-    }
-    
-    .restitution-card .btn {
-        margin-right: 1rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin: 3rem 0;
-    }
-    
-    .stat-card {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    }
-    
-    .stat-number {
-        font-size: 3rem;
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-        color: #6c757d;
-        font-weight: 600;
-    }
-    
-    .timeline {
-        position: relative;
-        padding-left: 2rem;
-    }
-    
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: var(--primary);
-    }
-    
-    .timeline-item {
-        position: relative;
-        margin-bottom: 2rem;
-        padding-left: 2rem;
-    }
-    
-    .timeline-item::before {
-        content: '';
-        position: absolute;
-        left: -2.5rem;
-        top: 0.5rem;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: var(--primary);
-        border: 2px solid white;
-        box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
-    }
-    
-    .timeline-date {
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 0.5rem;
-    }
-
-    .restitution-galerie .carousel-item img {
-        width: 100%;
-        height: 420px;
-        object-fit: cover;
-        border-radius: 15px;
-    }
-
     @media (max-width: 768px) {
-        .restitution-galerie .carousel-item img {
-            height: 260px;
-        }
+        .rest-galerie .carousel-item img { height: 280px; }
+    }
+
+    /* ===== CTA ===== */
+    .rest-cta {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        padding: 5rem 0;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .rest-cta::before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.06);
+    }
+    .rest-cta::after {
+        content: '';
+        position: absolute;
+        bottom: -40px;
+        left: -40px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.04);
+    }
+    .rest-cta .container { position: relative; z-index: 1; }
+    .rest-cta h2 {
+        font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+        font-weight: 800;
+    }
+    .rest-cta p { opacity: .9; font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+
+    /* ===== FADE IN ANIMATION ===== */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="restitution-hero">
+
+<!-- ==================== HERO ==================== -->
+<section class="rest-hero">
     {% if hero_images %}
     <div class="page-hero-bg-slideshow">
         {% for img in hero_images %}
@@ -187,150 +444,347 @@
     </div>
     {% elif restitution.hero_image or restitution.hero_image_url %}
     <div class="page-hero-bg-slideshow">
-        <div class="page-hero-bg-slide" style="opacity: 0.65; animation: none; background-image: url({% if restitution.hero_image %}{{ restitution.hero_image.url }}?t={{ restitution.updated_at|date:'U' }}{% else %}{{ restitution.hero_image_url }}{% endif %});"></div>
+        <div class="page-hero-bg-slide" style="opacity: 0.7; animation: none; background-image: url({% if restitution.hero_image %}{{ restitution.hero_image.url }}?t={{ restitution.updated_at|date:'U' }}{% else %}{{ restitution.hero_image_url }}{% endif %});"></div>
     </div>
     {% endif %}
+    <div class="hero-overlay"></div>
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <div class="animate-fade-in-up">
-                    <h1 class="display-4 fw-bold mb-4">{{ restitution.titre_hero }}</h1>
-                    <p class="lead mb-4">{{ restitution.description_hero }}</p>
+                <span class="badge-pill"><i class="bi bi-calendar-event me-1"></i> Restitution officielle</span>
+                <h1 class="mb-3">{{ restitution.titre_hero }}</h1>
+                <p class="lead mb-4">{{ restitution.description_hero }}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="#contexte" class="btn btn-light btn-lg px-4 fw-semibold">
+                        <i class="bi bi-arrow-down-circle me-2"></i>Voir le contenu
+                    </a>
+                    {% if restitution.rapport_synthese_fichier %}
+                    <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-outline-light btn-lg px-4" target="_blank">
+                        <i class="bi bi-download me-2"></i>Rapport
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Restitution Section -->
-<section class="restitution-section bg-light">
+<!-- ==================== CHIFFRES CLES ==================== -->
+<section class="rest-stats">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">{{ restitution.section_titre }}</h2>
-            <hr class="section-divider">
-        </div>
-
-        <div class="restitution-card">
-            <h3>1. {{ restitution.contexte_titre }}</h3>
-            <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
-            {% if restitution.contexte_points %}
-            <ul>
-                {% for point in restitution.contexte_points %}
-                <li>{{ point }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-
-        <div class="restitution-card">
-            <h3>2. {{ restitution.objectif_titre }}</h3>
-            <p><strong>Objectif général :</strong> {{ restitution.objectif_general }}</p>
-            {% if restitution.objectifs_specifiques %}
-            <p><strong>Objectifs spécifiques :</strong></p>
-            <ul>
-                {% for point in restitution.objectifs_specifiques %}
-                <li>{{ point }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-
-        <div class="restitution-card">
-            <h3>3. {{ restitution.resultats_titre }}</h3>
-            {% if restitution.resultats_attendus %}
-            <p>{{ restitution.resultats_intro }}</p>
-            <ul>
-                {% for point in restitution.resultats_attendus %}
-                <li>{{ point }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-
-        <div class="restitution-card">
-            <h3>4. {{ restitution.public_titre_ceremonie }}</h3>
-            {% if restitution.public_cible %}
-            <ul>
-                {% for point in restitution.public_cible %}
-                <li>{{ point }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-
-        <div class="restitution-card">
-            <h3>5. {{ restitution.agenda_titre }}</h3>
-            {% if restitution.agenda_date or restitution.agenda_duree or restitution.agenda_invites %}
-            <div class="row g-3 mb-3">
-                {% if restitution.agenda_duree %}
-                <div class="col-md-4">
-                    <div class="small text-muted">{{ restitution.agenda_label_duree }}</div>
-                    <div class="fw-semibold">{{ restitution.agenda_duree }}</div>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                    <div class="stat-num">{{ restitution.participants_nombre }}</div>
+                    <div class="stat-lbl">{{ restitution.participants_label }}</div>
                 </div>
-                {% endif %}
-                {% if restitution.agenda_date %}
-                <div class="col-md-4">
-                    <div class="small text-muted">{{ restitution.agenda_label_date }}</div>
-                    <div class="fw-semibold">{{ restitution.agenda_date }}</div>
-                </div>
-                {% endif %}
-                {% if restitution.agenda_invites %}
-                <div class="col-md-4">
-                    <div class="small text-muted">{{ restitution.agenda_label_invites }}</div>
-                    <div class="fw-semibold">{{ restitution.agenda_invites }}</div>
-                </div>
-                {% endif %}
             </div>
-            {% endif %}
-
-            {% if restitution.agenda_sessions %}
-            <div class="timeline">
-                {% for s in restitution.agenda_sessions %}
-                <div class="timeline-item">
-                    <div class="timeline-date">{{ s.heure|default:"" }}</div>
-                    <div class="fw-bold">{{ s.titre|default:"" }}</div>
-                    {% if s.details %}
-                    <div class="text-muted mt-1">{{ s.details|linebreaksbr }}</div>
-                    {% endif %}
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="bi bi-journal-richtext"></i></div>
+                    <div class="stat-num">{{ restitution.ateliers_nombre }}</div>
+                    <div class="stat-lbl">{{ restitution.ateliers_label }}</div>
                 </div>
-                {% endfor %}
             </div>
-            {% else %}
-            <p class="text-muted mb-0">{{ restitution.agenda_empty_message }}</p>
-            {% endif %}
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="bi bi-lightbulb-fill"></i></div>
+                    <div class="stat-num">{{ restitution.recommandations_nombre }}</div>
+                    <div class="stat-lbl">{{ restitution.recommandations_label }}</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="bi bi-calendar3"></i></div>
+                    <div class="stat-num">{{ restitution.duree_nombre }}</div>
+                    <div class="stat-lbl">{{ restitution.duree_label }}</div>
+                </div>
+            </div>
         </div>
+    </div>
+</section>
 
-        {% if images %}
-        <div class="restitution-card restitution-galerie">
-            <h3>Galerie DounIA 1</h3>
-            <div id="restitutionGalerie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500" data-bs-pause="false">
-                <div class="carousel-inner">
-                    {% for img in images %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}">
-                        {% if img.titre or img.description %}
-                        <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.35); border-radius: 12px;">
-                            {% if img.titre %}<h5 class="mb-1">{{ img.titre }}</h5>{% endif %}
-                            {% if img.description %}<p class="mb-0">{{ img.description }}</p>{% endif %}
+<!-- ==================== CONTEXTE ==================== -->
+<section class="rest-section" id="contexte">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Contexte</span>
+            <h2 class="section-heading">{{ restitution.contexte_titre }}</h2>
+            <hr class="section-divider-sm">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="rest-card fade-up">
+                    <div class="d-flex gap-3 align-items-start mb-3">
+                        <div class="card-icon"><i class="bi bi-info-circle-fill"></i></div>
+                        <div>
+                            <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
+                            {% if restitution.contexte_points %}
+                            <ul>
+                                {% for point in restitution.contexte_points %}
+                                <li>{{ point }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== OBJECTIFS ==================== -->
+<section class="rest-section bg-alt">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Objectifs</span>
+            <h2 class="section-heading">{{ restitution.objectif_titre }}</h2>
+            <hr class="section-divider-sm">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="obj-general fade-up">
+                    <p><i class="bi bi-bullseye me-2 text-primary"></i><strong>Objectif g&eacute;n&eacute;ral :</strong> {{ restitution.objectif_general }}</p>
+                </div>
+                {% if restitution.objectifs_specifiques %}
+                <h5 class="fw-bold mb-3"><i class="bi bi-list-check me-2 text-primary"></i>Objectifs sp&eacute;cifiques</h5>
+                <div class="row g-3">
+                    {% for point in restitution.objectifs_specifiques %}
+                    <div class="col-md-6">
+                        <div class="rest-card fade-up" style="margin-bottom: 0;">
+                            <div class="d-flex gap-3 align-items-start">
+                                <span class="card-icon" style="min-width:40px;min-height:40px;width:40px;height:40px;font-size:1rem;">{{ forloop.counter }}</span>
+                                <p class="mb-0" style="font-size:.95rem;">{{ point }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== RESULTATS ATTENDUS ==================== -->
+<section class="rest-section">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">R&eacute;sultats</span>
+            <h2 class="section-heading">{{ restitution.resultats_titre }}</h2>
+            <hr class="section-divider-sm">
+            {% if restitution.resultats_intro %}
+            <p class="section-sub">{{ restitution.resultats_intro }}</p>
+            {% endif %}
+        </div>
+        {% if restitution.resultats_attendus %}
+        <div class="row g-3 justify-content-center">
+            {% for point in restitution.resultats_attendus %}
+            <div class="col-md-6 col-lg-4">
+                <div class="rest-card fade-up text-center" style="height:100%;">
+                    <div class="card-icon mx-auto"><i class="bi bi-check-circle-fill"></i></div>
+                    <p class="mb-0">{{ point }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ==================== PUBLIC CIBLE ==================== -->
+{% if restitution.public_cible %}
+<section class="rest-section bg-alt">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Audience</span>
+            <h2 class="section-heading">{{ restitution.public_titre_ceremonie }}</h2>
+            <hr class="section-divider-sm">
+        </div>
+        <div class="row g-3">
+            {% for point in restitution.public_cible %}
+            <div class="col-md-6 col-lg-4">
+                <div class="public-card fade-up">
+                    <div class="public-icon" style="background: var(--primary);">
+                        <i class="bi bi-{% cycle 'bank' 'cpu' 'mortarboard' 'heart-pulse' 'globe' 'megaphone' 'currency-exchange' %}"></i>
+                    </div>
+                    <p>{{ point }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== AGENDA / PROGRAMME ==================== -->
+<section class="rest-section">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Programme</span>
+            <h2 class="section-heading">{{ restitution.agenda_titre }}</h2>
+            <hr class="section-divider-sm">
+        </div>
+
+        {% if restitution.agenda_date or restitution.agenda_duree or restitution.agenda_invites %}
+        <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+            {% if restitution.agenda_date %}
+            <div class="agenda-pill"><i class="bi bi-calendar3"></i> {{ restitution.agenda_date }}</div>
+            {% endif %}
+            {% if restitution.agenda_duree %}
+            <div class="agenda-pill"><i class="bi bi-clock"></i> {{ restitution.agenda_duree }}</div>
+            {% endif %}
+            {% if restitution.agenda_invites %}
+            <div class="agenda-pill"><i class="bi bi-people"></i> {{ restitution.agenda_invites }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if restitution.agenda_sessions %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="rest-timeline">
+                    {% for s in restitution.agenda_sessions %}
+                    <div class="tl-item fade-up">
+                        {% if s.heure %}<div class="tl-time">{{ s.heure }}</div>{% endif %}
+                        <div class="tl-title">{{ s.titre|default:"" }}</div>
+                        {% if s.details %}
+                        <div class="tl-details">{{ s.details|linebreaksbr }}</div>
                         {% endif %}
                     </div>
                     {% endfor %}
                 </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
         </div>
+        {% else %}
+        <p class="text-center text-muted">{{ restitution.agenda_empty_message }}</p>
         {% endif %}
-
     </div>
 </section>
 
+<!-- ==================== RAPPORTS ==================== -->
+{% if restitution.rapport_synthese_fichier or restitution.rapport_detail_fichier %}
+<section class="rest-section bg-alt">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Documents</span>
+            <h2 class="section-heading">Rapports &amp; Documents</h2>
+            <hr class="section-divider-sm">
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% if restitution.rapport_synthese_fichier %}
+            <div class="col-md-5">
+                <div class="rapport-card fade-up text-center">
+                    <div class="rapport-icon mx-auto" style="background: rgba(11,74,154,.08); color: var(--primary);">
+                        <i class="bi bi-file-earmark-text-fill"></i>
+                    </div>
+                    <h4>{{ restitution.rapport_synthese_titre }}</h4>
+                    <p>{{ restitution.rapport_synthese_description }}</p>
+                    <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-primary px-4" target="_blank">
+                        <i class="bi bi-download me-2"></i>T&eacute;l&eacute;charger
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% if restitution.rapport_detail_fichier %}
+            <div class="col-md-5">
+                <div class="rapport-card fade-up text-center">
+                    <div class="rapport-icon mx-auto" style="background: rgba(11,74,154,.08); color: var(--primary);">
+                        <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                    </div>
+                    <h4>{{ restitution.rapport_detail_titre }}</h4>
+                    <p>{{ restitution.rapport_detail_description }}</p>
+                    <a href="{{ restitution.rapport_detail_fichier.url }}" class="btn btn-primary px-4" target="_blank">
+                        <i class="bi bi-download me-2"></i>T&eacute;l&eacute;charger
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== GALERIE ==================== -->
+{% if images %}
+<section class="rest-section">
+    <div class="container">
+        <div class="text-center">
+            <span class="section-badge">Galerie</span>
+            <h2 class="section-heading">Galerie DounIA 1</h2>
+            <hr class="section-divider-sm">
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="rest-galerie fade-up">
+                    <div id="restitutionGalerie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="false">
+                        <div class="carousel-indicators">
+                            {% for img in images %}
+                            <button type="button" data-bs-target="#restitutionGalerie" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                            {% endfor %}
+                        </div>
+                        <div class="carousel-inner">
+                            {% for img in images %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}" class="d-block">
+                                {% if img.titre or img.description %}
+                                <div class="carousel-caption d-none d-md-block">
+                                    {% if img.titre %}<h5 class="mb-1">{{ img.titre }}</h5>{% endif %}
+                                    {% if img.description %}<p class="mb-0 small">{{ img.description }}</p>{% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Pr&eacute;c&eacute;dent</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#restitutionGalerie" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Suivant</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ==================== CTA ==================== -->
+<section class="rest-cta">
+    <div class="container">
+        <h2 class="mb-3">{{ restitution.cta_titre }}</h2>
+        <p class="mb-4">{{ restitution.cta_description }}</p>
+        <a href="{% url 'landing_page' %}#inscription" class="btn btn-light btn-lg px-5 fw-semibold">
+            <i class="bi bi-pencil-square me-2"></i>S'inscrire
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    var items = document.querySelectorAll('.fade-up');
+    if (!items.length) return;
+    if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        items.forEach(function(el) { obs.observe(el); });
+    } else {
+        items.forEach(function(el) { el.classList.add('visible'); });
+    }
+})();
+</script>
 {% endblock %}
