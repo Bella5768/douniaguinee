@@ -273,7 +273,7 @@
     }
     .rest-card p { color: #444; line-height: 1.7; }
     .contexte-text {
-        max-height: 150px;
+        max-height: 100px;
         overflow: hidden;
         position: relative;
         transition: max-height .4s ease;
@@ -401,42 +401,78 @@
     }
     .tl-item {
         position: relative;
-        margin-bottom: 2rem;
-        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 1.5rem 1.5rem 5rem;
         background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 2px 16px rgba(0,0,0,.05);
-        border: 1px solid rgba(0,0,0,.04);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,51,102,.08);
+        border-left: 4px solid #003366;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .tl-item:hover {
+        transform: translateX(6px);
+        box-shadow: 0 8px 30px rgba(0,51,102,.14);
     }
     .tl-item::before {
         content: '';
         position: absolute;
         left: -2.35rem;
         top: 1.5rem;
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
-        background: var(--primary);
+        background: #003366;
         border: 3px solid #fff;
-        box-shadow: 0 0 0 3px rgba(11,74,154,.18);
+        box-shadow: 0 0 0 3px rgba(0,51,102,.2);
+    }
+    .tl-item .tl-time-badge {
+        position: absolute;
+        left: 1rem;
+        top: 1.5rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #003366, #004d99);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .7rem;
+        font-weight: 800;
+        text-align: center;
+        line-height: 1.1;
     }
     .tl-item .tl-time {
-        font-size: .85rem;
+        font-size: .8rem;
         font-weight: 700;
-        color: var(--primary);
-        text-transform: uppercase;
+        color: #003366;
         letter-spacing: .5px;
-        margin-bottom: .25rem;
+        margin-bottom: .3rem;
+        display: inline-block;
+        background: rgba(0,51,102,.06);
+        padding: .2rem .7rem;
+        border-radius: 20px;
     }
     .tl-item .tl-title {
         font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: .25rem;
+        font-size: 1.05rem;
+        color: #1a1a1a;
+        margin-bottom: .3rem;
     }
     .tl-item .tl-details {
-        color: var(--text-muted);
-        font-size: .92rem;
-        line-height: 1.55;
+        color: #666;
+        font-size: .9rem;
+        line-height: 1.6;
+    }
+    .tl-item:nth-child(even) {
+        border-left-color: #A0A0A0;
+    }
+    .tl-item:nth-child(even) .tl-time-badge {
+        background: linear-gradient(135deg, #A0A0A0, #888);
+    }
+    .tl-item:nth-child(even) .tl-time {
+        color: #666;
+        background: rgba(160,160,160,.1);
     }
 
     /* ===== AGENDA INFO PILLS ===== */
@@ -444,13 +480,14 @@
         display: inline-flex;
         align-items: center;
         gap: .5rem;
-        background: rgba(11,74,154,.06);
+        background: #003366;
+        color: #fff;
         border-radius: 50px;
-        padding: .5rem 1.2rem;
-        font-size: .92rem;
-        color: var(--text-dark);
+        padding: .55rem 1.3rem;
+        font-size: .9rem;
+        font-weight: 600;
     }
-    .agenda-pill i { color: var(--primary); font-size: 1.1rem; }
+    .agenda-pill i { color: rgba(255,255,255,.8); font-size: 1.1rem; }
 
     /* ===== RAPPORTS ===== */
     .rapport-card {
@@ -748,6 +785,7 @@
                 <div class="rest-timeline">
                     {% for s in restitution.agenda_sessions %}
                     <div class="tl-item fade-up">
+                        <div class="tl-time-badge"><i class="bi bi-clock"></i></div>
                         {% if s.heure %}<div class="tl-time">{{ s.heure }}</div>{% endif %}
                         <div class="tl-title">{{ s.titre|default:"" }}</div>
                         {% if s.details %}
