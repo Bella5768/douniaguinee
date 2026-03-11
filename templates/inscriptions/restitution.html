@@ -495,7 +495,7 @@
     {% endif %}
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <span class="badge-pill"><i class="bi bi-calendar-event me-1"></i> Restitution officielle</span>
                 <h1 class="mb-3">{{ restitution.titre_hero }}</h1>
                 <p class="lead mb-4">{{ restitution.description_hero }}</p>
@@ -507,9 +507,10 @@
                         <i class="bi bi-file-earmark-text me-2"></i>Rapport
                     </a>
                 </div>
-                <!-- Compte à rebours -->
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
                 <div id="countdown-container">
-                    <div class="countdown-wrap" id="countdown">
+                    <div class="countdown-wrap justify-content-center" id="countdown">
                         <div class="countdown-box"><span class="cd-num" id="cd-days">--</span><span class="cd-label">Jours</span></div>
                         <div class="countdown-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">Heures</span></div>
                         <div class="countdown-box"><span class="cd-num" id="cd-mins">--</span><span class="cd-label">Minutes</span></div>
@@ -681,48 +682,6 @@
     </div>
 </section>
 
-<!-- ==================== RAPPORTS ==================== -->
-{% if restitution.rapport_synthese_fichier or restitution.rapport_detail_fichier %}
-<section class="rest-section bg-alt">
-    <div class="container">
-        <div class="text-center">
-            <span class="section-badge">Documents</span>
-            <h2 class="section-heading">Rapports &amp; Documents</h2>
-            <hr class="section-divider-sm">
-        </div>
-        <div class="row g-4 justify-content-center">
-            {% if restitution.rapport_synthese_fichier %}
-            <div class="col-md-5">
-                <div class="rapport-card fade-up text-center">
-                    <div class="rapport-icon mx-auto" style="background: rgba(11,74,154,.08); color: var(--primary);">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                    </div>
-                    <h4>{{ restitution.rapport_synthese_titre }}</h4>
-                    <p>{{ restitution.rapport_synthese_description }}</p>
-                    <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-primary px-4" target="_blank">
-                        <i class="bi bi-download me-2"></i>T&eacute;l&eacute;charger
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if restitution.rapport_detail_fichier %}
-            <div class="col-md-5">
-                <div class="rapport-card fade-up text-center">
-                    <div class="rapport-icon mx-auto" style="background: rgba(11,74,154,.08); color: var(--primary);">
-                        <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                    </div>
-                    <h4>{{ restitution.rapport_detail_titre }}</h4>
-                    <p>{{ restitution.rapport_detail_description }}</p>
-                    <a href="{{ restitution.rapport_detail_fichier.url }}" class="btn btn-primary px-4" target="_blank">
-                        <i class="bi bi-download me-2"></i>T&eacute;l&eacute;charger
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-</section>
-{% endif %}
 
 <!-- ==================== GALERIE ==================== -->
 {% if images %}
