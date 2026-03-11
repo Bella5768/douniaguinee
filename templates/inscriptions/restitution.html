@@ -458,15 +458,105 @@
         font-size: .95rem;
     }
 
-    /* ===== OBJECTIFS ===== */
+    /* ===== OBJECTIFS SECTION ===== */
+    .objectifs-section {
+        background: #fff;
+        position: relative;
+    }
     .obj-general {
-        background: linear-gradient(135deg, rgba(11,74,154,.04) 0%, rgba(11,74,154,.09) 100%);
+        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+        border-radius: 20px;
+        padding: 2rem 2.5rem;
+        margin-bottom: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .obj-general::before {
+        content: '';
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.06);
+    }
+    .obj-general .obj-icon {
+        width: 52px;
+        height: 52px;
         border-radius: 14px;
-        padding: 1.5rem 2rem;
-        border-left: 4px solid var(--primary);
+        background: rgba(255,255,255,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .obj-general h4 {
+        color: rgba(255,255,255,.7);
+        font-size: .85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0 0 .3rem;
+    }
+    .obj-general p { margin: 0; font-size: 1.1rem; color: #fff; line-height: 1.7; font-weight: 500; }
+    .obj-spec-title {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #003366;
         margin-bottom: 1.5rem;
     }
-    .obj-general p { margin: 0; font-size: 1.05rem; color: #333; }
+    .obj-spec-title::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(to right, #003366, transparent);
+        min-width: 60px;
+    }
+    .obj-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid rgba(0,51,102,.08);
+        box-shadow: 0 4px 20px rgba(0,51,102,.06);
+        height: 100%;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    .obj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(0,51,102,.12);
+        border-color: #003366;
+    }
+    .obj-card .obj-num {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #003366, #004d99);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: .95rem;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+    .obj-card p {
+        margin: 0;
+        color: #444;
+        font-size: .95rem;
+        line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+        .obj-general { padding: 1.5rem; }
+    }
 
     /* ===== PUBLIC CIBLE ===== */
     .public-card {
@@ -800,9 +890,9 @@
 </section>
 
 <!-- ==================== OBJECTIFS ==================== -->
-<section class="rest-section bg-alt">
+<section class="rest-section objectifs-section" id="objectifs">
     <div class="container">
-        <div class="text-center">
+        <div class="text-center mb-5">
             <span class="section-badge">Objectifs</span>
             <h2 class="section-heading">{{ restitution.objectif_titre }}</h2>
             <hr class="section-divider-sm">
@@ -810,18 +900,24 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="obj-general fade-up">
-                    <p><i class="bi bi-bullseye me-2 text-primary"></i><strong>Objectif g&eacute;n&eacute;ral :</strong> {{ restitution.objectif_general }}</p>
+                    <div class="d-flex gap-3 align-items-start">
+                        <div class="obj-icon"><i class="bi bi-bullseye"></i></div>
+                        <div>
+                            <h4>Objectif général</h4>
+                            <p>{{ restitution.objectif_general }}</p>
+                        </div>
+                    </div>
                 </div>
                 {% if restitution.objectifs_specifiques %}
-                <h5 class="fw-bold mb-3"><i class="bi bi-list-check me-2 text-primary"></i>Objectifs sp&eacute;cifiques</h5>
+                <div class="obj-spec-title">
+                    <i class="bi bi-list-check"></i> Objectifs spécifiques
+                </div>
                 <div class="row g-3">
                     {% for point in restitution.objectifs_specifiques %}
                     <div class="col-md-6">
-                        <div class="rest-card fade-up" style="margin-bottom: 0;">
-                            <div class="d-flex gap-3 align-items-start">
-                                <span class="card-icon" style="min-width:40px;min-height:40px;width:40px;height:40px;font-size:1rem;">{{ forloop.counter }}</span>
-                                <p class="mb-0" style="font-size:.95rem;">{{ point }}</p>
-                            </div>
+                        <div class="obj-card fade-up">
+                            <div class="obj-num">{{ forloop.counter }}</div>
+                            <p>{{ point }}</p>
                         </div>
                     </div>
                     {% endfor %}
