@@ -272,6 +272,34 @@
         font-size: .85rem;
     }
     .rest-card p { color: #444; line-height: 1.7; }
+    .contexte-text {
+        max-height: 150px;
+        overflow: hidden;
+        position: relative;
+        transition: max-height .4s ease;
+    }
+    .contexte-text.expanded {
+        max-height: 3000px;
+    }
+    .contexte-text:not(.expanded)::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(transparent, #fff);
+    }
+    .btn-lire-suite {
+        border: none;
+        background: none;
+        color: var(--primary);
+        font-weight: 600;
+        cursor: pointer;
+        padding: .5rem 0;
+        font-size: .95rem;
+    }
+    .btn-lire-suite:hover { text-decoration: underline; }
 
     /* ===== RESULTAT CARDS GRADIENT ===== */
     .result-card {
@@ -585,15 +613,20 @@
                 <div class="rest-card fade-up">
                     <div class="d-flex gap-3 align-items-start mb-3">
                         <div class="card-icon"><i class="bi bi-info-circle-fill"></i></div>
-                        <div>
-                            <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
-                            {% if restitution.contexte_points %}
-                            <ul>
-                                {% for point in restitution.contexte_points %}
-                                <li>{{ point }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
+                        <div style="flex:1;">
+                            <div class="contexte-text" id="contexteText">
+                                <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
+                                {% if restitution.contexte_points %}
+                                <ul>
+                                    {% for point in restitution.contexte_points %}
+                                    <li>{{ point }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.classList.contains('expanded')){t.classList.remove('expanded');b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.classList.add('expanded');b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>Réduire';}">
+                                <i class="bi bi-chevron-down me-1"></i>Lire la suite
+                            </button>
                         </div>
                     </div>
                 </div>
