@@ -260,6 +260,42 @@
     }
     .rest-card p { color: #444; line-height: 1.7; }
 
+    /* ===== RESULTAT CARDS GRADIENT ===== */
+    .result-card {
+        background: linear-gradient(135deg, #0B4A9A 0%, #1B62C6 50%, #062F64 100%);
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(11,74,154,.18);
+        padding: 2rem;
+        margin-bottom: 0;
+        height: 100%;
+        transition: transform .25s ease, box-shadow .25s ease;
+        border: none;
+        color: #fff;
+        text-align: center;
+    }
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 14px 40px rgba(11,74,154,.28);
+    }
+    .result-card .card-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: rgba(255,255,255,.18);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: #fff;
+        margin: 0 auto 1rem;
+    }
+    .result-card p {
+        color: rgba(255,255,255,.92);
+        line-height: 1.6;
+        margin: 0;
+        font-size: .95rem;
+    }
+
     /* ===== OBJECTIFS ===== */
     .obj-general {
         background: linear-gradient(135deg, rgba(11,74,154,.04) 0%, rgba(11,74,154,.09) 100%);
@@ -601,9 +637,9 @@
         <div class="row g-3 justify-content-center">
             {% for point in restitution.resultats_attendus %}
             <div class="col-md-6 col-lg-4">
-                <div class="rest-card fade-up text-center" style="height:100%;">
-                    <div class="card-icon mx-auto"><i class="bi bi-check-circle-fill"></i></div>
-                    <p class="mb-0">{{ point }}</p>
+                <div class="result-card fade-up">
+                    <div class="card-icon"><i class="bi bi-check-circle-fill"></i></div>
+                    <p>{{ point }}</p>
                 </div>
             </div>
             {% endfor %}
