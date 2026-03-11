@@ -16,12 +16,6 @@
         display: flex;
         align-items: center;
     }
-    .rest-hero .hero-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(6,47,100,.82) 0%, rgba(11,74,154,.65) 100%);
-        z-index: 1;
-    }
     .page-hero-bg-slideshow {
         position: absolute;
         inset: 0;
@@ -447,7 +441,6 @@
         <div class="page-hero-bg-slide" style="opacity: 0.7; animation: none; background-image: url({% if restitution.hero_image %}{{ restitution.hero_image.url }}?t={{ restitution.updated_at|date:'U' }}{% else %}{{ restitution.hero_image_url }}{% endif %});"></div>
     </div>
     {% endif %}
-    <div class="hero-overlay"></div>
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -469,41 +462,6 @@
     </div>
 </section>
 
-<!-- ==================== CHIFFRES CLES ==================== -->
-<section class="rest-stats">
-    <div class="container">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                    <div class="stat-num">{{ restitution.participants_nombre }}</div>
-                    <div class="stat-lbl">{{ restitution.participants_label }}</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-journal-richtext"></i></div>
-                    <div class="stat-num">{{ restitution.ateliers_nombre }}</div>
-                    <div class="stat-lbl">{{ restitution.ateliers_label }}</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-lightbulb-fill"></i></div>
-                    <div class="stat-num">{{ restitution.recommandations_nombre }}</div>
-                    <div class="stat-lbl">{{ restitution.recommandations_label }}</div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-calendar3"></i></div>
-                    <div class="stat-num">{{ restitution.duree_nombre }}</div>
-                    <div class="stat-lbl">{{ restitution.duree_label }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ==================== CONTEXTE ==================== -->
 <section class="rest-section" id="contexte">
