@@ -559,40 +559,94 @@
     }
 
     /* ===== PUBLIC CIBLE ===== */
+    .public-section {
+        background: linear-gradient(135deg, #f0f4f8 0%, #e8edf3 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .public-section::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: rgba(0,51,102,.03);
+    }
     .public-card {
         background: #fff;
-        border-radius: 14px;
-        padding: 1.5rem;
+        border-radius: 18px;
+        padding: 0;
         height: 100%;
-        box-shadow: 0 2px 16px rgba(0,0,0,.05);
-        border: 1px solid rgba(0,0,0,.04);
-        transition: transform .25s ease, box-shadow .25s ease;
+        box-shadow: 0 4px 24px rgba(0,51,102,.06);
+        border: 1px solid rgba(0,51,102,.06);
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
     }
     .public-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 28px rgba(0,0,0,.1);
+        transform: translateY(-6px);
+        box-shadow: 0 12px 36px rgba(0,51,102,.14);
+        border-color: #003366;
     }
+    .public-card-inner {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem 1.5rem 1.5rem 0;
+    }
+    .public-card-accent {
+        width: 5px;
+        min-height: 100%;
+        border-radius: 0;
+        flex-shrink: 0;
+    }
+    .public-card:nth-child(odd) .public-card-accent { background: linear-gradient(to bottom, #003366, #004d99); }
+    .public-card:nth-child(even) .public-card-accent { background: linear-gradient(to bottom, #A0A0A0, #888); }
     .public-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .public-card:nth-child(odd) .public-icon { background: linear-gradient(135deg, #003366, #004d99); }
+    .public-card:nth-child(even) .public-icon { background: linear-gradient(135deg, #A0A0A0, #777); }
+    .public-card p {
+        font-size: .95rem;
+        color: #444;
+        margin: 0;
+        line-height: 1.65;
+        font-weight: 500;
+    }
+    .public-card:hover .public-icon {
+        transform: scale(1.1);
+        transition: transform .3s ease;
+    }
+    .public-counter {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.15rem;
+        gap: .6rem;
+        background: #003366;
         color: #fff;
-        margin-bottom: .75rem;
-        flex-shrink: 0;
-    }
-    .public-card p {
-        font-size: .92rem;
-        color: #555;
-        margin: 0;
-        line-height: 1.55;
-    }
-    .public-card .fw-bold {
-        color: var(--text-dark);
+        border-radius: 50px;
+        padding: .5rem 1.5rem;
+        font-weight: 700;
         font-size: .95rem;
+        margin-top: 2rem;
+    }
+    .public-counter i { font-size: 1.1rem; }
+    @media (max-width: 768px) {
+        .public-card-inner { padding: 1.2rem 1.2rem 1.2rem 0; gap: .8rem; }
+        .public-icon { width: 42px; height: 42px; font-size: 1.1rem; }
     }
 
     /* ===== TIMELINE ===== */
@@ -956,24 +1010,35 @@
 
 <!-- ==================== PUBLIC CIBLE ==================== -->
 {% if restitution.public_cible %}
-<section class="rest-section bg-alt">
+<section class="rest-section public-section" id="public">
     <div class="container">
-        <div class="text-center">
+        <div class="text-center mb-5">
             <span class="section-badge">Audience</span>
             <h2 class="section-heading">{{ restitution.public_titre_ceremonie }}</h2>
             <hr class="section-divider-sm">
         </div>
-        <div class="row g-3">
+        <div class="row g-4">
             {% for point in restitution.public_cible %}
             <div class="col-md-6 col-lg-4">
                 <div class="public-card fade-up">
-                    <div class="public-icon" style="background: var(--primary);">
-                        <i class="bi bi-{% cycle 'bank' 'cpu' 'mortarboard' 'heart-pulse' 'globe' 'megaphone' 'currency-exchange' %}"></i>
+                    <div class="d-flex h-100">
+                        <div class="public-card-accent"></div>
+                        <div class="public-card-inner">
+                            <div class="public-icon">
+                                <i class="bi bi-{% cycle 'bank' 'cpu' 'mortarboard' 'heart-pulse' 'globe' 'megaphone' 'currency-exchange' %}"></i>
+                            </div>
+                            <p>{{ point }}</p>
+                        </div>
                     </div>
-                    <p>{{ point }}</p>
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="text-center">
+            <div class="public-counter fade-up">
+                <i class="bi bi-people-fill"></i>
+                {{ restitution.public_cible|length }} catégorie{{ restitution.public_cible|length|pluralize:"s" }} de parties prenantes
+            </div>
         </div>
     </div>
 </section>
