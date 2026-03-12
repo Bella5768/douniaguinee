@@ -352,13 +352,13 @@
         font-family: Georgia, serif;
     }
     .contexte-text {
-        max-height: 120px;
-        overflow: hidden;
+        max-height: 180px !important;
+        overflow: hidden !important;
         position: relative;
-        transition: max-height .5s ease;
+        transition: max-height .6s cubic-bezier(0.4,0,0.2,1);
     }
     .contexte-text.expanded {
-        max-height: 3000px;
+        max-height: 4000px !important;
     }
     .contexte-text p {
         color: #444;
@@ -371,8 +371,9 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 70px;
-        background: linear-gradient(transparent, #fff);
+        height: 90px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+        pointer-events: none;
     }
     .contexte-text ul {
         padding-left: 0;
