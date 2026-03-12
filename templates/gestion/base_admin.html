@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{% static 'css/admin.css' %}?v=2.0"> 
     {% block extra_css %}{% endblock %}
 </head> 
-<body>
+<body class="admin-body">
     <!-- Admin Navbar -->
     <nav class="navbar navbar-expand-lg admin-navbar">
         <div class="container-fluid px-4">
@@ -31,8 +31,8 @@
                 {% else %}
                 <i class="bi bi-speedometer2 me-2"></i>Doun<span>IA</span>
                 {% endif %}
-                <small class="admin-badge-nav">Gestion</small>
-            </a>
+                <small class="admin-badge-nav">Gestion</small>   
+            </a> 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
