@@ -153,8 +153,8 @@ class Restitution(models.Model):
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
     countdown_date = models.DateTimeField(blank=True, null=True, verbose_name='Date du countdown', help_text='Date cible pour le compte à rebours (ex: 2026-04-01 09:00)')
 
-    section_titre = models.CharField(max_length=200, default="Restitution DounIA 1")
-    galerie_titre = models.CharField(max_length=200, default="Galerie DounIA 1", verbose_name='Titre Galerie')
+    section_titre = models.CharField(max_length=200, default="Restitution DounIA\u00b9")
+    galerie_titre = models.CharField(max_length=200, default="Galerie DounIA\u00b9", verbose_name='Titre Galerie')
 
     contexte_titre = models.CharField(max_length=200, default="Contexte et justification")
     contexte_texte = models.TextField(default=(

@@ -11,18 +11,18 @@
             <li class="breadcrumb-item active">Événements</li>
         </ol>
     </nav>
-    <h2 class="fw-bold mb-4" style="color: var(--primary);">Événements (DounIA 1 &amp; DounIA 2)</h2>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Événements (DounIA<sup>1</sup> &amp; DounIA<sup>2</sup>)</h2>
 
     <div class="row g-4">
         <div class="col-lg-6">
             <div class="admin-card">
-                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA 1</h6></div>
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA<sup>1</sup></h6></div>
                 <div class="admin-card-body">
                     <form method="post" class="mb-4">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="save_evenement">
                         <input type="hidden" name="edition" value="dounia1">
-                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev1.titre }}" placeholder="DounIA 1 — Événement"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev1.titre }}" placeholder="DounIA¹ — Événement"></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Sous-titre</label><textarea class="form-control" name="sous_titre" rows="2">{{ ev1.sous_titre }}</textarea></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Objectifs (un par ligne)</label><textarea class="form-control" name="objectifs" rows="6">{{ ev1.objectifs }}</textarea></div>
                         <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Enregistrer</button>
@@ -73,13 +73,13 @@
 
         <div class="col-lg-6">
             <div class="admin-card">
-                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA 2</h6></div>
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>DounIA<sup>2</sup></h6></div>
                 <div class="admin-card-body">
                     <form method="post" class="mb-4">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="save_evenement">
                         <input type="hidden" name="edition" value="dounia2">
-                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev2.titre }}" placeholder="DounIA 2 — Événement"></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Titre</label><input type="text" class="form-control" name="titre" value="{{ ev2.titre }}" placeholder="DounIA² — Événement"></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Sous-titre</label><textarea class="form-control" name="sous_titre" rows="2">{{ ev2.sous_titre }}</textarea></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Objectifs (un par ligne)</label><textarea class="form-control" name="objectifs" rows="6">{{ ev2.objectifs }}</textarea></div>
                         <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Enregistrer</button>

@@ -18,9 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5.3">
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}?v=2.0">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}?v=2.0"> 
     {% block extra_css %}{% endblock %}
-</head>
+</head> 
 <body>
     <!-- Admin Navbar -->
     <nav class="navbar navbar-expand-lg admin-navbar">
@@ -48,18 +48,18 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if 'inscription' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'admin_inscriptions' %}">
-                            <i class="bi bi-people me-1"></i>Inscriptions
-                        </a>
+                            <i class="bi bi-people me-1"></i>Inscriptions 
+                        </a> 
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if 'contenu' in request.resolver_match.url_name or 'chiffres' in request.resolver_match.url_name or 'experts' in request.resolver_match.url_name or 'partenaires' in request.resolver_match.url_name or 'ateliers' in request.resolver_match.url_name or 'section' in request.resolver_match.url_name or 'restitution' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'admin_contenu_page' %}">
                             <i class="bi bi-palette me-1"></i>Contenu page
                         </a>
-                    </li>
+                    </li>  
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_ateliers' %}active{% endif %}" href="{% url 'admin_ateliers' %}">
-                            <i class="bi bi-journal-text me-1"></i>Ateliers
-                        </a>
+                            <i class="bi bi-journal-text me-1"></i>Ateliers 
+                        </a> 
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_restitution' %}active{% endif %}" href="{% url 'admin_restitution' %}">
@@ -68,7 +68,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_dounia_events' %}active{% endif %}" href="{% url 'admin_dounia_events' %}">
-                            <i class="bi bi-calendar-event me-1"></i>Événements DounIA
+                            <i class="bi bi-calendar-event me-1"></i>Événements DounIA 
                         </a>
                     </li>
                     <li class="nav-item">
@@ -145,8 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Simulation de recherche (à remplacer par une vraie API)
                 const mockResults = [
-                    { title: 'DounIA 1', url: '/event/dounia1/', type: 'Événement' },
-                    { title: 'DounIA 2', url: '/event/dounia2/', type: 'Événement' },
+                    { title: 'DounIA\u00b9', url: '/event/dounia1/', type: 'Événement' },
+                    { title: 'DounIA\u00b2', url: '/event/dounia2/', type: 'Événement' },
                     { title: 'Inscription', url: '/#inscription', type: 'Page' },
                     { title: 'Contact', url: '/#contact', type: 'Page' },
                     { title: 'Ateliers', url: '/#ateliers', type: 'Section' }

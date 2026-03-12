@@ -216,10 +216,10 @@
                 </h1>
                 <div>
                     <a href="{% url 'event_page' 'dounia1' %}" class="btn btn-outline-primary me-2" target="_blank">
-                        <i class="bi bi-eye me-1"></i>Voir DounIA 1
+                        <i class="bi bi-eye me-1"></i>Voir DounIA<sup>1</sup>
                     </a>
                     <a href="{% url 'event_page' 'dounia2' %}" class="btn btn-outline-primary me-2" target="_blank">
-                        <i class="bi bi-eye me-1"></i>Voir DounIA 2
+                        <i class="bi bi-eye me-1"></i>Voir DounIA<sup>2</sup>
                     </a>
                     <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left me-1"></i>Retour
@@ -239,14 +239,14 @@
             <!-- Tabs -->
             <div class="tabs">
                 <button class="tab active" onclick="showTab('dounia1')">
-                    <i class="bi bi-flag me-1"></i>DounIA 1
+                    <i class="bi bi-flag me-1"></i>DounIA<sup>1</sup>
                 </button>
                 <button class="tab" onclick="showTab('dounia2')">
-                    <i class="bi bi-rocket-takeoff me-1"></i>DounIA 2
+                    <i class="bi bi-rocket-takeoff me-1"></i>DounIA<sup>2</sup>
                 </button>
             </div>
             
-            <!-- DounIA 1 Tab -->
+            <!-- DounIA¹ Tab -->
             <div id="dounia1-tab" class="tab-content active">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -635,14 +635,14 @@
                         <!-- Boutons -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary btn-lg px-5">
-                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA 1
+                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA<sup>1</sup>
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
             
-            <!-- DounIA 2 Tab -->
+            <!-- DounIA² Tab -->
             <div id="dounia2-tab" class="tab-content">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -1031,7 +1031,7 @@
                         <!-- Boutons -->
                         <div class="text-center mt-4">
                             <button type="submit" class="btn btn-primary btn-lg px-5">
-                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA 2
+                                <i class="bi bi-save me-2"></i>Sauvegarder DounIA<sup>2</sup>
                             </button>
                         </div>
                     </div>
