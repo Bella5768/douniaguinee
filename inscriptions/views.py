@@ -1826,6 +1826,7 @@ def admin_edit_section(request, section):
         'hero': {
             'titre': 'Hero',
             'fields': [
+                {'name': 'logo', 'label': 'Logo du site (navbar)', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Logo affiché dans la barre de navigation. Format PNG recommandé.'},
                 {'name': 'hero_badge', 'label': 'Badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'hero_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'hero_titre_span', 'label': 'Titre (partie en surbrillance)', 'is_textarea': False, 'is_url': False, 'is_image': False},

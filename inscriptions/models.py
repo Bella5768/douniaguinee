@@ -432,6 +432,9 @@ class Inscription(models.Model):
 class SiteConfiguration(models.Model):
     """Singleton — contenu éditable de toutes les sections de la landing page."""
 
+    # LOGO
+    logo = models.ImageField(upload_to='logo/', blank=True, null=True, verbose_name='Logo du site (navbar)')
+
     # HERO
     hero_badge = models.CharField(max_length=200, default='Guinée — Processus National', verbose_name='Hero badge')
     hero_titre = models.CharField(max_length=300, default='DounIA — Données Numériques & Intelligence Artificielle', verbose_name='Hero titre')
