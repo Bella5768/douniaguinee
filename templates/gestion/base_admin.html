@@ -264,5 +264,27 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 {% block extra_js %}{% endblock %}
+<script>
+(function(){
+    function fixDounia(root){
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var nodes = [];
+        var n;
+        while((n = walker.nextNode())) nodes.push(n);
+        nodes.forEach(function(node){
+            if(/DounIA\s*[12]/.test(node.textContent)){
+                var span = document.createElement('span');
+                span.innerHTML = node.textContent.replace(/DounIA\s*([12])/g, 'DounIA<sup>$1</sup>');
+                node.parentNode.replaceChild(span, node);
+            }
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', function(){ fixDounia(document.body); });
+    } else {
+        fixDounia(document.body);
+    }
+})();
+</script>
 </body>
 </html>
