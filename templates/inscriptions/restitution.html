@@ -352,13 +352,9 @@
         font-family: Georgia, serif;
     }
     .contexte-text {
-        max-height: 180px !important;
-        overflow: hidden !important;
+        overflow: hidden;
         position: relative;
         transition: max-height .6s cubic-bezier(0.4,0,0.2,1);
-    }
-    .contexte-text.expanded {
-        max-height: 4000px !important;
     }
     .contexte-text p {
         color: #444;
@@ -934,7 +930,7 @@
                             </ul>
                             {% endif %}
                         </div>
-                        <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.dataset.expanded==='1'){t.style.maxHeight='180px';t.dataset.expanded='0';b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.style.maxHeight='9999px';t.dataset.expanded='1';b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>Réduire';}">
+                        <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.dataset.expanded==='1'){t.style.maxHeight='180px';t.dataset.expanded='0';t.classList.remove('expanded');b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.style.maxHeight='9999px';t.dataset.expanded='1';t.classList.add('expanded');b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>R\u00e9duire';}">
                             <i class="bi bi-chevron-down me-1"></i>Lire la suite
                         </button>
                     </div>
