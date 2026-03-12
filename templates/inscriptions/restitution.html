@@ -924,7 +924,7 @@
                         </div>
                     </div>
                     <div class="contexte-card-body">
-                        <div class="contexte-text" id="contexteText">
+                        <div class="contexte-text" id="contexteText" style="max-height:180px;overflow:hidden;position:relative;transition:max-height .6s ease;">
                             <p>{{ restitution.contexte_texte|linebreaksbr }}</p>
                             {% if restitution.contexte_points %}
                             <ul>
@@ -934,7 +934,7 @@
                             </ul>
                             {% endif %}
                         </div>
-                        <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.classList.contains('expanded')){t.classList.remove('expanded');b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.classList.add('expanded');b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>R\u00e9duire';}">
+                        <button class="btn-lire-suite" id="btnLireSuite" onclick="var t=document.getElementById('contexteText');var b=this;if(t.dataset.expanded==='1'){t.style.maxHeight='180px';t.dataset.expanded='0';b.innerHTML='<i class=\'bi bi-chevron-down me-1\'></i>Lire la suite';}else{t.style.maxHeight=t.scrollHeight+'px';t.dataset.expanded='1';b.innerHTML='<i class=\'bi bi-chevron-up me-1\'></i>R\u00e9duire';}">
                             <i class="bi bi-chevron-down me-1"></i>Lire la suite
                         </button>
                     </div>
