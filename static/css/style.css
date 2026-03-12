@@ -303,10 +303,10 @@ section {
 
 .hero-section .hero-content {
     margin-top: 2.25rem;
-    background: rgba(0, 30, 60, .45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0, 0, 0, .3);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.15);
     border-radius: 20px;
     padding: 2.5rem 2.5rem 2rem;
     max-width: 650px;
@@ -550,7 +550,7 @@ section {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(0,20,50,.88) 0%, rgba(0,20,50,.7) 45%, rgba(0,20,50,.3) 75%, transparent 100%);
+    background: linear-gradient(to right, rgba(0,0,0,.45) 0%, rgba(0,0,0,.2) 50%, transparent 100%);
     z-index: 1;
 }
 
