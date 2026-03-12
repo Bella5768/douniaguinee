@@ -877,15 +877,15 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7">
-                <span class="badge-pill"><i class="bi bi-calendar-event me-1"></i> Restitution officielle</span>
+                <span class="badge-pill"><i class="bi bi-calendar-event me-1"></i> {{ restitution.hero_badge_text }}</span>
                 <h1 class="mb-3">{{ restitution.titre_hero }}</h1>
                 <p class="lead mb-4">{{ restitution.description_hero }}</p>
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="#contexte" class="btn btn-light btn-lg px-4 fw-semibold">
-                        <i class="bi bi-arrow-down-circle me-2"></i>Voir le contenu
+                    <a href="{{ restitution.hero_btn1_lien|default:'#contexte' }}" class="btn btn-light btn-lg px-4 fw-semibold">
+                        <i class="bi bi-arrow-down-circle me-2"></i>{{ restitution.hero_btn1_texte }}
                     </a>
-                    <a href="{% url 'landing_page' %}#livrable" class="btn btn-outline-light btn-lg px-4">
-                        <i class="bi bi-file-earmark-text me-2"></i>Rapport
+                    <a href="{% if restitution.hero_btn2_lien %}{{ restitution.hero_btn2_lien }}{% else %}{% url 'landing_page' %}#livrable{% endif %}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-file-earmark-text me-2"></i>{{ restitution.hero_btn2_texte }}
                     </a>
                 </div>
             </div>
@@ -1097,7 +1097,7 @@
     <div class="container">
         <div class="text-center">
             <span class="section-badge">Galerie</span>
-            <h2 class="section-heading">Galerie DounIA 1</h2>
+            <h2 class="section-heading">{{ restitution.galerie_titre }}</h2>
             <hr class="section-divider-sm">
         </div>
         <div class="row justify-content-center">
@@ -1173,7 +1173,7 @@
     }
 
     /* ---- Countdown : 1er Avril 2025 ---- */
-    var target = new Date('2026-04-01T09:00:00').getTime();
+    var target = new Date('{% if restitution.countdown_date %}{{ restitution.countdown_date|date:"Y-m-d" }}T{{ restitution.countdown_date|date:"H:i:s" }}{% else %}2026-04-01T09:00:00{% endif %}').getTime();
     var container = document.getElementById('countdown-container');
     var daysEl  = document.getElementById('cd-days');
     var hoursEl = document.getElementById('cd-hours');

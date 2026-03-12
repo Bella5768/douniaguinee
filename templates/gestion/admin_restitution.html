@@ -183,17 +183,23 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="titre_hero" class="form-label">Titre Hero</label>
                                 <input type="text" class="form-control" id="titre_hero" name="titre_hero" 
                                        value="{{ restitution.titre_hero }}" required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="section_titre" class="form-label">Titre de section (page)</label>
                                 <input type="text" class="form-control" id="section_titre" name="section_titre" value="{{ restitution.section_titre }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="hero_badge_text" class="form-label">Badge Hero</label>
+                                <input type="text" class="form-control" id="hero_badge_text" name="hero_badge_text" value="{{ restitution.hero_badge_text }}">
                             </div>
                         </div>
                     </div>
@@ -203,6 +209,47 @@
                                 <label for="description_hero" class="form-label">Description Hero</label>
                                 <textarea class="form-control" id="description_hero" name="description_hero" 
                                           rows="3" required>{{ restitution.description_hero }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="hero_btn1_texte" class="form-label">Bouton 1 — texte</label>
+                                <input type="text" class="form-control" id="hero_btn1_texte" name="hero_btn1_texte" value="{{ restitution.hero_btn1_texte }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="hero_btn1_lien" class="form-label">Bouton 1 — lien</label>
+                                <input type="text" class="form-control" id="hero_btn1_lien" name="hero_btn1_lien" value="{{ restitution.hero_btn1_lien }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="hero_btn2_texte" class="form-label">Bouton 2 — texte</label>
+                                <input type="text" class="form-control" id="hero_btn2_texte" name="hero_btn2_texte" value="{{ restitution.hero_btn2_texte }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="mb-3">
+                                <label for="hero_btn2_lien" class="form-label">Bouton 2 — lien</label>
+                                <input type="text" class="form-control" id="hero_btn2_lien" name="hero_btn2_lien" value="{{ restitution.hero_btn2_lien }}" placeholder="Vide = landing#livrable">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="countdown_date" class="form-label"><i class="bi bi-clock me-1"></i>Date du Countdown</label>
+                                <input type="datetime-local" class="form-control" id="countdown_date" name="countdown_date" value="{% if restitution.countdown_date %}{{ restitution.countdown_date|date:'Y-m-d' }}T{{ restitution.countdown_date|date:'H:i' }}{% endif %}">
+                                <small class="text-muted">Laissez vide pour désactiver le countdown</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="galerie_titre" class="form-label">Titre section Galerie</label>
+                                <input type="text" class="form-control" id="galerie_titre" name="galerie_titre" value="{{ restitution.galerie_titre }}">
                             </div>
                         </div>
                     </div>

@@ -1509,9 +1509,25 @@ def admin_restitution(request):
         # Mise à jour des informations hero
         restitution.titre_hero = request.POST.get('titre_hero', restitution.titre_hero)
         restitution.description_hero = request.POST.get('description_hero', restitution.description_hero)
+        restitution.hero_badge_text = request.POST.get('hero_badge_text', restitution.hero_badge_text)
+        restitution.hero_btn1_texte = request.POST.get('hero_btn1_texte', restitution.hero_btn1_texte)
+        restitution.hero_btn1_lien = request.POST.get('hero_btn1_lien', restitution.hero_btn1_lien)
+        restitution.hero_btn2_texte = request.POST.get('hero_btn2_texte', restitution.hero_btn2_texte)
+        restitution.hero_btn2_lien = request.POST.get('hero_btn2_lien', restitution.hero_btn2_lien)
         restitution.hero_image_url = request.POST.get('hero_image_url', restitution.hero_image_url)
 
+        # Countdown date
+        countdown_raw = request.POST.get('countdown_date', '').strip()
+        if countdown_raw:
+            from django.utils.dateparse import parse_datetime
+            parsed = parse_datetime(countdown_raw)
+            if parsed:
+                restitution.countdown_date = parsed
+        else:
+            restitution.countdown_date = None
+
         restitution.section_titre = request.POST.get('section_titre', restitution.section_titre)
+        restitution.galerie_titre = request.POST.get('galerie_titre', restitution.galerie_titre)
 
         if 'hero_image' in request.FILES:
             restitution.hero_image = request.FILES['hero_image']

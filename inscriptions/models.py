@@ -144,10 +144,17 @@ class Restitution(models.Model):
     """Modèle pour la page de restitution"""
     titre_hero = models.CharField(max_length=200, default="Restitution DounIA")
     description_hero = models.TextField(default="Découvrez les résultats, recommandations et conclusions des ateliers de concertation sur la gouvernance des données et l'intelligence artificielle en Guinée.")
+    hero_badge_text = models.CharField(max_length=200, default="Restitution officielle", verbose_name='Badge Hero')
+    hero_btn1_texte = models.CharField(max_length=100, default="Voir le contenu", verbose_name='Bouton 1 texte')
+    hero_btn1_lien = models.CharField(max_length=200, default="#contexte", verbose_name='Bouton 1 lien')
+    hero_btn2_texte = models.CharField(max_length=100, default="Rapport", verbose_name='Bouton 2 texte')
+    hero_btn2_lien = models.CharField(max_length=200, default="", blank=True, verbose_name='Bouton 2 lien (vide = landing#livrable)')
     hero_image = models.ImageField(upload_to='restitution/hero/', blank=True, null=True, verbose_name='Image Hero (upload)')
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
+    countdown_date = models.DateTimeField(blank=True, null=True, verbose_name='Date du countdown', help_text='Date cible pour le compte à rebours (ex: 2026-04-01 09:00)')
 
     section_titre = models.CharField(max_length=200, default="Restitution DounIA 1")
+    galerie_titre = models.CharField(max_length=200, default="Galerie DounIA 1", verbose_name='Titre Galerie')
 
     contexte_titre = models.CharField(max_length=200, default="Contexte et justification")
     contexte_texte = models.TextField(default=(
