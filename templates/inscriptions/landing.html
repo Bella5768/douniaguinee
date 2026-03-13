@@ -1166,5 +1166,18 @@ function toggleAtelier(card) {
     document.head.appendChild(style);
     });
 })();
+
+/* ---- Scroll ancre fiable après chargement complet ---- */
+(function(){
+    if (!window.location.hash) return;
+    var id = window.location.hash.substring(1);
+    window.addEventListener('load', function(){
+        var el = document.getElementById(id);
+        if (!el) return;
+        var offset = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-offset')) || 96;
+        var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'instant' });
+    });
+})();
 </script>
 {% endblock %}
