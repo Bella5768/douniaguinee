@@ -16,12 +16,12 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1,douniaguinee.pythonanywhere.com'
+    'localhost,127.0.0.1,douniaguinee.pythonanywhere.com,dounia.org,www.dounia.org'
 ).split(',') if h.strip()]
 
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get(
     'DJANGO_CSRF_TRUSTED_ORIGINS',
-    'http://127.0.0.1:8000,http://localhost:8000,https://douniaguinee.pythonanywhere.com'
+    'http://127.0.0.1:8000,http://localhost:8000,https://douniaguinee.pythonanywhere.com,https://dounia.org,https://www.dounia.org'
 ).split(',') if o.strip()]
 
 INSTALLED_APPS = [
