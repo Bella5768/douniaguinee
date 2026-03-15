@@ -22,7 +22,18 @@
                         {% for field in fields_data %}
                         <div class="mb-2">
                             <label for="id_{{ field.name }}" class="form-label fw-semibold">{{ field.label }}</label>
-                            {% if field.is_file %}
+                            {% if field.is_video %}
+                            {% if field.value %}
+                            <div class="mb-2 p-2 rounded" style="background:#f0f7f0;border:1px solid #c3e6cb;">
+                                <video controls style="max-width:100%;max-height:180px;border-radius:8px;">
+                                    <source src="{{ field.value.url }}" type="video/mp4">
+                                </video>
+                                <div class="form-text text-success mt-1"><i class="bi bi-check-circle me-1"></i>Vidéo actuelle — <a href="{{ field.value.url }}" target="_blank">{{ field.value.name }}</a></div>
+                            </div>
+                            {% endif %}
+                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" accept="video/mp4,video/*">
+                            <div class="form-text">Uploadez un fichier MP4. Laisser vide pour garder la vidéo actuelle.</div>
+                            {% elif field.is_file %}
                             {% if field.value %}
                             <div class="mb-2 p-2 rounded" style="background:#f0f7f0;border:1px solid #c3e6cb;">
                                 <i class="bi bi-file-earmark-pdf text-danger me-2"></i>
@@ -30,7 +41,7 @@
                                 <div class="form-text text-success mb-0"><i class="bi bi-check-circle me-1"></i>Fichier actuel</div>
                             </div>
                             {% endif %}
-                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}">
+                            <input type="file" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" accept=".pdf,application/pdf">
                             <div class="form-text">Uploadez un fichier PDF. Laisser vide pour garder le fichier actuel.</div>
                             {% elif field.is_image %}
                             {% if field.value %}

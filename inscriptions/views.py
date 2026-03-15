@@ -1939,7 +1939,7 @@ def admin_edit_section(request, section):
                 {'name': 'video_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'video_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'video_lien', 'label': 'Lien YouTube / Vimeo (optionnel)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'Collez un lien YouTube ou Vimeo. Laissez vide si vous uploadez un fichier ci-dessous.'},
-                {'name': 'video_fichier', 'label': 'Fichier vidéo MP4 (optionnel)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': True, 'help_text': 'Uploadez un fichier MP4. Ce fichier sera prioritaire sur le lien YouTube.'},
+                {'name': 'video_fichier', 'label': 'Fichier vidéo MP4 (optionnel)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Uploadez un fichier MP4. Ce fichier sera prioritaire sur le lien YouTube.'},
             ],
         },
         'inscription_section': {
@@ -1978,7 +1978,7 @@ def admin_edit_section(request, section):
     if request.method == 'POST':
         for field in section_def['fields']:
             name = field['name']
-            if field.get('is_file') or field.get('is_image'):
+            if field.get('is_file') or field.get('is_image') or field.get('is_video'):
                 uploaded = request.FILES.get(name)
                 if uploaded:
                     setattr(config, name, uploaded)
