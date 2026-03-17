@@ -481,6 +481,13 @@
             <div class="col-12 text-center py-5">
                 <p class="text-muted">Aucun atelier disponible pour le moment.</p>
             </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% comment %}<!-- ============ SECTION 10 : CALENDRIER DES ATELIERS ============ -->
+<section id="calendrier">
     <div class="container">
         <div class="text-center fade-in-up">
             <h2 class="section-title">{{ config.calendrier_titre }}</h2>
@@ -651,7 +658,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
 <!-- ============ SECTION 11 : FORMULAIRE D'INSCRIPTION ============ -->
 <section id="inscription" class="form-section">
@@ -947,7 +954,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
 <!-- Modal de lecture et téléchargement du livrable -->
 {% include 'inscriptions/rapport_modal.html' %}
