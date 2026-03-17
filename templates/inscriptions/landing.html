@@ -84,7 +84,7 @@
     </div>
 </section>
 
-<!-- ============ SECTION 2 : C'EST QUOI DOUNIA ? ============ -->
+{% comment %}<!-- ============ SECTION 2 : C'EST QUOI DOUNIA ? ============ -->
 <section id="about" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -133,9 +133,9 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION 3 : DOUNIA 1 — CONTEXTE & ENSEIGNEMENTS ============ -->
+{% comment %}<!-- ============ SECTION 3 : DOUNIA 1 — CONTEXTE & ENSEIGNEMENTS ============ -->
 <section id="dounia1">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -168,9 +168,9 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION 4 : CHIFFRES CLÉS ============ -->
+{% comment %}<!-- ============ SECTION 4 : CHIFFRES CLÉS ============ -->
 <section class="stats-section">
     <div class="container">
         <div class="row">
@@ -186,9 +186,9 @@
             {% endfor %}
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION 5 : LIVRABLE DOUNIA 1 ============ -->
+{% comment %}<!-- ============ SECTION 5 : LIVRABLE DOUNIA 1 ============ -->
 <section id="livrable" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -234,9 +234,9 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
+{% comment %}<!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
 <section id="evenements" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -325,9 +325,9 @@
       </div>
     </div>
   </div>
-</div>
+</div>{% endcomment %}
 
-<!-- ============ SECTION 7 : PODCAST ============ -->
+{% comment %}<!-- ============ SECTION 7 : PODCAST ============ -->
 <section id="podcast" class="podcast-section text-white">
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
@@ -359,9 +359,9 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION : EXPERTS ============ -->
+{% comment %}<!-- ============ SECTION : EXPERTS ============ -->
 {% if experts %}
 <section id="experts" class="bg-light-custom">
     <div class="container">
@@ -390,9 +390,9 @@
         </div>
     </div>
 </section>
-{% endif %}
+{% endif %}{% endcomment %}
 
-<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
+{% comment %}<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
 <section id="dounia2" class="dounia2-section text-white">
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center">
@@ -411,9 +411,9 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
-<!-- ============ SECTION : VIDÉO ============ -->
+{% comment %}<!-- ============ SECTION : VIDÉO ============ -->
 <section id="video" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -442,7 +442,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>{% endcomment %}
 
 <!-- ============ SECTION 9 : ATELIERS THÉMATIQUES ============ -->
 <section id="ateliers" class="bg-light-custom">
@@ -481,13 +481,6 @@
             <div class="col-12 text-center py-5">
                 <p class="text-muted">Aucun atelier disponible pour le moment.</p>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- ============ SECTION 10 : CALENDRIER DES ATELIERS ============ -->
-<section id="calendrier">
     <div class="container">
         <div class="text-center fade-in-up">
             <h2 class="section-title">{{ config.calendrier_titre }}</h2>
@@ -849,6 +842,7 @@
     </div>
 </section>
 
+{% comment %}
 <!-- ============ SECTION 12 : PORTEURS & PARTENAIRES ============ -->
 <section id="partenaires" class="partners-section">
     <div class="container">
