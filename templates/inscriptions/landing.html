@@ -503,7 +503,7 @@
             <div class="calendar-marquee" aria-label="Calendrier des ateliers">
                 <div class="calendar-marquee-group">
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
                             </div>
@@ -516,7 +516,7 @@
                     </div>
 
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
                             </div>
@@ -529,7 +529,7 @@
                     </div>
 
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
                             </div>
@@ -583,7 +583,7 @@
 
                 <div class="calendar-marquee-group" aria-hidden="true">
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
                             </div>
@@ -596,7 +596,7 @@
                     </div>
 
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
                             </div>
@@ -609,7 +609,7 @@
                     </div>
 
                     <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% endif %}>
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
                             <div class="calendar-card-header">
                                 <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
                             </div>
