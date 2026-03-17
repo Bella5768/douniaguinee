@@ -25,12 +25,7 @@
                 <!-- Onglets pour les sections -->
                 <ul class="nav nav-tabs nav-fill mb-4" id="atelierTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="context-tab" data-bs-toggle="tab" data-bs-target="#context" type="button" role="tab" aria-controls="context" aria-selected="true">
-                            <i class="bi bi-info-circle me-2"></i>Contexte
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="objectif-tab" data-bs-toggle="tab" data-bs-target="#objectif" type="button" role="tab" aria-controls="objectif" aria-selected="false">
+                        <button class="nav-link active" id="objectif-tab" data-bs-toggle="tab" data-bs-target="#objectif" type="button" role="tab" aria-controls="objectif" aria-selected="true">
                             <i class="bi bi-bullseye me-2"></i>Objectif
                         </button>
                     </li>
@@ -47,24 +42,8 @@
                 </ul>
 
                 <div class="tab-content" id="atelierTabsContent">
-                    <!-- Contexte -->
-                    <div class="tab-pane fade show active" id="context" role="tabpanel" aria-labelledby="context-tab">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body p-4">
-                                <h4 class="mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Contexte</h4>
-                                <div class="prose">
-                                    {% if atelier.contexte %}
-                                        {{ atelier.contexte|safe }}
-                                    {% else %}
-                                        <p class="text-muted">Le contexte de cet atelier sera bientôt détaillé.</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Objectif -->
-                    <div class="tab-pane fade" id="objectif" role="tabpanel" aria-labelledby="objectif-tab">
+                    <div class="tab-pane fade show active" id="objectif" role="tabpanel" aria-labelledby="objectif-tab">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body p-4">
                                 <h4 class="mb-3"><i class="bi bi-bullseye text-success me-2"></i>Objectif</h4>
