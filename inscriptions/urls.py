@@ -29,4 +29,5 @@ urlpatterns = [
     path('gestion/restitution/', views.admin_restitution, name='admin_restitution'),
     path('gestion/ateliers/', views.admin_ateliers, name='admin_ateliers'),
     path('gestion/edit-section/<str:section>/', views.admin_edit_section, name='admin_edit_section'),
+    path('export-csv/', views.export_inscriptions_csv, name='export_inscriptions_csv'),
 ]
