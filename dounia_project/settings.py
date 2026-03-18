@@ -25,7 +25,6 @@ CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get(
 ).split(',') if o.strip()]
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
