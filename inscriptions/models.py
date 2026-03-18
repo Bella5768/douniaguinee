@@ -149,6 +149,7 @@ class Restitution(models.Model):
     hero_btn1_lien = models.CharField(max_length=200, default="#contexte", verbose_name='Bouton 1 lien')
     hero_btn2_texte = models.CharField(max_length=100, default="Rapport", verbose_name='Bouton 2 texte')
     hero_btn2_lien = models.CharField(max_length=200, default="", blank=True, verbose_name='Bouton 2 lien (vide = landing#livrable)')
+    tdr_pdf = models.FileField(upload_to='restitution/tdr/', blank=True, null=True, verbose_name='TDR PDF', help_text='Fichier PDF des Termes de Référence')
     hero_image = models.ImageField(upload_to='restitution/hero/', blank=True, null=True, verbose_name='Image Hero (upload)')
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
     countdown_date = models.DateTimeField(blank=True, null=True, verbose_name='Date du countdown', help_text='Date cible pour le compte à rebours (ex: 2026-04-01 09:00)')

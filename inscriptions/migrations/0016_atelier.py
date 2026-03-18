@@ -14,7 +14,7 @@ def seed_ateliers(apps, schema_editor):
         choices = []
 
     for i, item in enumerate(choices):
-        if not item or len(item) < 2:
+        if not item or len(item) < 2: 
             continue
         code, label = item[0], item[1]
         Atelier.objects.create(code=code, label=label, ordre=i, active=True)

@@ -885,9 +885,15 @@
                     <a href="{{ restitution.hero_btn1_lien|default:'#contexte' }}" class="btn btn-light btn-lg px-4 fw-semibold">
                         <i class="bi bi-arrow-down-circle me-2"></i>{{ restitution.hero_btn1_texte }}
                     </a>
+                    {% if restitution.tdr_pdf %}
+                    <a href="{{ restitution.tdr_pdf.url }}" target="_blank" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-file-earmark-pdf me-2"></i>TDR
+                    </a>
+                    {% else %}
                     <a href="{% if restitution.hero_btn2_lien %}{{ restitution.hero_btn2_lien }}{% else %}{% url 'landing_page' %}#livrable{% endif %}" class="btn btn-outline-light btn-lg px-4">
                         <i class="bi bi-file-earmark-text me-2"></i>{{ restitution.hero_btn2_texte }}
                     </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-5 text-center mt-4 mt-lg-0">
