@@ -239,7 +239,23 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tdr_pdf" class="form-label"><i class="bi bi-file-earmark-pdf me-1"></i>TDR PDF</label>
+                                <input type="file" class="form-control" id="tdr_pdf" name="tdr_pdf" accept=".pdf">
+                                {% if restitution.tdr_pdf %}
+                                <div class="small text-muted mt-1">
+                                    Actuel : <a href="{{ restitution.tdr_pdf.url }}" target="_blank" rel="noopener">voir le PDF</a>
+                                    <br><small class="text-success">✓ Le bouton TDR est actif sur la page restitution</small>
+                                </div>
+                                {% else %}
+                                <div class="small text-muted mt-1">
+                                    <small class="text-warning">⚠ Aucun PDF TDR uploadé</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="countdown_date" class="form-label"><i class="bi bi-clock me-1"></i>Date du Countdown</label>
                                 <input type="datetime-local" class="form-control" id="countdown_date" name="countdown_date" value="{% if restitution.countdown_date %}{{ restitution.countdown_date|date:'Y-m-d' }}T{{ restitution.countdown_date|date:'H:i' }}{% endif %}">

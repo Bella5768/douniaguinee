@@ -1531,6 +1531,10 @@ def admin_restitution(request):
 
         if 'hero_image' in request.FILES:
             restitution.hero_image = request.FILES['hero_image']
+        
+        # TDR PDF upload
+        if 'tdr_pdf' in request.FILES:
+            restitution.tdr_pdf = request.FILES['tdr_pdf']
 
         # Section cérémonie (Contexte / Objectif / Résultats / Public)
         restitution.contexte_titre = request.POST.get('contexte_titre', restitution.contexte_titre)
