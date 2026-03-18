@@ -30,4 +30,5 @@ urlpatterns = [
     path('gestion/ateliers/', views.admin_ateliers, name='admin_ateliers'),
     path('gestion/edit-section/<str:section>/', views.admin_edit_section, name='admin_edit_section'),
     path('export-csv/', views.export_inscriptions_csv, name='export_inscriptions_csv'),
+    path('manage-hero-stats-images/', views.manage_hero_stats_images, name='manage_hero_stats_images'),
 ]
