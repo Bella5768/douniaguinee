@@ -39,4 +39,17 @@ urlpatterns = [
     path('gestion/hero-images/delete/<int:image_id>/', views.delete_hero_image, name='delete_hero_image'),
     path('gestion/stats-images/delete/<int:image_id>/', views.delete_stats_image, name='delete_stats_image'),
     path('gestion/carousel-images/delete/<int:image_id>/', views.delete_carousel_image, name='delete_carousel_image'),
+    
+    # Toggle et ordre des images
+    path('gestion/hero-images/toggle/<int:image_id>/', views.toggle_hero_image, name='toggle_hero_image'),
+    path('gestion/stats-images/toggle/<int:image_id>/', views.toggle_stats_image, name='toggle_stats_image'),
+    path('gestion/carousel-images/toggle/<int:image_id>/', views.toggle_carousel_image, name='toggle_carousel_image'),
+    path('gestion/hero-images/order/', views.update_hero_image_order, name='update_hero_image_order'),
+    path('gestion/stats-images/order/', views.update_stats_image_order, name='update_stats_image_order'),
+    path('gestion/images/order/', views.update_image_order, name='update_image_order'),
+    
+    # Autres fonctionnalités
+    path('gestion/hero-images/', views.manage_hero_images, name='manage_hero_images'),
+    path('export-pdf/', views.export_inscriptions_pdf, name='export_inscriptions_pdf'),
+    path('generer-agenda-pdf/', views.generer_agenda_pdf_view, name='generer_agenda_pdf_view'),
 ]
