@@ -31,4 +31,12 @@ urlpatterns = [
     path('gestion/edit-section/<str:section>/', views.admin_edit_section, name='admin_edit_section'),
     path('export-csv/', views.export_inscriptions_csv, name='export_inscriptions_csv'),
     path('manage-hero-stats-images/', views.manage_hero_stats_images, name='manage_hero_stats_images'),
+    
+    # URLs pour les images hero et stats
+    path('add-hero-image/', views.add_hero_image, name='add_hero_image'),
+    path('add-stats-image/', views.add_stats_image, name='add_stats_image'),
+    path('add-carousel-image/', views.add_carousel_image, name='add_carousel_image'),
+    path('gestion/hero-images/delete/<int:image_id>/', views.delete_hero_image, name='delete_hero_image'),
+    path('gestion/stats-images/delete/<int:image_id>/', views.delete_stats_image, name='delete_stats_image'),
+    path('gestion/carousel-images/delete/<int:image_id>/', views.delete_carousel_image, name='delete_carousel_image'),
 ]
