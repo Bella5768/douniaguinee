@@ -11,7 +11,7 @@
             <li class="breadcrumb-item active">Partenaires</li>
         </ol>
     </nav>
-    <h2 class="fw-bold mb-4" style="color: var(--primary);">Partenaires & Institutions</h2>
+    <h2 class="fw-bold mb-4" style="color: var(--primary);">Partenaires & Co-organisateurs</h2>
 
     <div class="row g-4">
         <div class="col-lg-8">
@@ -40,7 +40,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="fw-semibold">{{ p.nom }}</td>
-                                <td><span class="badge {% if p.categorie == 'institutionnel' %}bg-primary{% else %}bg-success{% endif %}">{{ p.get_categorie_display }}</span></td>
+                                <td><span class="badge {% if p.categorie == 'institutionnel' %}bg-primary{% else %}bg-success{% endif %}">{% if p.categorie == 'technique' %}Co-organisateur{% else %}{{ p.get_categorie_display }}{% endif %}</span></td>
                                 <td class="small">{{ p.site_web|default:"—" }}</td>
                                 <td class="text-center text-nowrap">
                                     <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editPart{{ p.pk }}"><i class="bi bi-pencil"></i></button>
@@ -63,7 +63,7 @@
                                             <div class="modal-header border-0"><h5 class="modal-title fw-bold">Modifier le partenaire</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                                             <div class="modal-body">
                                                 <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" value="{{ p.nom }}" required></div>
-                                                <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel" {% if p.categorie == 'institutionnel' %}selected{% endif %}>Partenaire institutionnel</option><option value="technique" {% if p.categorie == 'technique' %}selected{% endif %}>Partenaire technique</option></select></div>
+                                                <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel" {% if p.categorie == 'institutionnel' %}selected{% endif %}>Partenaire institutionnel</option><option value="technique" {% if p.categorie == 'technique' %}selected{% endif %}>Co-organisateur</option></select></div>
                                                 <div class="mb-3"><label class="form-label small fw-semibold">Site web</label><input type="text" class="form-control" name="site_web" value="{{ p.site_web }}" placeholder="https://exemple.com"></div>
                                                 <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="{{ p.ordre }}"></div>
                                                 <div class="mb-3"><label class="form-label small fw-semibold">Logo (laisser vide pour garder l'actuel)</label><input type="file" class="form-control" name="logo" accept="image/*"></div>
@@ -90,7 +90,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="action" value="add">
                         <div class="mb-3"><label class="form-label small fw-semibold">Nom</label><input type="text" class="form-control" name="nom" required></div>
-                        <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel">Partenaire institutionnel</option><option value="technique">Partenaire technique</option></select></div>
+                        <div class="mb-3"><label class="form-label small fw-semibold">Catégorie</label><select class="form-select" name="categorie"><option value="institutionnel">Partenaire institutionnel</option><option value="technique">Co-organisateur</option></select></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Site web</label><input type="text" class="form-control" name="site_web" placeholder="https://exemple.com"></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Ordre</label><input type="number" class="form-control" name="ordre" value="0"></div>
                         <div class="mb-3"><label class="form-label small fw-semibold">Logo</label><input type="file" class="form-control" name="logo" accept="image/*"></div>
