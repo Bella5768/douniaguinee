@@ -77,6 +77,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_avis' %}active{% endif %}" href="{% url 'admin_avis' %}">
+                            <i class="bi bi-chat-dots me-1"></i>Avis
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'export_inscriptions_csv' %}">
                             <i class="bi bi-download me-1"></i>Export CSV
                         </a>

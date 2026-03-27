@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}DounIA² – Lancement Officiel{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== FULLSCREEN HERO ===== */
+.d2-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #001122;
+}
+.d2-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+}
+.d2-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,17,34,0.8) 0%, rgba(0,51,102,0.6) 50%, rgba(0,17,34,0.9) 100%);
+    z-index: 1;
+}
+.d2-hero .container { position: relative; z-index: 2; }
+
+/* ===== PARTICLES ===== */
+.d2-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+.d2-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(0,128,255,0.4);
+    border-radius: 50%;
+    animation: d2Float linear infinite;
+}
+@keyframes d2Float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* ===== BADGE ===== */
+.d2-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,128,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,128,255,0.3);
+    color: #4da6ff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: d2Pulse 2s ease infinite;
+}
+.d2-badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff4444;
+    border-radius: 50%;
+    animation: d2Blink 1s ease infinite;
+}
+@keyframes d2Blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+@keyframes d2Pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0,128,255,0.1); }
+    50% { box-shadow: 0 0 40px rgba(0,128,255,0.2); }
+}
+
+/* ===== TITLE ===== */
+.d2-title {
+    color: white;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+    letter-spacing: -1px;
+}
+.d2-title span {
+    background: linear-gradient(135deg, #4da6ff, #0080ff, #66ccff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.d2-subtitle {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.15rem;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+}
+
+/* ===== COUNTDOWN ===== */
+.d2-countdown {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+.d2-cd-box {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    min-width: 100px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.d2-cd-box:hover {
+    border-color: rgba(0,128,255,0.4);
+    background: rgba(0,128,255,0.08);
+    transform: translateY(-4px);
+}
+.d2-cd-num {
+    font-size: 3rem;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.d2-cd-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+.d2-cd-sep {
+    color: rgba(0,128,255,0.5);
+    font-size: 2.5rem;
+    font-weight: 300;
+    align-self: center;
+    animation: d2SepBlink 1s ease infinite;
+    padding-bottom: 1rem;
+}
+@keyframes d2SepBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+/* ===== DATE LINE ===== */
+.d2-date {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 2.5rem;
+}
+.d2-date i { color: #4da6ff; margin-right: 0.5rem; }
+
+/* ===== BUTTONS ===== */
+.d2-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.d2-btn-primary {
+    background: linear-gradient(135deg, #0066cc, #0080ff);
+    color: white;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,128,255,0.3);
+}
+.d2-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,128,255,0.5);
+    color: white;
+}
+.d2-btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 0.85rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.d2-btn-outline:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.4);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* ===== CONTENT SECTION ===== */
+.d2-content {
+    padding: 5rem 0;
+    background: #f8f9fb;
+}
+.d2-content-icon {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #003366, #0066cc);
+    color: white;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+}
+.d2-content-title {
+    color: #003366;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+.d2-content-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #003366, #0080ff);
+    border-radius: 2px;
+}
+.d2-content-text {
+    color: #555;
+    font-size: 1.08rem;
+    line-height: 1.9;
+}
+
+/* ===== AXES ===== */
+.d2-axes {
+    padding: 4rem 0;
+    background: white;
+}
+.d2-axes-title {
+    text-align: center;
+    color: #003366;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+}
+.d2-axe-card {
+    background: linear-gradient(135deg, #f0f4f8, #fff);
+    border-radius: 14px;
+    padding: 1.5rem;
+    border-left: 4px solid #003366;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+.d2-axe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,51,102,0.1);
+    border-left-color: #0080ff;
+}
+.d2-axe-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: #003366;
+    color: white;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+.d2-axe-name {
+    color: #222;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* ===== LAUNCH ANIMATION ===== */
+@keyframes d2LaunchIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(30px); }
+    60% { transform: scale(1.05) translateY(-5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ===== BACK ===== */
+.d2-back {
+    padding: 3rem 0;
+    text-align: center;
+    background: #f8f9fb;
+}
+.d2-back .btn {
+    border-radius: 50px;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    border-color: #003366;
+    color: #003366;
+}
+.d2-back .btn:hover {
+    background: #003366;
+    color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .d2-cd-box { min-width: 75px; padding: 1rem 0.75rem; }
+    .d2-cd-num { font-size: 2rem; }
+    .d2-cd-sep { font-size: 1.5rem; }
+    .d2-title { letter-spacing: 0; }
+}
+@media (max-width: 480px) {
+    .d2-countdown { gap: 0.5rem; }
+    .d2-cd-box { min-width: 65px; }
+    .d2-cd-sep { display: none; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO COUNTDOWN -->
+<section class="d2-hero">
+    <div class="d2-hero-bg" style="background-image: url('{% if hero_images %}{{ hero_images.0.get_image_url }}{% elif evenement.hero_image %}{{ evenement.hero_image.url }}{% elif evenement.hero_image_url %}{{ evenement.hero_image_url }}{% endif %}');"></div>
+
+    <div class="d2-particles" id="d2Particles"></div>
+
+    <div class="container text-center">
+        <div class="d2-badge">
+            <span class="d2-badge-dot"></span>
+            Lancement officiel
+        </div>
+        <h1 class="d2-title">
+            DounIA<span>²</span>
+        </h1>
+        <p class="d2-subtitle">La suite du processus scientifique et collaboratif pour co-construire une vision nationale des données numériques et de l'intelligence artificielle en Guinée.</p>
+
+        <div class="d2-date">
+            <i class="bi bi-calendar-event"></i>
+            {% if evenement.date_lancement %}
+                {{ evenement.date_lancement|date:"j F Y" }} &bull; {{ evenement.date_lancement|date:"H\hi" }} &bull; Conakry, Guinée
+            {% else %}
+                Date à confirmer &bull; Conakry, Guinée
+            {% endif %}
+        </div>
+
+        <div class="d2-buttons">
+            <a href="{% url 'landing_page' %}#inscription" class="d2-btn-primary">
+                <i class="bi bi-pencil-square me-2"></i>S'inscrire aux ateliers
+            </a>
+            <a href="{% url 'landing_page' %}#livrable" class="d2-btn-outline">
+                <i class="bi bi-file-earmark-pdf me-2"></i>Rapport DounIA¹
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CONTENU -->
+<section class="d2-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d2-content-icon"><i class="bi bi-rocket-takeoff"></i></div>
+                <h2 class="d2-content-title">La suite du processus</h2>
+                <div class="d2-content-text">
+                    {{ evenement.description_hero|linebreaksbr }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 6 AXES THÉMATIQUES -->
+<section class="d2-axes">
+    <div class="container">
+        <h3 class="d2-axes-title"><i class="bi bi-grid-3x3-gap me-2"></i>6 axes thématiques</h3>
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">1</div>
+                    <div class="d2-axe-name">Éducation, enseignement supérieur, recherche et innovation</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">2</div>
+                    <div class="d2-axe-name">Santé et inclusion sociale</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">3</div>
+                    <div class="d2-axe-name">Justice, sécurité et défense</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">4</div>
+                    <div class="d2-axe-name">Ressources humaines, gestion des entreprises et secteur informel</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">5</div>
+                    <div class="d2-axe-name">Agriculture et développement du monde rural</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="d2-axe-card">
+                    <div class="d2-axe-num">6</div>
+                    <div class="d2-axe-name">Mines, environnement, climat et biosphère</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- RETOUR -->
+<section class="d2-back">
+    <a href="{% url 'landing_page' %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>Retour à l'accueil
+    </a>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    // Particles
+    const container = document.getElementById('d2Particles');
+    if (container) {
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'd2-particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+            container.appendChild(p);
+        }
+    }
+})();
+</script>
+{% endblock %}

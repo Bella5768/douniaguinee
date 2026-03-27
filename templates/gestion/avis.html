@@ -1,0 +1,102 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Avis — Administration DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1"><i class="bi bi-chat-dots me-2"></i>Avis des visiteurs</h2>
+            <p class="text-muted mb-0">{{ total }} avis au total — <span class="text-danger fw-semibold">{{ non_lus }} non lu{{ non_lus|pluralize }}</span></p>
+        </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Recherche</label>
+                    <input type="text" name="q" class="form-control" placeholder="Nom, email, message..." value="{{ q }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Événement</label>
+                    <select name="event" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="dounia1" {% if event_filter == 'dounia1' %}selected{% endif %}>DounIA 1</option>
+                        <option value="dounia2" {% if event_filter == 'dounia2' %}selected{% endif %}>DounIA 2</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Statut</label>
+                    <select name="lu" class="form-select">
+                        <option value="">Tous</option>
+                        <option value="0" {% if lu_filter == '0' %}selected{% endif %}>Non lus</option>
+                        <option value="1" {% if lu_filter == '1' %}selected{% endif %}>Lus</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel me-1"></i>Filtrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste des avis -->
+    {% if avis_list %}
+    <div class="row g-3">
+        {% for avis in avis_list %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm {% if not avis.lu %}border-start border-primary border-4{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-person-circle fs-4 text-primary"></i>
+                                <div>
+                                    <strong>{{ avis.nom }}</strong>
+                                    {% if avis.email %}<span class="text-muted small ms-2">{{ avis.email }}</span>{% endif %}
+                                </div>
+                                <span class="badge {% if avis.event_slug == 'dounia1' %}bg-primary{% else %}bg-success{% endif %} ms-2">
+                                    {{ avis.get_event_slug_display }}
+                                </span>
+                                {% if not avis.lu %}
+                                <span class="badge bg-danger ms-1">Nouveau</span>
+                                {% endif %}
+                            </div>
+                            <p class="mb-2" style="white-space: pre-wrap;">{{ avis.message }}</p>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>{{ avis.date_creation|date:"d/m/Y à H:i" }}</small>
+                        </div>
+                        <div class="d-flex gap-2 ms-3">
+                            <form method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="toggle_lu">
+                                <input type="hidden" name="pk" value="{{ avis.pk }}">
+                                <button type="submit" class="btn btn-sm {% if avis.lu %}btn-outline-secondary{% else %}btn-outline-primary{% endif %}" title="{% if avis.lu %}Marquer non lu{% else %}Marquer lu{% endif %}">
+                                    <i class="bi {% if avis.lu %}bi-envelope{% else %}bi-envelope-open{% endif %}"></i>
+                                </button>
+                            </form>
+                            <form method="post" class="d-inline" onsubmit="return confirm('Supprimer cet avis ?');">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="pk" value="{{ avis.pk }}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-chat-dots display-1 text-muted"></i>
+        <h5 class="text-muted mt-3">Aucun avis pour le moment</h5>
+        <p class="text-muted">Les avis des visiteurs apparaîtront ici.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

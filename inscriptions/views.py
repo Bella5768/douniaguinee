@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
@@ -10,7 +11,7 @@ from django.db.utils import OperationalError
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import user_passes_test
 from .forms import InscriptionForm
-from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage
+from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage, Avis
 import csv
 from collections import OrderedDict
 from django.utils import timezone
@@ -23,7 +24,26 @@ def is_staff_user(user):
 
 
 def staff_login_url(request):
-    return f"/admin/login/?next={request.path}"
+    return f"/gestion/login/?next={request.path}"
+
+
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('admin_dashboard')
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None and user.is_staff:
+            login(request, user)
+            next_url = request.GET.get('next') or request.POST.get('next') or '/gestion/'
+            return redirect(next_url)
+
+        messages.error(request, 'Identifiants invalides ou accès non autorisé.')
+
+    return render(request, 'gestion/login.html')
 
 
 def staff_required(view_func):
@@ -808,15 +828,21 @@ def event_page(request, event_slug):
             position='galerie',
         ).order_by('ordre', 'date_ajout')
     )
+    # Experts pour la page DounIA 1
+    from .models import Expert
+    experts = Expert.objects.all().order_by('ordre')
+
     context = {
         'evenement': event,
         'hero_images': hero_images,
         'images': images,
+        'experts': experts,
         'event_slug': event_slug,
         'page_title': event.get_meta_title(),
         'meta_description': event.meta_description or f"Découvrez {event.titre_hero}",
     }
-    return render(request, 'inscriptions/event.html', context)
+    template = 'inscriptions/event_dounia2.html' if event_slug == 'dounia2' else 'inscriptions/event.html'
+    return render(request, template, context)
 
 
 @staff_required
@@ -1443,6 +1469,17 @@ def admin_dounia_events(request):
                 except ValueError:
                     pass
             
+            # Gestion de la date de lancement (compte à rebours)
+            date_lancement_str = request.POST.get('date_lancement', '')
+            if date_lancement_str:
+                from datetime import datetime
+                try:
+                    event.date_lancement = datetime.strptime(date_lancement_str, '%Y-%m-%dT%H:%M')
+                except ValueError:
+                    pass
+            elif 'date_lancement' in request.POST:
+                event.date_lancement = None
+            
             event.actif = request.POST.get('actif') == 'on'
             event.save()
             
@@ -1893,6 +1930,19 @@ def admin_edit_section(request, section):
                 {'name': 'podcast_description', 'label': 'Description', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'podcast_lien', 'label': 'Lien du podcast', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'URL vers le podcast (Spotify, YouTube, etc.)'},
                 {'name': 'podcast_fichier', 'label': 'Fichier audio (optionnel)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': True, 'help_text': 'Uploadez un fichier audio (MP3/WAV). Ce fichier sera prioritaire sur le lien externe.'},
+                {'name': 'podcast_video', 'label': 'Vidéo format téléphone (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Uploadez une vidéo MP4 en format portrait (vertical). Elle s\'affichera dans un cadre téléphone.'},
+                {'name': 'podcast_video_url', 'label': 'URL vidéo (YouTube embed, optionnel)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'URL embed d\'une vidéo YouTube/Vimeo. Utilisé si aucun fichier vidéo n\'est uploadé.'},
+            ],
+        },
+        'galerie_videos': {
+            'titre': 'Galerie Vidéos',
+            'fields': [
+                {'name': 'galerie_videos_titre', 'label': 'Titre de la section', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'galerie_video_1', 'label': 'Vidéo 1 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
+                {'name': 'galerie_video_2', 'label': 'Vidéo 2 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
+                {'name': 'galerie_video_3', 'label': 'Vidéo 3 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
+                {'name': 'galerie_video_4', 'label': 'Vidéo 4 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
+                {'name': 'galerie_video_5', 'label': 'Vidéo 5 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
             ],
         },
         'dounia2': {
@@ -1964,6 +2014,12 @@ def admin_edit_section(request, section):
                 {'name': 'porteur2_logo', 'label': 'Porteur 2 — Logo', 'is_textarea': False, 'is_url': False, 'is_image': True, 'is_file': False, 'help_text': 'Uploadez le logo du porteur 2'},
             ],
         },
+        'countdown': {
+            'titre': 'Compte à rebours',
+            'fields': [
+                {'name': 'date_lancement_site', 'label': 'Date de lancement du site', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_datetime': True, 'help_text': "Date et heure du lancement officiel. Le compte à rebours s'affichera dans le hero. Laissez vide pour désactiver."},
+            ],
+        },
         'footer': {
             'titre': 'Footer',
             'fields': [
@@ -1988,7 +2044,17 @@ def admin_edit_section(request, section):
                     setattr(config, name, uploaded)
             else:
                 value = request.POST.get(name, '')
-                setattr(config, name, value)
+                if field.get('is_datetime'):
+                    if value:
+                        from datetime import datetime as dt
+                        try:
+                            setattr(config, name, dt.strptime(value, '%Y-%m-%dT%H:%M'))
+                        except ValueError:
+                            pass
+                    else:
+                        setattr(config, name, None)
+                else:
+                    setattr(config, name, value)
         config.save()
         messages.success(request, f'Section "{section_def["titre"]}" mise à jour avec succès')
         return redirect('admin_contenu_page')
@@ -1997,7 +2063,11 @@ def admin_edit_section(request, section):
     fields_data = []
     for field in section_def['fields']:
         fd = dict(field)
-        fd['value'] = getattr(config, field['name'], '')
+        val = getattr(config, field['name'], '')
+        if field.get('is_datetime') and val:
+            fd['value'] = val.strftime('%Y-%m-%dT%H:%M')
+        else:
+            fd['value'] = val
         if 'help_text' not in fd:
             fd['help_text'] = ''
         fields_data.append(fd)
@@ -2157,3 +2227,78 @@ def update_image_order(request):
         except HeroCarouselImage.DoesNotExist:
             continue
     return JsonResponse({'success': True})
+
+
+@require_POST
+def soumettre_avis(request):
+    """API pour soumettre un avis depuis le chat"""
+    import json
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        data = request.POST
+    
+    nom = data.get('nom', '').strip()
+    email = data.get('email', '').strip()
+    message = data.get('message', '').strip()
+    event_slug = data.get('event_slug', 'dounia1')
+    
+    if not nom or not message:
+        return JsonResponse({'success': False, 'error': 'Le nom et le message sont requis.'}, status=400)
+    
+    Avis.objects.create(
+        nom=nom,
+        email=email,
+        message=message,
+        event_slug=event_slug,
+    )
+    return JsonResponse({'success': True, 'message': 'Merci pour votre avis !'})
+
+
+@staff_required
+def admin_avis(request):
+    """Page admin pour voir les avis"""
+    avis_list = Avis.objects.all()
+    
+    # Filtres
+    event_filter = request.GET.get('event', '')
+    lu_filter = request.GET.get('lu', '')
+    q = request.GET.get('q', '')
+    
+    if event_filter:
+        avis_list = avis_list.filter(event_slug=event_filter)
+    if lu_filter == '0':
+        avis_list = avis_list.filter(lu=False)
+    elif lu_filter == '1':
+        avis_list = avis_list.filter(lu=True)
+    if q:
+        avis_list = avis_list.filter(
+            Q(nom__icontains=q) | Q(email__icontains=q) | Q(message__icontains=q)
+        )
+    
+    # Marquer comme lu
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        pk = request.POST.get('pk')
+        if action == 'toggle_lu' and pk:
+            try:
+                avis = Avis.objects.get(pk=pk)
+                avis.lu = not avis.lu
+                avis.save()
+                messages.success(request, f"Avis de {avis.nom} marqué comme {'lu' if avis.lu else 'non lu'}.")
+            except Avis.DoesNotExist:
+                pass
+        elif action == 'delete' and pk:
+            Avis.objects.filter(pk=pk).delete()
+            messages.success(request, "Avis supprimé.")
+        return redirect('admin_avis')
+    
+    context = {
+        'avis_list': avis_list,
+        'total': avis_list.count(),
+        'non_lus': Avis.objects.filter(lu=False).count(),
+        'event_filter': event_filter,
+        'lu_filter': lu_filter,
+        'q': q,
+    }
+    return render(request, 'gestion/avis.html', context)

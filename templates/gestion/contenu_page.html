@@ -115,6 +115,22 @@
         <div class="col-md-6 col-lg-4">
             <div class="admin-card h-100">
                 <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(111,66,193,0.12);color:#6f42c1;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-collection-play fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Podcast</h6>
+                        <p class="text-muted small mb-2">Titre et 5 vidéos format téléphone</p>
+                        <a href="{% url 'admin_edit_section' 'galerie_videos' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
                     <div class="stat-card-icon" style="background:rgba(13,110,253,0.1);color:#0d6efd;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="bi bi-arrow-right-circle fs-5"></i>
                     </div>
@@ -218,6 +234,22 @@
                         <h6 class="fw-bold mb-1">Porteurs du processus</h6>
                         <p class="text-muted small mb-2">Logos et noms des porteurs (CSIG, ASG)</p>
                         <a href="{% url 'admin_edit_section' 'porteurs' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(255,193,7,0.1);color:#ffc107;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-stopwatch fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Compte à rebours</h6>
+                        <p class="text-muted small mb-2">Date de lancement du site (hero)</p>
+                        <a href="{% url 'admin_edit_section' 'countdown' %}" class="btn btn-primary-custom btn-sm">
                             <i class="bi bi-pencil me-1"></i>Modifier
                         </a>
                     </div>

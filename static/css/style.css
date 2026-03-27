@@ -609,6 +609,82 @@ section {
     transform: translateY(-2px);
 }
 
+/* ---- Hero Countdown ---- */
+.hero-countdown {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0 1rem;
+    flex-wrap: nowrap;
+}
+.hc-box {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 1rem 0.8rem;
+    min-width: 70px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.hc-box:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+}
+.hc-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.hc-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.3rem;
+    font-weight: 600;
+}
+.hc-sep {
+    color: rgba(255,255,255,0.5);
+    font-size: 1.8rem;
+    font-weight: 300;
+    animation: hcSepBlink 1s ease infinite;
+}
+@keyframes hcSepBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+.hero-launch-date {
+    color: rgba(255,255,255,0.8) !important;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+.hero-launch-date i {
+    color: rgba(255,255,255,0.6);
+}
+@keyframes hcLaunchIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(30px); }
+    60% { transform: scale(1.05) translateY(-5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@media (max-width: 768px) {
+    .hero-countdown { gap: 0.5rem; margin: 1.2rem 0 0.8rem; }
+    .hc-box { min-width: 60px; padding: 0.8rem 0.6rem; }
+    .hc-num { font-size: 1.5rem; }
+    .hc-sep { font-size: 1.4rem; }
+    .hc-label { font-size: 0.65rem; }
+}
+@media (max-width: 480px) {
+    .hero-countdown { gap: 0.4rem; }
+    .hc-box { min-width: 55px; padding: 0.6rem 0.4rem; }
+    .hc-sep { display: none; }
+}
+
 /* ---- Hero Carousel ---- */
 .hero-carousel-wrapper {
     position: relative;
@@ -1062,6 +1138,47 @@ section {
     font-size: 4rem;
     color: var(--accent);
     margin-bottom: 1.5rem;
+}
+
+/* ---- Podcast Phone Frame ---- */
+.podcast-phone-frame {
+    position: relative;
+    width: 220px;
+    height: 420px;
+    background: #1a1a1a;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4), inset 0 0 0 2px #333;
+    overflow: hidden;
+}
+.podcast-phone-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 22px;
+    background: #1a1a1a;
+    border-radius: 0 0 14px 14px;
+    z-index: 2;
+}
+.podcast-phone-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 24px;
+    background: #000;
+    display: block;
+    border: none;
+}
+@media (max-width: 768px) {
+    .podcast-phone-frame {
+        width: 180px;
+        height: 340px;
+        border-radius: 28px;
+        padding: 10px;
+    }
+    .podcast-phone-video { border-radius: 18px; }
 }
 
 /* ---- Atelier Cards ---- */

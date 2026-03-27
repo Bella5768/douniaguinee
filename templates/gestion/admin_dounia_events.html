@@ -945,6 +945,37 @@
                             </div>
                         </div>
                         
+                        <!-- Compte à rebours -->
+                        <div class="section-card" style="border-left: 4px solid #ff6600;">
+                            <h3 class="section-title">
+                                <i class="bi bi-stopwatch"></i>
+                                Compte à rebours – Lancement
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dounia2-date_lancement" class="form-label fw-bold">Date et heure du lancement</label>
+                                        <input type="datetime-local" class="form-control" id="dounia2-date_lancement" name="date_lancement" 
+                                               value="{% if dounia2.date_lancement %}{{ dounia2.date_lancement|date:'Y-m-d\TH:i' }}{% endif %}">
+                                        <small class="text-muted">Le compte à rebours sur la page DounIA² se déclenche automatiquement à cette date.</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-center">
+                                    {% if dounia2.date_lancement %}
+                                    <div class="alert alert-info mb-0 w-100">
+                                        <i class="bi bi-clock-history me-2"></i>
+                                        <strong>Lancement prévu :</strong> {{ dounia2.date_lancement|date:'l d F Y à H:i' }}
+                                    </div>
+                                    {% else %}
+                                    <div class="alert alert-warning mb-0 w-100">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>
+                                        Aucune date configurée. Le compte à rebours ne s'affichera pas.
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Section Contact -->
                         <div class="section-card">
                             <h3 class="section-title">

@@ -65,3 +65,11 @@ def after_em_dash(value):
     if '—' in s:
         return s.split('—', 1)[1].lstrip()
     return ''
+
+
+@register.filter
+def question_linebreak(value):
+    """Ajoute un saut de ligne après chaque point d'interrogation et chaque virgule"""
+    s = str(value or '')
+    s = s.replace('?', '?<br><br>')
+    return mark_safe(s)

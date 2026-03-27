@@ -654,107 +654,148 @@
     /* ===== TIMELINE ===== */
     .rest-timeline {
         position: relative;
-        padding-left: 3rem;
+        padding-left: 0;
+        counter-reset: tl-counter;
     }
     .rest-timeline::before {
         content: '';
         position: absolute;
-        left: 14px;
+        left: 28px;
         top: 0;
         bottom: 0;
         width: 3px;
-        background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+        background: linear-gradient(to bottom, #003366 0%, #0066cc 40%, #A0A0A0 100%);
         border-radius: 3px;
     }
     .tl-item {
         position: relative;
         margin-bottom: 1.5rem;
-        padding: 1.5rem 1.5rem 1.5rem 5rem;
+        margin-left: 60px;
+        padding: 0;
         background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,51,102,.08);
-        border-left: 4px solid #003366;
-        transition: transform .2s ease, box-shadow .2s ease;
+        border-radius: 18px;
+        box-shadow: 0 2px 16px rgba(0,51,102,.06);
+        border: 1px solid rgba(0,51,102,.06);
+        overflow: hidden;
+        transition: transform .25s ease, box-shadow .25s ease;
+        counter-increment: tl-counter;
     }
     .tl-item:hover {
-        transform: translateX(6px);
-        box-shadow: 0 8px 30px rgba(0,51,102,.14);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 36px rgba(0,51,102,.12);
     }
     .tl-item::before {
-        content: '';
+        content: counter(tl-counter);
         position: absolute;
-        left: -2.35rem;
-        top: 1.5rem;
-        width: 16px;
-        height: 16px;
+        left: -44px;
+        top: 1.4rem;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         background: #003366;
+        color: #fff;
+        font-size: .75rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 3px solid #fff;
-        box-shadow: 0 0 0 3px rgba(0,51,102,.2);
+        box-shadow: 0 0 0 3px rgba(0,51,102,.15), 0 2px 8px rgba(0,0,0,.1);
+        z-index: 2;
+    }
+    .tl-item:nth-child(even)::before {
+        background: #0066cc;
+    }
+    .tl-item-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem 1.5rem;
+        background: linear-gradient(135deg, rgba(0,51,102,.03) 0%, rgba(0,102,204,.02) 100%);
+        border-bottom: 1px solid rgba(0,51,102,.06);
+    }
+    .tl-item:nth-child(even) .tl-item-header {
+        background: linear-gradient(135deg, rgba(160,160,160,.04) 0%, rgba(0,102,204,.02) 100%);
     }
     .tl-item .tl-time-badge {
-        position: absolute;
-        left: 1rem;
-        top: 1.5rem;
         width: 3rem;
         height: 3rem;
-        border-radius: 12px;
+        border-radius: 14px;
         background: linear-gradient(135deg, #003366, #004d99);
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: .7rem;
-        font-weight: 800;
-        text-align: center;
-        line-height: 1.1;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        box-shadow: 0 3px 10px rgba(0,51,102,.2);
+    }
+    .tl-item:nth-child(even) .tl-time-badge {
+        background: linear-gradient(135deg, #0066cc, #0080ff);
+    }
+    .tl-item-header-text {
+        flex: 1;
+        min-width: 0;
     }
     .tl-item .tl-time {
         font-size: .8rem;
         font-weight: 700;
         color: #003366;
         letter-spacing: .5px;
-        margin-bottom: .3rem;
+        margin-bottom: .2rem;
         display: inline-block;
-        background: rgba(0,51,102,.06);
-        padding: .2rem .7rem;
+        background: rgba(0,51,102,.08);
+        padding: .2rem .8rem;
         border-radius: 20px;
+    }
+    .tl-item:nth-child(even) .tl-time {
+        color: #0066cc;
+        background: rgba(0,102,204,.08);
     }
     .tl-item .tl-title {
         font-weight: 700;
         font-size: 1.05rem;
         color: #1a1a1a;
-        margin-bottom: .3rem;
+        margin: 0;
+        line-height: 1.4;
+    }
+    .tl-item-body {
+        padding: 1rem 1.5rem 1.3rem;
     }
     .tl-item .tl-details {
-        color: #666;
-        font-size: .9rem;
-        line-height: 1.6;
+        color: #555;
+        font-size: .95rem;
+        line-height: 1.7;
+        letter-spacing: .01em;
+        margin: 0;
     }
-    .tl-item:nth-child(even) {
-        border-left-color: #A0A0A0;
-    }
-    .tl-item:nth-child(even) .tl-time-badge {
-        background: linear-gradient(135deg, #A0A0A0, #888);
-    }
-    .tl-item:nth-child(even) .tl-time {
-        color: #666;
-        background: rgba(160,160,160,.1);
-    }
+    .tl-item:last-child { margin-bottom: 0; }
 
     /* ===== AGENDA INFO PILLS ===== */
     .agenda-pill {
         display: inline-flex;
         align-items: center;
         gap: .5rem;
-        background: #003366;
+        background: linear-gradient(135deg, #003366, #004d99);
         color: #fff;
         border-radius: 50px;
-        padding: .55rem 1.3rem;
-        font-size: .9rem;
+        padding: .6rem 1.4rem;
+        font-size: .85rem;
         font-weight: 600;
+        box-shadow: 0 3px 12px rgba(0,51,102,.15);
+        transition: transform .2s ease;
     }
-    .agenda-pill i { color: rgba(255,255,255,.8); font-size: 1.1rem; }
+    .agenda-pill:hover { transform: translateY(-2px); }
+    .agenda-pill i { color: rgba(255,255,255,.85); font-size: 1rem; }
+
+    @media (max-width: 768px) {
+        .rest-timeline::before { left: 18px; }
+        .tl-item { margin-left: 45px; }
+        .tl-item::before { left: -34px; width: 24px; height: 24px; font-size: .7rem; }
+        .tl-item-header { padding: 1rem 1.2rem; gap: .8rem; }
+        .tl-item-body { padding: .8rem 1.2rem 1rem; }
+        .tl-item .tl-time-badge { width: 2.5rem; height: 2.5rem; font-size: .95rem; }
+    }
 
     /* ===== RAPPORTS ===== */
     .rapport-card {
@@ -1079,15 +1120,21 @@
 
         {% if restitution.agenda_sessions %}
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-10">
                 <div class="rest-timeline">
                     {% for s in restitution.agenda_sessions %}
                     <div class="tl-item fade-up">
-                        <div class="tl-time-badge"><i class="bi bi-clock"></i></div>
-                        {% if s.heure %}<div class="tl-time">{{ s.heure }}</div>{% endif %}
-                        <div class="tl-title">{{ s.titre|default:"" }}</div>
+                        <div class="tl-item-header">
+                            <div class="tl-time-badge"><i class="bi bi-clock"></i></div>
+                            <div class="tl-item-header-text">
+                                {% if s.heure %}<div class="tl-time">{{ s.heure }}</div>{% endif %}
+                                <div class="tl-title">{{ s.titre|default:"" }}</div>
+                            </div>
+                        </div>
                         {% if s.details %}
-                        <div class="tl-details">{{ s.details|linebreaksbr }}</div>
+                        <div class="tl-item-body">
+                            <div class="tl-details">{{ s.details|linebreaksbr }}</div>
+                        </div>
                         {% endif %}
                     </div>
                     {% endfor %}

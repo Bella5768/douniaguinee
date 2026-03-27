@@ -6,383 +6,883 @@
 
 {% block extra_css %}
 <style>
-    .event-hero {
-        background: linear-gradient(135deg, #003366 0%, #004080 50%, #0052a3 100%);
-        color: white;
-        padding: 6rem 0 4rem;
-        position: relative;
-        overflow: hidden;
-    }
+/* ===== HERO ===== */
+.ev-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ev-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+.ev-hero:hover .ev-hero-bg { transform: scale(1.03); }
+.ev-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,51,102,0.7);
+    z-index: 1;
+}
+.ev-hero .container { position: relative; z-index: 2; }
+.ev-hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+}
+.ev-hero-title {
+    color: white;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+}
+.ev-hero-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    max-width: 550px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
 
-    .page-hero-bg-slideshow {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        overflow: hidden;
-    }
+/* ===== CONTENT ===== */
+.ev-content {
+    padding: 4rem 0 3rem;
+}
+.ev-content-text {
+    color: #444;
+    font-size: 1.08rem;
+    line-height: 1.9;
+}
+.ev-content-text p { margin-bottom: 1.25rem; }
+.ev-content-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+}
+.ev-content-title {
+    color: #003366;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+.ev-content-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #003366, #0080ff);
+    border-radius: 2px;
+}
 
-    .page-hero-bg-slide {
-        position: absolute;
-        inset: 0;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        animation: pageHeroSlide 20s infinite;
-        transform: scale(1.05);
-    }
+/* ===== CHIFFRES ===== */
+.ev-chiffres {
+    background: linear-gradient(135deg, #002244 0%, #003366 50%, #004d99 100%);
+    padding: 3rem 0;
+    position: relative;
+}
+.ev-chiffres::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 0L40 20L20 40L0 20z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.ev-chiffre-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    position: relative;
+}
+.ev-chiffre-nombre {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+.ev-chiffre-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+.ev-chiffre-card + .ev-chiffre-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(255,255,255,0.12);
+}
 
-    .page-hero-bg-slide:nth-child(1) { animation-delay: 0s; }
-    .page-hero-bg-slide:nth-child(2) { animation-delay: 5s; }
-    .page-hero-bg-slide:nth-child(3) { animation-delay: 10s; }
-    .page-hero-bg-slide:nth-child(4) { animation-delay: 15s; }
+/* ===== GALERIE ===== */
+.ev-gallery {
+    padding: 3rem 0;
+    overflow: hidden;
+    background: #f8f9fb;
+}
+.ev-gallery-title {
+    text-align: center;
+    color: #003366;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+.ev-gallery-track {
+    display: flex;
+    gap: 1.25rem;
+    animation: evScroll 30s linear infinite;
+    width: max-content;
+}
+.ev-gallery-track:hover { animation-play-state: paused; }
+.ev-gallery-track img {
+    height: 220px;
+    width: 330px;
+    object-fit: cover;
+    border-radius: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.ev-gallery-track img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 40px rgba(0,51,102,0.2);
+}
+@keyframes evScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
 
-    @keyframes pageHeroSlide {
-        0% { opacity: 0; }
-        10% { opacity: 0.65; }
-        25% { opacity: 0.65; }
-        35% { opacity: 0; }
-        100% { opacity: 0; }
+/* ===== FORMAT ===== */
+.ev-format {
+    padding: 3.5rem 0;
+    background: white;
+}
+.ev-format-title {
+    text-align: center;
+    color: #003366;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+.ev-format-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.75rem 2rem;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.ev-format-pill {
+    background: linear-gradient(135deg, #0077cc, #003366);
+    color: white;
+    padding: 0.9rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,51,102,0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ev-format-pill:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 25px rgba(0,51,102,0.35);
+}
+.ev-format-pill-left { justify-self: end; }
+.ev-format-pill-right { justify-self: start; }
+.ev-format-center {
+    grid-row: 1 / 4;
+    grid-column: 2;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #0077cc, #003366);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 30px rgba(0,51,102,0.3);
+}
+@media (max-width: 576px) {
+    .ev-format-grid {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
     }
-    
-    .event-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        z-index: 1;
+    .ev-format-center {
+        grid-row: auto;
+        grid-column: auto;
+        margin: 0.5rem auto;
     }
-    
-    .event-hero .container {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .event-title {
-        font-size: clamp(1.8rem, 4.2vw, 3rem);
-        font-weight: 800;
-        margin-bottom: 1.5rem;
-        line-height: 1.15;
-        margin-top: 0.75rem;
-        word-break: break-word;
-        overflow-wrap: anywhere;
-        hyphens: auto;
-    }
-    
-    .event-subtitle {
-        font-size: 1.25rem;
-        opacity: 0.9;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-    }
-    
-    .event-buttons {
-        margin-top: 2rem;
-    }
-    
-    .event-buttons .btn {
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .section-content {
-        padding: 4rem 0;
-    }
-    
-    .section-content h2 {
-        color: #003366;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-    
-    .section-content h3 {
-        color: #003366;
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-    
-    .objectif-item {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 1.5rem;
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 10px;
-        border-left: 4px solid #003366;
-    }
-    
-    .objectif-icon {
-        color: #003366;
-        font-size: 1.5rem;
-        margin-right: 1rem;
-        margin-top: 0.25rem;
-    }
-    
-    .chiffre-card {
-        text-align: center;
-        padding: 2rem;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
-        margin-bottom: 2rem;
-        transition: transform 0.3s ease;
-    }
-    
-    .chiffre-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .chiffre-nombre {
-        font-size: 3rem;
-        font-weight: 800;
-        color: #003366;
-        margin-bottom: 0.5rem;
-    }
-    
-    .chiffre-label {
-        color: #666;
-        font-weight: 500;
-    }
-    
-    .programme-session {
-        padding: 2rem;
-        background: white;
-        border-radius: 10px;
-        margin-bottom: 1.5rem;
-        border-left: 4px solid #003366;
-    }
-    
-    .programme-heure {
-        color: #003366;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    .programme-titre {
-        font-size: 1.25rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    .galerie-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-    
-    .galerie-item {
-        position: relative;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-    }
-    
-    .galerie-item:hover {
-        transform: scale(1.05);
-    }
-    
-    .galerie-item img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-    }
-    
-    .galerie-caption {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-        color: white;
-        padding: 1.5rem 1rem 1rem;
-    }
-    
-    .galerie-caption h4 {
-        margin: 0;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
+    .ev-format-pill-left,
+    .ev-format-pill-right { justify-self: center; }
+}
+
+/* ===== EXPERTS ===== */
+.ev-experts {
+    padding: 4rem 0;
+    background: #f8f9fb;
+}
+.ev-experts-title {
+    text-align: center;
+    color: #003366;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+}
+.ev-expert-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,51,102,.06);
+    border: 1px solid rgba(0,51,102,.05);
+    transition: transform .3s ease, box-shadow .3s ease;
+    height: 100%;
+    min-height: 280px;
+}
+.ev-expert-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 36px rgba(0,51,102,.12);
+}
+.ev-expert-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.ev-expert-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem 1rem 0.8rem;
+    background: linear-gradient(transparent, rgba(0,30,60,.85));
+    text-align: center;
+}
+.ev-expert-info h5 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: .2rem;
+}
+.ev-expert-info .text-muted {
+    color: rgba(255,255,255,.8) !important;
+    font-size: .85rem;
+}
+
+/* ===== BACK ===== */
+.ev-back {
+    padding: 3rem 0;
+    text-align: center;
+    background: white;
+}
+.ev-back .btn {
+    border-radius: 50px;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    border-color: #003366;
+    color: #003366;
+    transition: all 0.3s ease;
+}
+.ev-back .btn:hover {
+    background: #003366;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,51,102,0.2);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .ev-hero { min-height: 380px; }
+    .ev-chiffre-nombre { font-size: 1.8rem; }
+    .ev-chiffre-card + .ev-chiffre-card::before { display: none; }
+    .ev-gallery-track img { height: 160px; width: 240px; }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="event-hero">
-    {% if hero_images %}
-    <div class="page-hero-bg-slideshow">
-        {% for img in hero_images %}
-        <div class="page-hero-bg-slide" style="background-image: url('{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}');"></div>
+<!-- HERO -->
+<section class="ev-hero">
+    <div class="ev-hero-bg" style="background-image: url('{% if hero_images %}{{ hero_images.0.get_image_url }}{% elif evenement.hero_image %}{{ evenement.hero_image.url }}{% elif evenement.hero_image_url %}{{ evenement.hero_image_url }}{% endif %}');"></div>
+    <div class="container text-center">
+        <div class="ev-hero-badge">Avril 2025 &bull; Conakry</div>
+        <h1 class="ev-hero-title">{{ evenement.titre_hero|dounia_exposant }}</h1>
+        <p class="ev-hero-sub">Un processus scientifique et collaboratif pour co-construire une vision nationale des données numériques et de l'IA en Guinée.</p>
+    </div>
+</section>
+
+<!-- CONTENU -->
+<section class="ev-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="ev-content-icon"><i class="bi bi-journal-richtext"></i></div>
+                <h2 class="ev-content-title">Contexte & Enseignements</h2>
+                <div class="ev-content-text">
+                    {{ evenement.description_hero|linebreaksbr }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CHIFFRES CLÉS -->
+{% if evenement.chiffres %}
+<section class="ev-chiffres">
+    <div class="container">
+        <div class="row justify-content-center g-0">
+            {% for chiffre in evenement.chiffres %}
+            <div class="col-6 col-md-3">
+                <div class="ev-chiffre-card">
+                    <div class="ev-chiffre-nombre">{{ chiffre.nombre }}</div>
+                    <div class="ev-chiffre-label">{{ chiffre.label }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- GALERIE DÉFILANTE -->
+{% if images %}
+<section class="ev-gallery">
+    <h3 class="ev-gallery-title"><i class="bi bi-camera me-2"></i>Moments forts</h3>
+    <div class="ev-gallery-track">
+        {% for image in images %}
+        <img src="{{ image.get_image_url }}" alt="{{ image.titre|default:'DounIA 1' }}">
+        {% endfor %}
+        {% for image in images %}
+        <img src="{{ image.get_image_url }}" alt="{{ image.titre|default:'DounIA 1' }}" aria-hidden="true">
         {% endfor %}
     </div>
-    {% elif evenement.hero_image or evenement.hero_image_url %}
-    <div class="page-hero-bg-slideshow">
-        <div class="page-hero-bg-slide" style="opacity: 0.65; animation: none; background-image: url('{% if evenement.hero_image %}{{ evenement.hero_image.url }}?t={{ evenement.updated_at|date:'U' }}{% else %}{{ evenement.hero_image_url }}{% endif %}');"></div>
-    </div>
-    {% endif %}
+</section>
+{% endif %}
+
+<!-- FORMAT DE L'ÉVÉNEMENT -->
+<section class="ev-format">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <h1 class="event-title">{{ evenement.titre_hero|dounia_exposant }}</h1>
-                <p class="event-subtitle">{{ evenement.description_hero }}</p>
-                <div class="event-buttons">
-                    <a href="{% url 'landing_page' %}#inscription" class="btn btn-light btn-lg">
-                        <i class="bi bi-play-circle me-2"></i>{{ evenement.bouton_principal_texte }}
-                    </a>
+        <h3 class="ev-format-title"><i class="bi bi-diagram-3 me-2"></i>Format de l'événement</h3>
+        <div class="ev-format-grid">
+            <div class="ev-format-pill ev-format-pill-left">La cérémonie d'ouverture</div>
+            <div class="ev-format-pill ev-format-pill-right">1 Panel multi-acteurs et panafricain</div>
+            <div class="ev-format-center"><i class="bi bi-grid-3x3-gap"></i></div>
+            <div class="ev-format-pill ev-format-pill-left">2 Keynote presentations</div>
+            <div class="ev-format-pill ev-format-pill-right">6 Tables rondes en parallèle</div>
+            <div class="ev-format-pill ev-format-pill-left">3 Mini-talk thématiques</div>
+            <div class="ev-format-pill ev-format-pill-right">1 dialogue stratégique</div>
+        </div>
+    </div>
+</section>
+
+<!-- EXPERTS -->
+{% if experts %}
+<section class="ev-experts">
+    <div class="container">
+        <h3 class="ev-experts-title"><i class="bi bi-people me-2"></i>Experts & Intervenants</h3>
+        <div class="row g-4 justify-content-center">
+            {% for expert in experts %}
+            <div class="col-6 col-sm-4 col-lg-3">
+                <div class="ev-expert-card">
+                    {% if expert.photo %}
+                    <img src="{{ expert.photo.url }}" alt="{{ expert.nom }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/400x400/003366/ffffff?text={{ expert.nom|first }}" alt="{{ expert.nom }}">
+                    {% endif %}
+                    <div class="ev-expert-info">
+                        <h5>{{ expert.nom }}</h5>
+                        <div class="text-muted small">{{ expert.specialite }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============ CALENDRIER DES ATELIERS ============ -->
+<section id="calendrier" style="padding: 4rem 0;">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title" style="color:#003366;">{{ config.calendrier_titre|default:"Calendrier des Ateliers" }}</h2>
+            <hr class="section-divider" style="border-color:#003366;width:80px;margin:1rem auto;">
+            <p class="section-subtitle" style="max-width:800px;margin:0 auto 1.5rem;font-size:1.05rem;color:#555;">
+                Les ateliers thématiques de DounIA 2 se tiennent de manière récurrente afin de permettre un travail approfondi, progressif et collaboratif sur chaque thématique.<br>
+                Chaque atelier s'inscrit dans un cycle de sessions organisées sur plusieurs semaines. La participation aux ateliers thématiques est ouverte à toute personne intéressée, sous réserve d'une inscription préalable en ligne.
+            </p>
+        </div>
+        <div class="calendar-scroll fade-in-up">
+            <div class="calendar-marquee" aria-label="Calendrier des ateliers">
+                <div class="calendar-marquee-group">
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Mamadou Cherif Sow</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Djibril Kaba / Tafsir Diallo</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Seydou Diallo, ex Dir. Nati. Economie Numérique</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-briefcase me-2"></i>Ressources humaines, gestion des entreprises et secteur informel
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> À confirmer</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-tree me-2"></i>Agriculture et développement du monde rural
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Castro Honenmnou</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Nassirou Diallo</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-marquee-group" aria-hidden="true">
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Mamadou Cherif Sow</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Djibril Kaba / Tafsir Diallo</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Seydou Diallo, ex Dir. Nati. Economie Numérique</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-briefcase me-2"></i>Ressources humaines, gestion des entreprises et secteur informel
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> À confirmer</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-tree me-2"></i>Agriculture et développement du monde rural
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Castro Honenmnou</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-scroll-item">
+                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
+                            <div class="calendar-card-header">
+                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
+                            </div>
+                            <div class="calendar-card-body">
+                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Nassirou Diallo</span></div>
+                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
+                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Objectifs Section -->
-{% if evenement.objectifs_points %}
-<section class="section-content bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2>{{ evenement.objectifs_titre }}</h2>
-            <p class="lead">{{ evenement.objectifs_description }}</p>
+<!-- RETOUR -->
+<section class="ev-back">
+    <a href="{% url 'landing_page' %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>Retour à l'accueil
+    </a>
+</section>
+
+<!-- BOUTON FLOTTANT AVIS -->
+<button id="avisToggleBtn" class="avis-fab" title="Donnez votre avis">
+    <i class="bi bi-chat-dots-fill"></i>
+    <span class="avis-fab-label">Donnez votre avis</span>
+</button>
+
+<!-- CHAT MODAL AVIS -->
+<div id="avisChatBox" class="avis-chat-box" style="display:none;">
+    <div class="avis-chat-header">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-chat-heart-fill"></i>
+            <strong>Donnez votre avis</strong>
         </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                {% for objectif in evenement.objectifs_points %}
-                <div class="objectif-item">
-                    <div class="objectif-icon">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </div>
-                    <div>
-                        <h3>Objectif {{ forloop.counter }}</h3>
-                        <p>{{ objectif }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+        <button id="avisChatClose" class="avis-chat-close">&times;</button>
+    </div>
+    <div class="avis-chat-body" id="avisChatBody">
+        <div class="avis-bot-msg">
+            Bonjour ! Nous aimerions connaître votre avis sur DounIA<sup>1</sup>. Remplissez le formulaire ci-dessous.
         </div>
     </div>
-</section>
-{% endif %}
-
-<!-- Chiffres Section -->
-{% if evenement.chiffres %}
-    {% if evenement.chiffres_image or evenement.chiffres_image_url %}
-    <section class="chiffres-bandeau" style="background-image: url('{% if evenement.chiffres_image %}{{ evenement.chiffres_image.url }}?t={{ evenement.updated_at|date:'U' }}{% else %}{{ evenement.chiffres_image_url }}?t={{ evenement.updated_at|date:'U' }}{% endif %}');">
-        <div class="chiffres-bandeau-overlay">
-            <div class="container">
-                <div class="row g-0 chiffres-bandeau-row">
-                    {% for chiffre in evenement.chiffres %}
-                    <div class="col-6 col-md-3 chiffres-bandeau-item">
-                        <div class="chiffres-bandeau-nombre">{{ chiffre.nombre }}</div>
-                        <div class="chiffres-bandeau-label">{{ chiffre.label }}</div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
-    {% else %}
-    <section class="section-content">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>{{ evenement.chiffres_titre }}</h2>
-            </div>
-            <div class="row">
-                {% for chiffre in evenement.chiffres %}
-                <div class="col-md-3 col-6">
-                    <div class="chiffre-card">
-                        <div class="chiffre-nombre">{{ chiffre.nombre }}</div>
-                        <div class="chiffre-label">{{ chiffre.label }}</div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    {% endif %}
-{% endif %}
-
-<!-- Programme Section -->
-{% if evenement.programme_sessions %}
-<section class="section-content bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2>{{ evenement.programme_titre }}</h2>
-            <p class="lead">{{ evenement.programme_description }}</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                {% for session in evenement.programme_sessions %}
-                <div class="programme-session">
-                    <div class="programme-heure">{{ session.heure }}</div>
-                    <div class="programme-titre">{{ session.titre }}</div>
-                    <div class="programme-description">{{ session.description }}</div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+    <div class="avis-chat-form" id="avisChatForm">
+        <input type="text" id="avisNom" class="avis-input" placeholder="Votre nom *" required>
+        <input type="email" id="avisEmail" class="avis-input" placeholder="Votre email (optionnel)">
+        <textarea id="avisMessage" class="avis-input avis-textarea" placeholder="Votre avis ou commentaire *" required></textarea>
+        <button id="avisSubmitBtn" class="avis-submit-btn">
+            <i class="bi bi-send-fill me-1"></i>Envoyer
+        </button>
     </div>
-</section>
-{% endif %}
+</div>
 
-<!-- Galerie Section -->
-{% if images %}
-<section class="section-content">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2>Galerie Photos</h2>
-            <p class="lead">Découvrez les moments clés de l'événement</p>
-        </div>
-        <div id="eventGalleryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3500">
-            <div class="carousel-indicators">
-                {% for image in images %}
-                <button type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" {% if forloop.first %}aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
+<style>
+/* ===== BOUTON FLOTTANT AVIS ===== */
+.avis-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #003366, #0055a5);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 25px rgba(0,51,102,.35);
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.avis-fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(0,51,102,.45);
+    background: linear-gradient(135deg, #00254d, #003d7a);
+}
+.avis-fab i { font-size: 1.2rem; }
 
-            <div class="carousel-inner">
-                {% for image in images %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ image.get_image_url }}?t={{ image.date_ajout|date:'U' }}" class="d-block w-100" alt="{{ image.titre|default:'Image' }}" style="height: 520px; object-fit: cover;">
-                    <div class="carousel-caption d-none d-md-block">
-                        {% if image.titre %}<h5>{{ image.titre }}</h5>{% endif %}
-                        {% if image.description %}<p class="mb-0">{{ image.description|truncatewords:18 }}</p>{% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+/* ===== CHAT BOX ===== */
+.avis-chat-box {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    z-index: 10000;
+    width: 380px;
+    max-width: calc(100vw - 40px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    background: #fff;
+    animation: avisChatSlideUp .3s ease;
+    display: flex;
+    flex-direction: column;
+    max-height: 520px;
+}
+@keyframes avisChatSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.avis-chat-header {
+    background: linear-gradient(135deg, #003366, #0055a5);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.avis-chat-header i { font-size: 1.2rem; }
+.avis-chat-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: .8;
+    transition: opacity .2s;
+}
+.avis-chat-close:hover { opacity: 1; }
+.avis-chat-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    background: #f0f4f8;
+}
+.avis-bot-msg {
+    background: #fff;
+    border-radius: 16px 16px 16px 4px;
+    padding: 12px 16px;
+    font-size: .92rem;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    margin-bottom: 8px;
+    max-width: 90%;
+}
+.avis-user-msg {
+    background: #003366;
+    color: #fff;
+    border-radius: 16px 16px 4px 16px;
+    padding: 12px 16px;
+    font-size: .92rem;
+    margin-left: auto;
+    margin-bottom: 8px;
+    max-width: 90%;
+    text-align: right;
+}
+.avis-chat-form {
+    padding: 16px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.avis-input {
+    border: 1.5px solid #dee2e6;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s;
+    width: 100%;
+}
+.avis-input:focus { border-color: #003366; }
+.avis-textarea {
+    resize: none;
+    height: 70px;
+}
+.avis-submit-btn {
+    background: linear-gradient(135deg, #003366, #0055a5);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+.avis-submit-btn:hover {
+    background: linear-gradient(135deg, #00254d, #003d7a);
+    transform: translateY(-1px);
+}
+.avis-submit-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+@media (max-width: 500px) {
+    .avis-chat-box { width: calc(100vw - 20px); right: 10px; bottom: 90px; }
+    .avis-fab { padding: 12px 18px; bottom: 20px; right: 15px; }
+    .avis-fab-label { display: none; }
+}
+</style>
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#eventGalleryCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-</section>
-{% endif %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('avisToggleBtn');
+    const chatBox = document.getElementById('avisChatBox');
+    const closeBtn = document.getElementById('avisChatClose');
+    const submitBtn = document.getElementById('avisSubmitBtn');
+    const chatBody = document.getElementById('avisChatBody');
+    const chatForm = document.getElementById('avisChatForm');
 
-<!-- Partenaires Section -->
-{% if evenement.partenaires_description %}
-<section class="section-content bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2>{{ evenement.partenaires_titre }}</h2>
-            <p class="lead">{{ evenement.partenaires_description }}</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <p class="mb-4">Merci à tous nos partenaires pour leur soutien précieux</p>
-                <a href="#contact" class="btn btn-primary">Devenir partenaire</a>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
+    toggleBtn.addEventListener('click', function() {
+        if (chatBox.style.display === 'none') {
+            chatBox.style.display = 'flex';
+            toggleBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+        } else {
+            chatBox.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="bi bi-chat-dots-fill"></i><span class="avis-fab-label">Donnez votre avis</span>';
+        }
+    });
+
+    closeBtn.addEventListener('click', function() {
+        chatBox.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="bi bi-chat-dots-fill"></i><span class="avis-fab-label">Donnez votre avis</span>';
+    });
+
+    submitBtn.addEventListener('click', function() {
+        const nom = document.getElementById('avisNom').value.trim();
+        const email = document.getElementById('avisEmail').value.trim();
+        const message = document.getElementById('avisMessage').value.trim();
+
+        if (!nom || !message) {
+            addBotMsg('Veuillez remplir votre nom et votre message.');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Envoi...';
+
+        // Show user message in chat
+        addUserMsg(message);
+
+        fetch('{% url "soumettre_avis" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                nom: nom,
+                email: email,
+                message: message,
+                event_slug: '{{ event_slug }}',
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                addBotMsg('Merci ' + nom + ' ! Votre avis a bien été envoyé. Nous apprécions votre retour.');
+                chatForm.style.display = 'none';
+            } else {
+                addBotMsg('Erreur : ' + (data.error || 'Veuillez réessayer.'));
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer';
+            }
+        })
+        .catch(() => {
+            addBotMsg('Une erreur est survenue. Veuillez réessayer.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer';
+        });
+    });
+
+    function addBotMsg(text) {
+        const div = document.createElement('div');
+        div.className = 'avis-bot-msg';
+        div.textContent = text;
+        chatBody.appendChild(div);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function addUserMsg(text) {
+        const div = document.createElement('div');
+        div.className = 'avis-user-msg';
+        div.textContent = text;
+        chatBody.appendChild(div);
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function getCookie(name) {
+        let v = null;
+        document.cookie.split(';').forEach(c => {
+            c = c.trim();
+            if (c.startsWith(name + '=')) v = decodeURIComponent(c.substring(name.length + 1));
+        });
+        return v;
+    }
+});
+</script>
 {% endblock %}

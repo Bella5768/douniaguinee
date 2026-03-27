@@ -56,6 +56,8 @@
                             <textarea class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" rows="{% if 'about_' in field.name %}{% if '_texte' in field.name %}8{% else %}6{% endif %}{% else %}4{% endif %}">{{ field.value }}</textarea>
                             {% elif field.is_url %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
+                            {% elif field.is_datetime %}
+                            <input type="datetime-local" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}">
                             {% else %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}">
                             {% endif %}

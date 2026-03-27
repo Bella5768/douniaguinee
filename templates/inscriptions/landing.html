@@ -70,6 +70,7 @@
                     <p class="lead mb-4">
                         {{ config.hero_sous_titre }}
                     </p>
+
                     <div class="hero-buttons">
                         <a href="{% if config.hero_btn1_lien == '#rapport' %}#livrable{% else %}{{ config.hero_btn1_lien }}{% endif %}" class="btn btn-primary btn-lg me-3">
                             <i class="bi bi-play-circle me-2"></i>{{ config.hero_btn1_texte }}
@@ -81,10 +82,40 @@
                 </div>
             </div>
         </div>
+
+        {% if config.date_lancement_site %}
+        <!-- COMPTE À REBOURS LANCEMENT DU SITE -->
+        <div style="text-align:center;margin-top:2rem;">
+            <div id="heroCountdown" style="display:flex;flex-direction:row;justify-content:center;align-items:center;gap:1rem;">
+                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
+                    <div id="hcDays" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Jours</div>
+                </div>
+                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
+                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
+                    <div id="hcHours" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Heures</div>
+                </div>
+                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
+                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
+                    <div id="hcMins" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Minutes</div>
+                </div>
+                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
+                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
+                    <div id="hcSecs" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
+                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Secondes</div>
+                </div>
+            </div>
+            <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-top:1.2rem;" class="hero-launch-date">
+                <i class="bi bi-calendar-event me-2"></i>Lancement officiel : {{ config.date_lancement_site|date:"j F Y" }} &bull; {{ config.date_lancement_site|date:"H\hi" }} &bull; Conakry, Guinée
+            </p>
+        </div>
+        {% endif %}
     </div>
 </section>
 
-{% comment %}<!-- ============ SECTION 2 : C'EST QUOI DOUNIA ? ============ -->
+<!-- ============ SECTION 2 : C'EST QUOI DOUNIA ? ============ -->
 <section id="about" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -99,10 +130,7 @@
     {% if config.about_card1_icone %}
         <i class="bi {{ config.about_card1_icone }}"></i>
     {% else %}
-        <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M6 13.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm2-1a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H2z"/>
-            <path d="M8 4.754a3.246 3.246 0 0 0 1-2.254C9 1.354 7.646 0 6 0S3 1.354 3 2.5c0 .898.396 1.702 1 2.254v1.246a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.246A3.246 3.246 0 0 1 0 2.5C0 1.354 1.354 0 3 0s3 1.354 3 2.5c0 .898-.396 1.702-1 2.254v1.246a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5V4.754zM6 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-        </svg>
+        <i class="bi bi-cpu-fill"></i>
     {% endif %}
 </div>
                     <h5>{{ config.about_card1_titre }}</h5>
@@ -133,44 +161,9 @@
             </div>
         </div>
     </div>
-</section>{% endcomment %}
+</section>
 
-{% comment %}<!-- ============ SECTION 3 : DOUNIA 1 — CONTEXTE & ENSEIGNEMENTS ============ -->
-<section id="dounia1">
-    <div class="container">
-        <div class="text-center fade-in-up">
-            <h2 class="section-title">{{ config.dounia1_titre }}</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">{{ config.dounia1_sous_titre }}</p>
-        </div>
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6 fade-in-up">
-                <h4 class="mb-3">Défis identifiés</h4>
-                <ul class="list-unstyled">
-                    {% for defi in defis %}
-                    <li class="d-flex align-items-start mb-3">
-                        <i class="bi bi-exclamation-triangle text-warning me-3 mt-1" style="font-size: 1.2rem;"></i>
-                        <span>{{ defi }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-lg-6 fade-in-up">
-                <h4 class="mb-3">Opportunités sectorielles</h4>
-                <ul class="list-unstyled">
-                    {% for opp in opportunites %}
-                    <li class="d-flex align-items-start mb-3">
-                        <i class="bi bi-check-circle text-success me-3 mt-1" style="font-size: 1.2rem;"></i>
-                        <span>{{ opp }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>{% endcomment %}
-
-{% comment %}<!-- ============ SECTION 4 : CHIFFRES CLÉS ============ -->
+<!-- ============ SECTION 4 : CHIFFRES CLÉS ============ -->
 <section class="stats-section">
     <div class="container">
         <div class="row">
@@ -186,9 +179,9 @@
             {% endfor %}
         </div>
     </div>
-</section>{% endcomment %}
+</section>
 
-{% comment %}<!-- ============ SECTION 5 : LIVRABLE DOUNIA 1 ============ -->
+<!-- ============ SECTION 5 : LIVRABLE DOUNIA 1 ============ -->
 <section id="livrable" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -234,9 +227,113 @@
             </div>
         </div>
     </div>
-</section>{% endcomment %}
+</section>
 
-{% comment %}<!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
+<!-- ============ SECTION 7 : PODCAST ============ -->
+<section id="podcast" class="podcast-section text-white">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <div class="podcast-icon">
+                    <i class="bi bi-mic"></i>
+                </div>
+                <h2 class="mb-3" style="color: #fff;">{{ config.podcast_titre }}</h2>
+                <p class="mb-4" style="opacity: 0.85; font-size: 1.1rem;">{{ config.podcast_description }}</p>
+                {% if config.podcast_fichier %}
+                <audio controls class="w-100" style="max-width:520px;">
+                    <source src="{{ config.podcast_fichier.url }}">
+                    Votre navigateur ne supporte pas la lecture audio.
+                </audio>
+                {% elif config.podcast_url %}
+                <a href="{{ config.podcast_url }}" class="btn btn-accent btn-lg" target="_blank" rel="noopener">
+                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
+                </a>
+                {% else %}
+                <a href="#" class="btn btn-accent btn-lg disabled" tabindex="-1" aria-disabled="true">
+                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
+                </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center fade-in-up">
+                {% if config.podcast_video %}
+                <video autoplay loop muted playsinline controls style="width:220px;height:420px;object-fit:cover;border-radius:24px;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+                    <source src="{{ config.podcast_video.url }}" type="video/mp4">
+                </video>
+                {% elif config.podcast_video_url %}
+                <div style="width:220px;height:420px;border-radius:24px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+                    <iframe src="{{ config.podcast_video_url }}" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                </div>
+                {% else %}
+                <div style="opacity: 0.1;">
+                    <i class="bi bi-soundwave" style="font-size: 14rem;"></i>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ GALERIE VIDÉOS ============ -->
+{% if config.galerie_video_1 or config.galerie_video_2 or config.galerie_video_3 or config.galerie_video_4 or config.galerie_video_5 %}
+<section id="galerie-videos" style="padding:3rem 0;background:#f8f9fb;">
+    <div class="container">
+        <div class="text-center fade-in-up mb-4">
+            <h2 class="section-title">{{ config.galerie_videos_titre|default:"Nos Vidéos" }}</h2>
+            <hr class="section-divider">
+        </div>
+        <div class="d-flex justify-content-center flex-wrap gap-3 fade-in-up">
+            {% if config.galerie_video_1 %}
+            <video autoplay loop muted playsinline controls style="width:200px;height:380px;object-fit:cover;border-radius:20px;box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <source src="{{ config.galerie_video_1.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+            {% if config.galerie_video_2 %}
+            <video autoplay loop muted playsinline controls style="width:200px;height:380px;object-fit:cover;border-radius:20px;box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <source src="{{ config.galerie_video_2.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+            {% if config.galerie_video_3 %}
+            <video autoplay loop muted playsinline controls style="width:200px;height:380px;object-fit:cover;border-radius:20px;box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <source src="{{ config.galerie_video_3.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+            {% if config.galerie_video_4 %}
+            <video autoplay loop muted playsinline controls style="width:200px;height:380px;object-fit:cover;border-radius:20px;box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <source src="{{ config.galerie_video_4.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+            {% if config.galerie_video_5 %}
+            <video autoplay loop muted playsinline controls style="width:200px;height:380px;object-fit:cover;border-radius:20px;box-shadow:0 6px 30px rgba(0,0,0,0.2);">
+                <source src="{{ config.galerie_video_5.url }}" type="video/mp4">
+            </video>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
+<section id="dounia2" class="dounia2-section text-white">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <div class="hero-badge">{{ config.dounia2_badge }}</div>
+                <h2 class="mb-3" style="color: #fff;">{{ config.dounia2_titre }}</h2>
+                <p style="opacity: 0.85; font-size: 1.1rem;" class="mb-4">{{ config.dounia2_description }}</p>
+            </div>
+            <div class="col-lg-6 fade-in-up">
+                {% for phase in phases %}
+                <div class="timeline-item">
+                    <h6 style="color: #ffffff; font-weight: 700;">{{ phase.titre }}</h6>
+                    <p style="opacity: 0.92; font-size: 0.95rem; color: #ffffff;">{{ phase.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
 <section id="evenements" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -325,95 +422,9 @@
       </div>
     </div>
   </div>
-</div>{% endcomment %}
+</div>
 
-{% comment %}<!-- ============ SECTION 7 : PODCAST ============ -->
-<section id="podcast" class="podcast-section text-white">
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center">
-            <div class="col-lg-6 fade-in-up">
-                <div class="podcast-icon">
-                    <i class="bi bi-mic"></i>
-                </div>
-                <h2 class="mb-3" style="color: #fff;">{{ config.podcast_titre }}</h2>
-                <p class="mb-4" style="opacity: 0.85; font-size: 1.1rem;">{{ config.podcast_description }}</p>
-                {% if config.podcast_fichier %}
-                <audio controls class="w-100" style="max-width:520px;">
-                    <source src="{{ config.podcast_fichier.url }}">
-                    Votre navigateur ne supporte pas la lecture audio.
-                </audio>
-                {% elif config.podcast_url %}
-                <a href="{{ config.podcast_url }}" class="btn btn-accent btn-lg" target="_blank" rel="noopener">
-                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
-                </a>
-                {% else %}
-                <a href="#" class="btn btn-accent btn-lg disabled" tabindex="-1" aria-disabled="true">
-                    <i class="bi bi-headphones me-2"></i>Écouter les épisodes
-                </a>
-                {% endif %}
-            </div>
-            <div class="col-lg-6 d-none d-lg-flex justify-content-center fade-in-up">
-                <div style="opacity: 0.1;">
-                    <i class="bi bi-soundwave" style="font-size: 14rem;"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>{% endcomment %}
-
-{% comment %}<!-- ============ SECTION : EXPERTS ============ -->
-{% if experts %}
-<section id="experts" class="bg-light-custom">
-    <div class="container">
-        <div class="text-center fade-in-up">
-            <h2 class="section-title">{{ config.experts_titre }}</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">{{ config.experts_sous_titre }}</p>
-        </div>
-
-        <div class="row g-4 justify-content-center">
-            {% for expert in experts %}
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 fade-in-up">
-                <div class="expert-card">
-                    <div class="expert-avatar">
-                        {% if expert.photo %}
-                        <img src="{{ expert.photo.url }}" alt="{{ expert.nom }}">
-                        {% else %}
-                        <img src="https://via.placeholder.com/200x200/003366/ffffff?text=Expert" alt="{{ expert.nom }}">
-                        {% endif %}
-                    </div>
-                    <h5 class="mt-3 mb-1" style="color: var(--primary);">{{ expert.nom }}</h5>
-                    <div class="text-muted small">{{ expert.specialite }}</div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}{% endcomment %}
-
-{% comment %}<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
-<section id="dounia2" class="dounia2-section text-white">
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center">
-            <div class="col-lg-6 fade-in-up">
-                <div class="hero-badge">{{ config.dounia2_badge }}</div>
-                <h2 class="mb-3" style="color: #fff;">{{ config.dounia2_titre }}</h2>
-                <p style="opacity: 0.85; font-size: 1.1rem;" class="mb-4">{{ config.dounia2_description }}</p>
-            </div>
-            <div class="col-lg-6 fade-in-up">
-                {% for phase in phases %}
-                <div class="timeline-item">
-                    <h6 style="color: #ffffff; font-weight: 700;">{{ phase.titre }}</h6>
-                    <p style="opacity: 0.92; font-size: 0.95rem; color: #ffffff;">{{ phase.description }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>{% endcomment %}
-
-{% comment %}<!-- ============ SECTION : VIDÉO ============ -->
+<!-- ============ SECTION : VIDÉO ============ -->
 <section id="video" class="bg-light-custom">
     <div class="container">
         <div class="text-center fade-in-up">
@@ -425,7 +436,7 @@
             <div class="col-lg-10">
                 <div class="video-wrapper">
                     {% if config.video_fichier %}
-                    <video controls playsinline class="w-100" style="border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+                    <video autoplay loop muted playsinline controls class="w-100" style="border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
                         <source src="{{ config.video_fichier.url }}" type="video/mp4">
                         Votre navigateur ne supporte pas la lecture vidéo.
                     </video>
@@ -442,7 +453,7 @@
             </div>
         </div>
     </div>
-</section>{% endcomment %}
+</section>
 
 <!-- ============ SECTION 9 : ATELIERS THÉMATIQUES ============ -->
 <section id="ateliers" class="bg-light-custom">
@@ -456,211 +467,26 @@
             <!-- Les ateliers seront ajoutés dynamiquement depuis la base de données -->
             {% for atelier in ateliers_db %}
             <div class="col-md-6 col-lg-4 fade-in-up">
-                <div class="atelier-card">
-                    <div class="atelier-image">
-                        <img src="{{ atelier.get_image_url }}" alt="{{ atelier.label }}">
-                    </div>
-                    <div class="atelier-content">
-                        <div class="atelier-number">{{ forloop.counter }}</div>
-                        <h5>{{ atelier.label }}</h5>
-                        <div class="atelier-description">
-                            <p>{{ atelier.description|default:"Description à ajouter..." }}</p>
-                            <div class="atelier-details">
-                                <span class="badge bg-light text-primary">{{ atelier.code|upper }}</span>
+                <a href="{% url 'atelier_detail' atelier.id %}" class="text-decoration-none">
+                    <div class="atelier-card" style="cursor:pointer;">
+                        <div class="atelier-image">
+                            <img src="{{ atelier.get_image_url }}" alt="{{ atelier.label }}">
+                        </div>
+                        <div class="atelier-content">
+                            <div class="atelier-number">{{ forloop.counter }}</div>
+                            <h5>{{ atelier.label }}</h5>
+                            <div class="atelier-description" style="display:block;">
+                                <p>{{ atelier.description|default:"Description à ajouter..." }}</p>
                             </div>
                         </div>
-                        <div class="atelier-actions mt-3">
-                            <a href="{% url 'atelier_detail' atelier.id %}" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-arrow-right-circle me-1"></i>En savoir plus
-                            </a>
-                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
                 <p class="text-muted">Aucun atelier disponible pour le moment.</p>
             </div>
             {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- ============ SECTION 10 : CALENDRIER DES ATELIERS ============ -->
-<section id="calendrier">
-    <div class="container">
-        <div class="text-center fade-in-up">
-            <h2 class="section-title">{{ config.calendrier_titre|default:"Calendrier des Ateliers" }}</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle">{{ config.calendrier_sous_titre|default:"Horaires et intervenants pour chaque atelier thématique" }}</p>
-        </div>
-        
-        <!-- Test pour vérifier que la section s'affiche -->
-        <div class="alert alert-info text-center">
-            <i class="bi bi-info-circle me-2"></i>Section calendrier active - Si vous voyez ce message, la section fonctionne !
-        </div>
-        <div class="calendar-scroll fade-in-up">
-            <div class="calendar-marquee" aria-label="Calendrier des ateliers">
-                <div class="calendar-marquee-group">
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Mamadou Cherif Sow</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Djibril Kaba / Tafsir Diallo</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Seydou Diallo, ex Dir. Nati. Economie Numérique</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-briefcase me-2"></i>Ressources humaines, gestion des entreprises et secteur informel
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> À confirmer</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-tree me-2"></i>Agriculture et développement du monde rural
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Castro Honenmnou</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Nassirou Diallo</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calendar-marquee-group" aria-hidden="true">
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_education %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_education.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-mortarboard me-2"></i>Éducation, enseignement supérieur, recherche
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Mamadou Cherif Sow</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_sante %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_sante.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-heart-pulse me-2"></i>Santé et inclusion sociale
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Djibril Kaba / Tafsir Diallo</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mardi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_justice %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_justice.url }}');"{% else %}style="background: linear-gradient(135deg, #003366 0%, #004080 100%);"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-shield-check me-2"></i>Justice, sécurité et défense
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Seydou Diallo, ex Dir. Nati. Economie Numérique</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_rh %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_rh.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-briefcase me-2"></i>Ressources humaines, gestion des entreprises et secteur informel
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> À confirmer</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Mercredi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_finance %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_finance.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-tree me-2"></i>Agriculture et développement du monde rural
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Dr Castro Honenmnou</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-scroll-item">
-                        <div class="calendar-card" {% if config.calendrier_bg_mines %}data-has-bg="1" style="--calendar-bg: url('{{ config.calendrier_bg_mines.url }}');"{% endif %}>
-                            <div class="calendar-card-header">
-                                <i class="bi bi-gem me-2"></i>Mines, environnement, climat &amp; biosphère
-                            </div>
-                            <div class="calendar-card-body">
-                                <div class="calendar-detail"><i class="bi bi-person"></i><span><strong>Intervenant :</strong> Mr Nassirou Diallo</span></div>
-                                <div class="calendar-detail"><i class="bi bi-clock"></i><span><strong>Horaire :</strong> Jeudi 16h – 18h30</span></div>
-                                <div class="calendar-detail"><i class="bi bi-calendar3"></i><span><strong>Fréquence :</strong> 2 fois / mois</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -854,7 +680,6 @@
     </div>
 </section>
 
-{% comment %}
 <!-- ============ SECTION 12 : PORTEURS & PARTENAIRES ============ -->
 <section id="partenaires" class="partners-section">
     <div class="container">
@@ -865,7 +690,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="partner-category text-center fade-in-up">
-                    <h5>Porteurs du processus</h5>
+                    <h5>Co-organisateurs</h5>
                     <div class="row g-3 justify-content-center">
                         <div class="col-6 col-md-4">
                             <div class="partner-logo">
@@ -919,47 +744,10 @@
                     </div>
                 </div>
                 {% endif %}
-
-                {% if partenaires_techniques %}
-                <div class="partner-category text-center fade-in-up mt-4">
-                    <h5>Partenaires techniques</h5>
-                    <div class="partner-marquee" aria-label="Partenaires techniques">
-                        <div class="partner-marquee-track">
-                            {% for partenaire in partenaires_techniques %}
-                            {% if partenaire.logo %}
-                            <div class="partner-logo">
-                                {% if partenaire.site_web %}
-                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
-                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                </a>
-                                {% else %}
-                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                {% endif %}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-
-                            {% for partenaire in partenaires_techniques %}
-                            {% if partenaire.logo %}
-                            <div class="partner-logo" aria-hidden="true">
-                                {% if partenaire.site_web %}
-                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
-                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                </a>
-                                {% else %}
-                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                {% endif %}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
-</section>{% endcomment %}
+</section>
 
 <!-- Modal de lecture et téléchargement du livrable -->
 {% include 'inscriptions/rapport_modal.html' %}
@@ -1202,5 +990,148 @@ function toggleAtelier(card) {
         window.scrollTo({ top: top, behavior: 'instant' });
     });
 })();
+
+// ===== HERO COUNTDOWN + CELEBRATION =====
+{% if config.date_lancement_site %}
+(function() {
+    const launchDate = new Date('{{ config.date_lancement_site|date:"Y-m-d\TH:i:s" }}').getTime();
+    let launched = false;
+    const colors = ['#0080ff','#00cc66','#ff4444','#ffcc00','#ff66cc','#66ccff','#ffffff','#003366'];
+
+    function createConfetti() {
+        const canvas = document.createElement('canvas');
+        canvas.id = 'hcConfetti';
+        canvas.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;';
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', function() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        const pieces = [];
+        const shapes = ['rect','circle','ribbon'];
+
+        function addBurst(count) {
+            for (let i = 0; i < count; i++) {
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: -20 - Math.random() * 200,
+                    w: shape === 'ribbon' ? 4 + Math.random() * 4 : 8 + Math.random() * 10,
+                    h: shape === 'ribbon' ? 15 + Math.random() * 20 : 8 + Math.random() * 10,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: 2 + Math.random() * 4,
+                    rot: Math.random() * 360,
+                    rotV: (Math.random() - 0.5) * 12,
+                    shape: shape,
+                    opacity: 1,
+                    wobble: Math.random() * 10,
+                    wobbleSpeed: 0.03 + Math.random() * 0.05,
+                });
+            }
+        }
+
+        addBurst(150);
+        let burstCount = 0;
+        const burstInterval = setInterval(function() {
+            addBurst(60);
+            burstCount++;
+            if (burstCount > 15) clearInterval(burstInterval);
+        }, 800);
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = pieces.length - 1; i >= 0; i--) {
+                const p = pieces[i];
+                p.x += p.vx + Math.sin(p.wobble) * 0.5;
+                p.y += p.vy;
+                p.rot += p.rotV;
+                p.wobble += p.wobbleSpeed;
+                p.vy += 0.04;
+                p.vx *= 0.99;
+                if (p.y > canvas.height + 50) p.opacity -= 0.02;
+                if (p.opacity <= 0) { pieces.splice(i, 1); continue; }
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rot * Math.PI / 180);
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+                if (p.shape === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                }
+                ctx.restore();
+            }
+            if (pieces.length > 0) requestAnimationFrame(draw);
+            else canvas.remove();
+        }
+        requestAnimationFrame(draw);
+    }
+
+    function launchCelebration() {
+        if (launched) return;
+        launched = true;
+
+        // Replace countdown with launch message
+        const countdown = document.getElementById('heroCountdown');
+        if (countdown) {
+            countdown.innerHTML = '<div style="animation:hcLaunchIn 1s ease forwards;"><div style="color:#00ff88;font-size:clamp(1.3rem,3vw,2rem);font-weight:900;text-shadow:0 0 30px rgba(0,255,136,0.5);">🎉 DounIA EST LANCÉ ! 🎉</div></div>';
+        }
+
+        // Update date text
+        const dateText = document.querySelector('.hero-launch-date');
+        if (dateText) {
+            dateText.innerHTML = '<i class="bi bi-check-circle me-2"></i>Le site DounIA est officiellement lancé !';
+            dateText.style.color = '#00ff88';
+        }
+
+        // Confetti
+        createConfetti();
+
+        // Screen flashes
+        let flashCount = 0;
+        const flashInterval = setInterval(function() {
+            const flash = document.createElement('div');
+            flash.style.cssText = 'position:fixed;inset:0;background:rgba(255,255,255,0.15);z-index:9998;pointer-events:none;';
+            document.body.appendChild(flash);
+            setTimeout(function() { flash.remove(); }, 100);
+            flashCount++;
+            if (flashCount > 5) clearInterval(flashInterval);
+        }, 400);
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = launchDate - now;
+
+        if (diff <= 0) {
+            document.getElementById('hcDays').textContent = '0';
+            document.getElementById('hcHours').textContent = '00';
+            document.getElementById('hcMins').textContent = '00';
+            document.getElementById('hcSecs').textContent = '00';
+            launchCelebration();
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('hcDays').textContent = days;
+        document.getElementById('hcHours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('hcMins').textContent = String(mins).padStart(2, '0');
+        document.getElementById('hcSecs').textContent = String(secs).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+})();
+{% endif %}
+
 </script>
 {% endblock %}

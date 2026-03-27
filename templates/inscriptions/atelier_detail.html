@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}{{ atelier.label }} — DounIA{% endblock %}
 
@@ -69,7 +70,7 @@
                                 <h4 class="mb-3"><i class="bi bi-question-circle text-warning me-2"></i>Questions Clés à traiter</h4>
                                 <div class="prose">
                                     {% if atelier.questions_cles %}
-                                        {{ atelier.questions_cles|safe }}
+                                        {{ atelier.questions_cles|question_linebreak }}
                                     {% else %}
                                         <p class="text-muted">Les questions clés de cet atelier seront bientôt détaillées.</p>
                                     {% endif %}

@@ -123,6 +123,9 @@ class DouniaEvent(models.Model):
     meta_title = models.CharField(max_length=200, blank=True)
     meta_description = models.TextField(blank=True)
     
+    # Compte à rebours (pour DounIA 2)
+    date_lancement = models.DateTimeField(null=True, blank=True, verbose_name="Date de lancement (compte à rebours)")
+    
     # État
     actif = models.BooleanField(default=True)
     
@@ -482,6 +485,16 @@ class SiteConfiguration(models.Model):
     podcast_description = models.TextField(default="Écoutez les échanges, interviews et analyses des experts ayant participé au processus DounIA. Des discussions autour de la gouvernance de l'IA, de la souveraineté numérique et des enjeux spécifiques à la Guinée et au continent africain.", verbose_name='Podcast description')
     podcast_lien = models.URLField(blank=True, default='', verbose_name='Lien du podcast')
     podcast_fichier = models.FileField(upload_to='podcasts/', blank=True, null=True, verbose_name='Fichier audio du podcast (MP3/WAV)')
+    podcast_video = models.FileField(upload_to='podcasts/', blank=True, null=True, verbose_name='Vidéo du podcast (MP4)')
+    podcast_video_url = models.URLField(max_length=500, blank=True, default='', verbose_name='URL vidéo du podcast (YouTube, etc.)')
+
+    # GALERIE VIDÉOS
+    galerie_videos_titre = models.CharField(max_length=200, default='Podcast', verbose_name='Galerie vidéos — Titre')
+    galerie_video_1 = models.FileField(upload_to='galerie_videos/', blank=True, null=True, verbose_name='Galerie vidéo 1')
+    galerie_video_2 = models.FileField(upload_to='galerie_videos/', blank=True, null=True, verbose_name='Galerie vidéo 2')
+    galerie_video_3 = models.FileField(upload_to='galerie_videos/', blank=True, null=True, verbose_name='Galerie vidéo 3')
+    galerie_video_4 = models.FileField(upload_to='galerie_videos/', blank=True, null=True, verbose_name='Galerie vidéo 4')
+    galerie_video_5 = models.FileField(upload_to='galerie_videos/', blank=True, null=True, verbose_name='Galerie vidéo 5')
 
     # DOUNIA 2
     dounia2_badge = models.CharField(max_length=200, default='Prochaine étape', verbose_name='DounIA 2 badge')
@@ -527,6 +540,9 @@ class SiteConfiguration(models.Model):
     porteur2_nom = models.CharField(max_length=200, default='ASG', verbose_name='Porteur 2 — Nom')
     porteur2_description = models.CharField(max_length=300, default='Académie des Sciences de Guinée', verbose_name='Porteur 2 — Description')
     porteur2_logo = models.ImageField(upload_to='porteurs/', blank=True, null=True, verbose_name='Porteur 2 — Logo')
+
+    # COMPTE À REBOURS (lancement du site)
+    date_lancement_site = models.DateTimeField(null=True, blank=True, verbose_name="Date de lancement du site (compte à rebours hero)")
 
     # FOOTER
     footer_description = models.TextField(default="DounIA est un processus scientifique national visant à coconstruire une vision guinéenne autour de l'IA et de la gouvernance des données.", verbose_name='Footer description')
@@ -680,3 +696,26 @@ class HeroCarouselImage(models.Model):
         else:
             # Image par défaut
             return "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80"
+
+
+class Avis(models.Model):
+    """Avis / commentaires laissés par les visiteurs"""
+    EVENT_CHOICES = [
+        ('dounia1', 'DounIA 1'),
+        ('dounia2', 'DounIA 2'),
+    ]
+    
+    nom = models.CharField(max_length=100, verbose_name='Nom')
+    email = models.EmailField(blank=True, default='', verbose_name='Email')
+    message = models.TextField(verbose_name='Message')
+    event_slug = models.CharField(max_length=20, choices=EVENT_CHOICES, default='dounia1', verbose_name='Événement')
+    date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    lu = models.BooleanField(default=False, verbose_name='Lu')
+    
+    class Meta:
+        verbose_name = 'Avis'
+        verbose_name_plural = 'Avis'
+        ordering = ['-date_creation']
+    
+    def __str__(self):
+        return f"{self.nom} — {self.get_event_slug_display()} ({self.date_creation:%d/%m/%Y})"

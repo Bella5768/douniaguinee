@@ -12,8 +12,10 @@ urlpatterns = [
     path('restitution/', views.restitution_page, name='restitution_page'),
     path('event/<slug:event_slug>/', views.event_page, name='event_page'),
     path('search/', views.search_results, name='search_results'),
+    path('soumettre-avis/', views.soumettre_avis, name='soumettre_avis'),
     
     # Pages de gestion (admin)
+    path('gestion/login/', views.admin_login, name='admin_login'),
     path('gestion/', views.admin_dashboard, name='admin_dashboard'),
     path('gestion/evenements/', views.admin_evenements, name='admin_evenements'),
     path('gestion/inscriptions/', views.admin_inscriptions, name='admin_inscriptions'),
@@ -28,6 +30,7 @@ urlpatterns = [
     path('gestion/dounia-events/', views.admin_dounia_events, name='admin_dounia_events'),
     path('gestion/restitution/', views.admin_restitution, name='admin_restitution'),
     path('gestion/ateliers/', views.admin_ateliers, name='admin_ateliers'),
+    path('gestion/avis/', views.admin_avis, name='admin_avis'),
     path('gestion/edit-section/<str:section>/', views.admin_edit_section, name='admin_edit_section'),
     path('export-csv/', views.export_inscriptions_csv, name='export_inscriptions_csv'),
     path('manage-hero-stats-images/', views.manage_hero_stats_images, name='manage_hero_stats_images'),
