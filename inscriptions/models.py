@@ -652,7 +652,7 @@ class Partenaire(models.Model):
     """Partenaires et institutions affichés sur la page."""
     CATEGORIE_CHOICES = [
         ('institutionnel', 'Partenaire institutionnel'),
-        ('technique', 'Partenaire technique'),
+        ('technique', 'Co-organisateur'),
     ]
 
     nom = models.CharField(max_length=200, verbose_name='Nom')

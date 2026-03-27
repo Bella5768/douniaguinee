@@ -707,10 +707,10 @@
                 {% if partenaires_institutionnels %}
                 <div class="partner-category text-center fade-in-up mt-4">
                     <h5>Partenaires institutionnels</h5>
-                    <div class="partner-marquee" aria-label="Partenaires institutionnels">
-                        <div class="partner-marquee-track">
-                            {% for partenaire in partenaires_institutionnels %}
-                            {% if partenaire.logo %}
+                    <div class="row g-4 justify-content-center align-items-center" aria-label="Partenaires institutionnels">
+                        {% for partenaire in partenaires_institutionnels %}
+                        {% if partenaire.logo %}
+                        <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center">
                             <div class="partner-logo">
                                 {% if partenaire.site_web %}
                                 <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
@@ -720,23 +720,9 @@
                                 <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
                                 {% endif %}
                             </div>
-                            {% endif %}
-                            {% endfor %}
-
-                            {% for partenaire in partenaires_institutionnels %}
-                            {% if partenaire.logo %}
-                            <div class="partner-logo" aria-hidden="true">
-                                {% if partenaire.site_web %}
-                                <a href="{{ partenaire.site_web }}" target="_blank" rel="noopener">
-                                    <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                </a>
-                                {% else %}
-                                <img src="{{ partenaire.logo.url }}" alt="{{ partenaire.nom }}">
-                                {% endif %}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
                         </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 {% endif %}
