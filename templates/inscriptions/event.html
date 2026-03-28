@@ -281,25 +281,6 @@
     object-fit: cover;
     object-position: center top;
 }
-.ev-expert-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2.5rem 1rem 0.8rem;
-    background: linear-gradient(transparent, rgba(0,30,60,.85));
-    text-align: center;
-}
-.ev-expert-info h5 {
-    color: #fff;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: .2rem;
-}
-.ev-expert-info .text-muted {
-    color: rgba(255,255,255,.8) !important;
-    font-size: .85rem;
-}
 
 @media (max-width: 768px) {
     .ev-expert-card {
@@ -984,10 +965,6 @@
                     {% else %}
                     <img src="https://via.placeholder.com/400x400/003366/ffffff?text={{ expert.nom|first }}" alt="{{ expert.nom }}">
                     {% endif %}
-                    <div class="ev-expert-info">
-                        <h5>{{ expert.nom }}</h5>
-                        <div class="text-muted small">{{ expert.specialite }}</div>
-                    </div>
                 </div>
             </div>
             {% endfor %}
