@@ -2310,6 +2310,26 @@ html {
 .event-card-hover.text-center .about-icon {
     margin: 0 auto 1rem auto;
 }
+.dounia1-event-card,
+.dounia1-event-card * {
+    list-style: none !important;
+}
+.dounia1-event-card::before,
+.dounia1-event-card::after,
+.dounia1-event-card *::before,
+.dounia1-event-card *::after {
+    box-shadow: none !important;
+}
+.dounia1-event-card .card-content::before,
+.dounia1-event-card .card-content::after,
+.dounia1-event-card p::before,
+.dounia1-event-card p::after,
+.dounia1-event-card h5::before,
+.dounia1-event-card h5::after,
+.dounia1-event-card li::before,
+.dounia1-event-card li::after {
+    content: none !important;
+}
 .event-card-hover .card-content,
 .event-card-hover .card-content * {
     list-style: none;

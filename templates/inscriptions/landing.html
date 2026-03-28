@@ -341,7 +341,7 @@
         <div class="row g-4">
             <div class="col-lg-4 fade-in-up">
                 <a href="{% url 'event_page' 'dounia1' %}" class="text-decoration-none">
-                    <div class="about-card h-100 event-card-hover text-center">
+                    <div class="about-card h-100 event-card-hover text-center dounia1-event-card">
                         <div class="card-content">
                             <div class="about-icon"><i class="bi bi-flag"></i></div>
                             <h5 class="mb-0">
@@ -351,9 +351,6 @@
                                     {{ evenement_dounia1.evenement.titre|default:"DounIA 1"|dounia_exposant }}
                                 {% endif %}
                             </h5>
-                            {% if dounia1_event %}
-                                <p class="small text-muted mt-2">{{ dounia1_event.description_hero|truncatewords:15 }}</p>
-                            {% endif %}
                         </div>
                     </div>
                 </a>
@@ -371,9 +368,6 @@
                                     {{ evenement_dounia2.evenement.titre|default:"DounIA 2"|dounia_exposant }}
                                 {% endif %}
                             </h5>
-                            {% if dounia2_event %}
-                                <p class="small text-muted mt-2">{{ dounia2_event.description_hero|truncatewords:15 }}</p>
-                            {% endif %}
                         </div>
                     </div>
                 </a>
@@ -383,7 +377,7 @@
                 <a href="{% url 'restitution_page' %}" class="text-decoration-none">
                     <div class="about-card h-100 restitution-card-hover text-center">
                         <div class="card-content">
-                            <div class="about-icon"><i class="bi bi-file-earmark-text"></i></div>
+                            <div class="about-icon"><i class="bi bi-clipboard-data"></i></div>
                             <h5 class="mb-0">
                                 {% if restitution_data %}
                                     {{ restitution_data.titre_hero }}
@@ -391,9 +385,6 @@
                                     Restitution
                                 {% endif %}
                             </h5>
-                            {% if restitution_data %}
-                                <p class="small text-muted mt-2">{{ restitution_data.description_hero|truncatewords:15 }}</p>
-                            {% endif %}
                         </div>
                     </div>
                 </a>

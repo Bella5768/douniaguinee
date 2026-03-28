@@ -888,7 +888,11 @@
 {% block content %}
 <!-- HERO -->
 <section class="ev-hero">
-    {% if evenement.hero_video %}
+    {% if evenement.hero_video_url %}
+    <video class="ev-hero-video" autoplay loop muted playsinline>
+        <source src="{{ evenement.hero_video_url }}" type="video/mp4">
+    </video>
+    {% elif evenement.hero_video %}
     <video class="ev-hero-video" autoplay loop muted playsinline>
         <source src="{{ evenement.hero_video.url }}" type="video/mp4">
     </video>

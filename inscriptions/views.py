@@ -1388,6 +1388,7 @@ def admin_dounia_events(request):
             # Mise à jour des informations hero
             event.titre_hero = request.POST.get('titre_hero', event.titre_hero)
             event.description_hero = request.POST.get('description_hero', event.description_hero)
+            event.hero_video_url = request.POST.get('hero_video_url', event.hero_video_url)
             event.hero_image_url = request.POST.get('hero_image_url', event.hero_image_url)
             event.bouton_principal_texte = request.POST.get('bouton_principal_texte', event.bouton_principal_texte)
             event.bouton_principal_lien = request.POST.get('bouton_principal_lien', event.bouton_principal_lien)

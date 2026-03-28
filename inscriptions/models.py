@@ -82,6 +82,7 @@ class DouniaEvent(models.Model):
     description_hero = models.TextField()
     hero_image = models.ImageField(upload_to='evenements/hero/', blank=True, null=True, verbose_name='Image Hero (upload)')
     hero_video = models.FileField(upload_to='evenements/hero_videos/', blank=True, null=True, verbose_name='Vidéo Hero (upload)')
+    hero_video_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Vidéo Hero URL')
     hero_image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image Hero URL (fallback)')
     bouton_principal_texte = models.CharField(max_length=100, default="S'inscrire")
     bouton_principal_lien = models.CharField(max_length=200, default="#inscription")
