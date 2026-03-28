@@ -2310,6 +2310,20 @@ html {
 .event-card-hover.text-center .about-icon {
     margin: 0 auto 1rem auto;
 }
+.event-card-hover .card-content,
+.event-card-hover .card-content * {
+    list-style: none;
+}
+.event-card-hover .card-content p {
+    margin-left: 0;
+    padding-left: 0;
+}
+.event-card-hover .card-content p::before,
+.event-card-hover .card-content p::after,
+.event-card-hover .card-content li::before,
+.event-card-hover .card-content li::after {
+    content: none !important;
+}
 /* Event cards with background image */
 .event-card-with-bg {
     background-size: cover !important;
