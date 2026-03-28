@@ -1396,6 +1396,8 @@ def admin_dounia_events(request):
 
             if 'hero_image' in request.FILES:
                 event.hero_image = request.FILES['hero_image']
+            if 'hero_video' in request.FILES:
+                event.hero_video = request.FILES['hero_video']
             
             # Section objectifs
             event.objectifs_titre = request.POST.get('objectifs_titre', event.objectifs_titre)
