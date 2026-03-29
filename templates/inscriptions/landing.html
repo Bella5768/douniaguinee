@@ -678,21 +678,39 @@
             <div class="col-lg-10">
                 <div class="partner-category text-center fade-in-up">
                     <h5>Co-organisateurs</h5>
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-6 col-md-4">
-                            <div class="partner-logo">
-                                {% if config.porteur1_logo %}
-                                <img src="{{ config.porteur1_logo.url }}" alt="{{ config.porteur1_nom }}">
-                                {% endif %}
+                    <div class="row g-3 justify-content-center align-items-center">
+                        {% if partenaires_techniques %}
+                            {% for p in partenaires_techniques %}
+                            {% if p.logo %}
+                            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center">
+                                <div class="partner-logo">
+                                    {% if p.site_web %}
+                                    <a href="{{ p.site_web }}" target="_blank" rel="noopener">
+                                        <img src="{{ p.logo.url }}" alt="{{ p.nom }}">
+                                    </a>
+                                    {% else %}
+                                    <img src="{{ p.logo.url }}" alt="{{ p.nom }}">
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-6 col-md-4">
-                            <div class="partner-logo">
-                                {% if config.porteur2_logo %}
-                                <img src="{{ config.porteur2_logo.url }}" alt="{{ config.porteur2_nom }}">
-                                {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% if config.porteur1_logo %}
+                            <div class="col-6 col-md-4">
+                                <div class="partner-logo">
+                                    <img src="{{ config.porteur1_logo.url }}" alt="{{ config.porteur1_nom }}">
+                                </div>
                             </div>
-                        </div>
+                            {% endif %}
+                            {% if config.porteur2_logo %}
+                            <div class="col-6 col-md-4">
+                                <div class="partner-logo">
+                                    <img src="{{ config.porteur2_logo.url }}" alt="{{ config.porteur2_nom }}">
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
                 {% if partenaires_institutionnels %}
