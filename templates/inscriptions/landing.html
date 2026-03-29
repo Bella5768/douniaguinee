@@ -722,8 +722,235 @@
     </div>
 </section>
 
+<!-- ============ SECTION : AVIS & PARTENARIAT ============ -->
+<section class="ev-engage-section">
+    <div class="container">
+        <div class="ev-engage-header text-center fade-in-up">
+            <div class="ev-engage-kicker">Avec vous</div>
+            <h2 class="section-title" style="color:#003366;">Construisons la suite ensemble</h2>
+            <p class="section-subtitle" style="max-width:820px;margin:0 auto;color:#5f6b7a;">
+                Ce processus n'appartient pas qu'à nous. Il avance avec les idées, les contributions et les partenariats de celles et ceux qui souhaitent faire grandir DounIA.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center mt-2">
+            <div class="col-lg-6 fade-in-up">
+                <div class="ev-engage-card ev-engage-card-light">
+                    <div class="ev-engage-icon-wrap">
+                        <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <h3>Votre voix façonne DounIA</h3>
+                    <p>
+                        Vous avez une idée, une critique ou une suggestion&nbsp;? Chaque retour aide à améliorer le processus et à nourrir les prochaines étapes de DounIA.
+                    </p>
+                    <div class="ev-engage-meta">
+                        <span class="ev-engage-pill">Avis</span>
+                        <span class="ev-engage-pill">Contribution</span>
+                        <span class="ev-engage-caption">Vos retours comptent dans l'amélioration continue.</span>
+                    </div>
+                    <button type="button" class="ev-engage-btn ev-engage-btn-primary" id="landingAvisOpenBtn">
+                        Partager mon avis <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6 fade-in-up">
+                <div class="ev-engage-card ev-engage-card-dark">
+                    <div class="ev-engage-icon-wrap ev-engage-icon-wrap-dark">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h3>Devenez partenaire ou sponsor</h3>
+                    <p>
+                        Vous partagez la vision de DounIA&nbsp;? Rejoignez la dynamique comme partenaire, sponsor ou structure d'appui pour accompagner l'initiative.
+                    </p>
+                    <div class="ev-engage-meta">
+                        <span class="ev-engage-pill ev-engage-pill-dark">Partenariat</span>
+                        <span class="ev-engage-pill ev-engage-pill-dark">Sponsor</span>
+                        <span class="ev-engage-caption ev-engage-caption-dark">Construisons une alliance utile autour des données et de l'IA.</span>
+                    </div>
+                    <button type="button" class="ev-engage-btn ev-engage-btn-secondary" id="landingPartenariatOpenBtn">
+                        Rejoindre la dynamique <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AVIS MODAL (Landing) -->
+<div id="landingAvisChatBox" class="avis-chat-box" style="display:none;">
+    <div class="avis-modal-panel">
+        <button id="landingAvisChatClose" class="avis-chat-close" type="button">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="avis-modal-badge">
+            <i class="bi bi-chat-heart-fill me-2"></i>Votre avis
+        </div>
+        <h3>Qu'est-ce qu'on peut améliorer ?</h3>
+        <div class="avis-chat-body" id="landingAvisChatBody">
+            <div class="avis-bot-msg">
+                Bonjour&nbsp;! Nous aimerions connaître votre avis sur DounIA. Remplissez le formulaire ci-dessous.
+            </div>
+        </div>
+        <div class="avis-chat-form" id="landingAvisChatForm">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="avis-label">Nom complet</label>
+                    <input type="text" id="landingAvisNom" class="avis-input" placeholder="Votre nom *" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="avis-label">Email</label>
+                    <input type="email" id="landingAvisEmail" class="avis-input" placeholder="Votre email (optionnel)">
+                </div>
+                <div class="col-12">
+                    <label class="avis-label">Votre message</label>
+                    <textarea id="landingAvisMessage" class="avis-input avis-textarea" placeholder="Votre avis ou commentaire *" required></textarea>
+                </div>
+            </div>
+            <button id="landingAvisSubmitBtn" class="avis-submit-btn" type="button">
+                <i class="bi bi-send-fill me-1"></i>Envoyer mon retour
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- PARTENARIAT MODAL (Landing) -->
+<div id="landingPartenariatModal" class="partenariat-modal" style="display:none;">
+    <div class="partenariat-modal-panel">
+        <button type="button" id="landingPartenariatModalClose" class="partenariat-modal-close">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="partenariat-modal-badge">
+            <i class="bi bi-stars me-2"></i>Partenariat
+        </div>
+        <h3>Construisons ensemble</h3>
+        <form class="partenariat-form">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="partenariat-label">Nom complet</label>
+                    <input type="text" class="partenariat-input" placeholder="Votre nom">
+                </div>
+                <div class="col-md-6">
+                    <label class="partenariat-label">Organisation</label>
+                    <input type="text" class="partenariat-input" placeholder="Entreprise / Association">
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Email professionnel</label>
+                    <input type="email" class="partenariat-input" placeholder="{{ config.footer_email }}">
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Type de collaboration</label>
+                    <select class="partenariat-input partenariat-select">
+                        <option selected>Choisir...</option>
+                        <option>Partenaire institutionnel</option>
+                        <option>Sponsor</option>
+                        <option>Appui technique</option>
+                        <option>Partenaire média</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Pourquoi DounIA vous inspire ?</label>
+                    <textarea class="partenariat-input partenariat-textarea" placeholder="Partagez ce qui vous a attiré vers ce projet..."></textarea>
+                </div>
+            </div>
+            <div class="partenariat-actions">
+                <a href="mailto:{{ config.footer_email }}?subject=Partenariat%20DounIA" class="ev-engage-btn ev-engage-btn-secondary">
+                    Envoyer ma demande <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Modal de lecture et téléchargement du livrable -->
 {% include 'inscriptions/rapport_modal.html' %}
+
+<!-- Script Avis & Partenariat modals (Landing) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ---- Avis modal ----
+    var landingAvisOpenBtn = document.getElementById('landingAvisOpenBtn');
+    var landingAvisChatBox = document.getElementById('landingAvisChatBox');
+    var landingAvisChatClose = document.getElementById('landingAvisChatClose');
+    var landingAvisSubmitBtn = document.getElementById('landingAvisSubmitBtn');
+    var landingAvisChatBody = document.getElementById('landingAvisChatBody');
+    var landingAvisChatForm = document.getElementById('landingAvisChatForm');
+
+    if (landingAvisOpenBtn && landingAvisChatBox) {
+        landingAvisOpenBtn.addEventListener('click', function() {
+            landingAvisChatBox.style.display = 'flex';
+        });
+    }
+    if (landingAvisChatClose && landingAvisChatBox) {
+        landingAvisChatClose.addEventListener('click', function() {
+            landingAvisChatBox.style.display = 'none';
+        });
+    }
+    if (landingAvisChatBox) {
+        landingAvisChatBox.addEventListener('click', function(e) {
+            if (e.target === landingAvisChatBox) landingAvisChatBox.style.display = 'none';
+        });
+    }
+    if (landingAvisSubmitBtn) {
+        landingAvisSubmitBtn.addEventListener('click', function() {
+            var nom = document.getElementById('landingAvisNom').value.trim();
+            var email = document.getElementById('landingAvisEmail').value.trim();
+            var message = document.getElementById('landingAvisMessage').value.trim();
+            if (!nom || !message) {
+                var errDiv = document.createElement('div');
+                errDiv.className = 'avis-bot-msg';
+                errDiv.textContent = 'Veuillez remplir votre nom et votre message.';
+                landingAvisChatBody.appendChild(errDiv);
+                return;
+            }
+            landingAvisSubmitBtn.disabled = true;
+            landingAvisSubmitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Envoi...';
+            var userDiv = document.createElement('div');
+            userDiv.className = 'avis-user-msg';
+            userDiv.textContent = message;
+            landingAvisChatBody.appendChild(userDiv);
+            fetch('{% url "soumettre_avis" %}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRFToken': (function(n){var v=null;document.cookie.split(';').forEach(function(c){c=c.trim();if(c.startsWith(n+'='))v=decodeURIComponent(c.substring(n.length+1));});return v;})('csrftoken')},
+                body: JSON.stringify({nom: nom, email: email, message: message, event_slug: 'landing'})
+            }).then(function(r){return r.json();}).then(function(data){
+                var botDiv = document.createElement('div');
+                botDiv.className = 'avis-bot-msg';
+                botDiv.textContent = data.success ? 'Merci ' + nom + '\u00a0! Votre avis a bien \u00e9t\u00e9 envoy\u00e9.' : ('Erreur\u00a0: ' + (data.error || 'Veuillez r\u00e9essayer.'));
+                landingAvisChatBody.appendChild(botDiv);
+                if (data.success) landingAvisChatForm.style.display = 'none';
+                else { landingAvisSubmitBtn.disabled = false; landingAvisSubmitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer'; }
+            }).catch(function(){
+                var botDiv = document.createElement('div');
+                botDiv.className = 'avis-bot-msg';
+                botDiv.textContent = 'Une erreur est survenue. Veuillez r\u00e9essayer.';
+                landingAvisChatBody.appendChild(botDiv);
+                landingAvisSubmitBtn.disabled = false;
+                landingAvisSubmitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer';
+            });
+        });
+    }
+
+    // ---- Partenariat modal ----
+    var landingPartenariatOpenBtn = document.getElementById('landingPartenariatOpenBtn');
+    var landingPartenariatModal = document.getElementById('landingPartenariatModal');
+    var landingPartenariatModalClose = document.getElementById('landingPartenariatModalClose');
+
+    if (landingPartenariatOpenBtn && landingPartenariatModal) {
+        landingPartenariatOpenBtn.addEventListener('click', function() {
+            landingPartenariatModal.style.display = 'block';
+        });
+    }
+    if (landingPartenariatModalClose && landingPartenariatModal) {
+        landingPartenariatModalClose.addEventListener('click', function() {
+            landingPartenariatModal.style.display = 'none';
+        });
+    }
+    if (landingPartenariatModal) {
+        landingPartenariatModal.addEventListener('click', function(e) {
+            if (e.target === landingPartenariatModal) landingPartenariatModal.style.display = 'none';
+        });
+    }
+});
+</script>
 
 <!-- Script pour le formulaire de téléchargement -->
 <script>
@@ -1052,7 +1279,7 @@ function toggleAtelier(card) {
         // Replace countdown with launch message
         const countdown = document.getElementById('heroCountdown');
         if (countdown) {
-            countdown.innerHTML = '<div style="animation:hcLaunchIn 1s ease forwards;"><div style="color:#00ff88;font-size:clamp(1.3rem,3vw,2rem);font-weight:900;text-shadow:0 0 30px rgba(0,255,136,0.5);">🎉 DounIA EST LANCÉ ! 🎉</div></div>';
+            countdown.innerHTML = '<div style="animation:hcLaunchIn 1s ease forwards;"><div style="color:#00ff88;font-size:clamp(1.3rem,3vw,2rem);font-weight:900;text-shadow:0 0 30px rgba(0,255,136,0.5);">La plateforme DounIA est disponible</div></div>';
         }
 
         // Update date text

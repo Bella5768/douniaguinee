@@ -2467,6 +2467,272 @@ html {
     }
 }
 
+/* ===== ENGAGE SECTION (Avis + Partenaire) ===== */
+.ev-engage-section {
+    padding: 5rem 0 2rem;
+    background: linear-gradient(180deg, #fffdf8 0%, #f5f8fc 100%);
+}
+.ev-engage-header { margin-bottom: 2.5rem; }
+.ev-engage-kicker {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: rgba(0,51,102,0.08);
+    color: #003366;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+}
+.ev-engage-card {
+    height: 100%;
+    min-height: 360px;
+    border-radius: 28px;
+    padding: 2.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+.ev-engage-card h3 {
+    font-size: clamp(1.55rem, 2.2vw, 2rem);
+    font-weight: 800;
+    margin: 1rem 0 0.9rem;
+}
+.ev-engage-card p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+.ev-engage-card-light {
+    background: linear-gradient(135deg, #f4f7fb 0%, #dfe7f1 100%) !important;
+    border: 1px solid rgba(0,51,102,0.12);
+    color: #16324f;
+    box-shadow: 0 20px 60px rgba(0,51,102,0.12);
+}
+.ev-engage-card-light::after {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,51,102,0.16) 0%, rgba(0,51,102,0) 70%);
+}
+.ev-engage-card-dark {
+    background: linear-gradient(135deg, #003366 0%, #0b2340 100%) !important;
+    color: #f7f4ee;
+    border: 1px solid rgba(160,160,160,0.18);
+    box-shadow: 0 24px 70px rgba(0,28,58,0.35);
+}
+.ev-engage-card-dark::after {
+    content: '';
+    position: absolute;
+    right: -30px; bottom: -30px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(160,160,160,0.22) 0%, rgba(160,160,160,0) 72%);
+}
+.ev-engage-card-light h3,
+.ev-engage-card-light p,
+.ev-engage-card-light .ev-engage-caption { position: relative; z-index: 1; }
+.ev-engage-card-dark h3,
+.ev-engage-card-dark p,
+.ev-engage-card-dark .ev-engage-caption-dark { position: relative; z-index: 1; }
+.ev-engage-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+    position: relative;
+    z-index: 1;
+}
+.ev-engage-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(0,51,102,0.1);
+    color: #003366;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+.ev-engage-pill-dark { background: rgba(255,255,255,0.12); color: #f4f7fb; }
+.ev-engage-caption { color: #5f6b7a; font-size: 0.92rem; }
+.ev-engage-caption-dark { color: rgba(255,255,255,0.76); }
+.ev-engage-icon-wrap {
+    width: 62px; height: 62px;
+    background: linear-gradient(135deg, #0077cc, #003366);
+    border-radius: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(0,51,102,0.25);
+    margin-bottom: 1.5rem;
+}
+.ev-engage-icon-wrap-dark { background: rgba(255,255,255,0.12); box-shadow: none; }
+.ev-engage-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: all .25s ease;
+    position: relative;
+    z-index: 1;
+}
+.ev-engage-btn:hover { transform: translateY(-2px); }
+.ev-engage-btn-primary {
+    background: #003366;
+    color: #ffffff;
+    box-shadow: 0 14px 30px rgba(0,51,102,0.24);
+}
+.ev-engage-btn-primary:hover { color: #ffffff; box-shadow: 0 18px 36px rgba(0,51,102,0.28); }
+.ev-engage-btn-secondary {
+    background: #ffffff;
+    color: #003366;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+.ev-engage-btn-secondary:hover { color: #003366; box-shadow: 0 18px 36px rgba(0,0,0,0.22); }
+@media (max-width: 767px) {
+    .ev-engage-section { padding: 4rem 0 1rem; }
+    .ev-engage-card { min-height: auto; padding: 1.5rem; }
+    .ev-engage-btn { width: 100%; }
+}
+
+/* ===== BOUTON FLOTTANT AVIS ===== */
+.avis-fab {
+    position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: linear-gradient(135deg, #003366, #0055a5);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 14px 24px; font-size: 1rem; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 25px rgba(0,51,102,.35);
+    cursor: pointer; transition: all .3s ease;
+}
+.avis-fab:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(0,51,102,.45); background: linear-gradient(135deg, #00254d, #003d7a); }
+.avis-fab i { font-size: 1.2rem; }
+
+/* ===== AVIS CHAT BOX ===== */
+.avis-chat-box {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(8,10,16,0.62); backdrop-filter: blur(4px);
+    padding: 20px; overflow-y: auto;
+}
+@keyframes avisChatSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.avis-modal-panel {
+    width: min(620px, 100%); margin: 18px auto;
+    background: linear-gradient(180deg, #003366 0%, #0a2544 100%);
+    border: 1px solid rgba(160,160,160,0.18); border-radius: 34px;
+    padding: 1.5rem 1.5rem 1.7rem; position: relative;
+    box-shadow: 0 28px 80px rgba(0,0,0,0.35); animation: avisChatSlideUp .3s ease;
+}
+.avis-chat-close {
+    position: absolute; top: 24px; right: 24px;
+    width: 54px; height: 54px; border: none; border-radius: 50%;
+    background: rgba(255,255,255,0.1); color: #fff; font-size: 1.2rem;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.avis-modal-badge {
+    display: inline-flex; align-items: center;
+    padding: 0.7rem 1rem; border-radius: 999px;
+    background: rgba(255,255,255,0.12); color: #fff;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 800; margin-bottom: 1.4rem;
+}
+.avis-modal-panel h3 {
+    color: #fff; font-size: clamp(1.7rem, 4vw, 2.7rem);
+    line-height: 1; font-weight: 900; margin-bottom: 1.5rem; max-width: 380px;
+}
+.avis-chat-body { margin-bottom: 1rem; }
+.avis-bot-msg {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 12px 16px; font-size: .92rem;
+    color: rgba(255,255,255,.92); margin-bottom: 8px;
+}
+.avis-user-msg {
+    background: rgba(255,255,255,0.14); color: #fff;
+    border-radius: 16px; padding: 12px 16px; font-size: .92rem;
+    margin-left: auto; margin-bottom: 8px; max-width: 90%; text-align: right;
+}
+.avis-chat-form { padding: 0; border-top: none; display: flex; flex-direction: column; gap: 14px; }
+.avis-label { display: block; margin-bottom: 0.6rem; color: rgba(255,255,255,0.82); text-transform: uppercase; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; }
+.avis-input {
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 18px;
+    padding: 0.85rem 1rem; font-size: 0.96rem; outline: none;
+    transition: border-color .2s; width: 100%;
+    background: rgba(255,255,255,0.08); color: #f8f4ef;
+}
+.avis-input::placeholder { color: rgba(248,244,239,0.35); }
+.avis-input:focus { border-color: rgba(160,160,160,0.7); box-shadow: 0 0 0 3px rgba(160,160,160,0.12); }
+.avis-textarea { resize: vertical; min-height: 120px; }
+.avis-submit-btn {
+    background: #fff; color: #003366; border: none; border-radius: 999px;
+    padding: 0.95rem 1.4rem; font-weight: 800; font-size: .95rem;
+    cursor: pointer; transition: all .2s ease; align-self: flex-start;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+.avis-submit-btn:hover { color: #003366; transform: translateY(-2px); box-shadow: 0 18px 36px rgba(0,0,0,0.22); }
+
+/* ===== PARTENARIAT MODAL ===== */
+.partenariat-modal {
+    position: fixed; inset: 0; z-index: 10020;
+    background: rgba(8,10,16,0.62); backdrop-filter: blur(4px);
+    padding: 20px; overflow-y: auto;
+}
+.partenariat-modal-panel {
+    width: min(620px, 100%); margin: 18px auto;
+    background: linear-gradient(180deg, #003366 0%, #0a2544 100%);
+    border: 1px solid rgba(160,160,160,0.18); border-radius: 34px;
+    padding: 1.5rem 1.5rem 1.7rem; position: relative;
+    box-shadow: 0 28px 80px rgba(0,0,0,0.35);
+}
+.partenariat-modal-close {
+    position: absolute; top: 24px; right: 24px;
+    width: 54px; height: 54px; border: none; border-radius: 50%;
+    background: rgba(255,255,255,0.1); color: #fff; font-size: 1.2rem;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.partenariat-modal-badge {
+    display: inline-flex; align-items: center;
+    padding: 0.7rem 1rem; border-radius: 999px;
+    background: rgba(255,255,255,0.12); color: #fff;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 800; margin-bottom: 1.4rem;
+}
+.partenariat-modal-panel h3 {
+    color: #fff; font-size: clamp(1.7rem, 4vw, 2.7rem);
+    line-height: 1; font-weight: 900; margin-bottom: 1.5rem; max-width: 320px;
+}
+.partenariat-label { display: block; margin-bottom: 0.6rem; color: rgba(255,255,255,0.82); text-transform: uppercase; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; }
+.partenariat-input {
+    width: 100%; border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.08); color: #f8f4ef;
+    padding: 0.85rem 1rem; outline: none; font-size: 0.96rem;
+}
+.partenariat-input::placeholder { color: rgba(248,244,239,0.35); }
+.partenariat-input:focus { border-color: rgba(160,160,160,0.7); box-shadow: 0 0 0 3px rgba(160,160,160,0.12); }
+.partenariat-select { appearance: auto; background-color: rgba(255,255,255,0.08); color: #f8f4ef; color-scheme: dark; }
+.partenariat-select option { background: #0a2544; color: #f8f4ef; }
+.partenariat-select option:first-child { color: rgba(248,244,239,0.7); }
+.partenariat-textarea { min-height: 120px; resize: vertical; }
+.partenariat-actions { margin-top: 1.1rem; }
+.partenariat-actions .ev-engage-btn-secondary:hover { color: #003366; box-shadow: 0 18px 36px rgba(0,0,0,0.22); }
+
 /* ---- Scrollbar Custom ---- */
 ::-webkit-scrollbar {
     width: 8px;

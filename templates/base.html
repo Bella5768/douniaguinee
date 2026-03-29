@@ -110,12 +110,24 @@
                 <div class="col-lg-4">
                     <h5>DounIA</h5>
                     <p class="small">{{ config.footer_description }}</p>
+                    <div class="d-flex gap-3 mt-3">
+                        {% if config.lien_twitter %}<a href="{{ config.lien_twitter }}" class="fs-5" target="_blank" rel="noopener" title="Twitter / X"><i class="bi bi-twitter-x"></i></a>{% else %}<a href="#" class="fs-5 text-white-50"><i class="bi bi-twitter-x"></i></a>{% endif %}
+                        {% if config.lien_linkedin %}<a href="{{ config.lien_linkedin }}" class="fs-5" target="_blank" rel="noopener" title="LinkedIn"><i class="bi bi-linkedin"></i></a>{% else %}<a href="#" class="fs-5 text-white-50"><i class="bi bi-linkedin"></i></a>{% endif %}
+                        {% if config.lien_facebook %}<a href="{{ config.lien_facebook }}" class="fs-5" target="_blank" rel="noopener" title="Facebook"><i class="bi bi-facebook"></i></a>{% else %}<a href="#" class="fs-5 text-white-50"><i class="bi bi-facebook"></i></a>{% endif %}
+                        {% if config.lien_youtube %}<a href="{{ config.lien_youtube }}" class="fs-5" target="_blank" rel="noopener" title="YouTube"><i class="bi bi-youtube"></i></a>{% else %}<a href="#" class="fs-5 text-white-50"><i class="bi bi-youtube"></i></a>{% endif %}
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <h5>Navigation</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-1"><a href="{% url 'restitution_page' %}"><i class="bi bi-chevron-right me-1"></i>Restitution</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#hero"><i class="bi bi-chevron-right me-1"></i>Accueil</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#about"><i class="bi bi-chevron-right me-1"></i>À propos</a></li>
                         <li class="mb-1"><a href="{% url 'landing_page' %}#ateliers"><i class="bi bi-chevron-right me-1"></i>Ateliers thématiques</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#evenements"><i class="bi bi-chevron-right me-1"></i>Événements</a></li>
+                        <li class="mb-1"><a href="{% url 'event_page' 'dounia1' %}"><i class="bi bi-chevron-right me-1"></i>DounIA<sup>1</sup></a></li>
+                        <li class="mb-1"><a href="{% url 'event_page' 'dounia2' %}"><i class="bi bi-chevron-right me-1"></i>DounIA<sup>2</sup></a></li>
+                        <li class="mb-1"><a href="{% url 'restitution_page' %}"><i class="bi bi-chevron-right me-1"></i>Restitution</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}#podcast"><i class="bi bi-chevron-right me-1"></i>Podcast</a></li>
                         <li class="mb-1"><a href="{% url 'landing_page' %}#inscription"><i class="bi bi-chevron-right me-1"></i>S'inscrire</a></li>
                     </ul>
                 </div>
@@ -123,15 +135,14 @@
                     <h5>Contact</h5>
                     <ul class="list-unstyled small">
                         <li class="mb-2"><i class="bi bi-telephone me-2"></i><a href="tel:+224621057698" class="text-white-50 text-decoration-none">+224 621 057 698</a></li>
-                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>{{ config.footer_email }}</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>
+                            {% if config.footer_email %}
+                            <a href="mailto:{{ config.footer_email }}" class="text-white-50 text-decoration-none">{{ config.footer_email }}</a>
+                            {% endif %}
+                        </li>
                         <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>{{ config.footer_lieu }}</li>
+                        <li class="mb-2"><i class="bi bi-globe me-2"></i><a href="{% url 'landing_page' %}" class="text-white-50 text-decoration-none">dounia.org</a></li>
                     </ul>
-                    <div class="d-flex gap-3 mt-3">
-                        <a href="#" class="fs-5"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="fs-5"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="fs-5"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="fs-5"><i class="bi bi-youtube"></i></a>
-                    </div>
                 </div>
             </div>
             <div class="footer-bottom text-center">
