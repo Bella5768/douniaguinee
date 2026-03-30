@@ -65,17 +65,48 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 }
 </style>
 
+<style>
+#splashEnterBtn {
+    margin-top: 0.5rem;
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem; font-weight: 700; letter-spacing: 0.08em;
+    background: #00ff88; color: #001833;
+    border: none; border-radius: 50px; cursor: pointer;
+    box-shadow: 0 0 30px rgba(0,255,136,0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+#splashEnterBtn:hover { transform: scale(1.06); box-shadow: 0 0 45px rgba(0,255,136,0.6); }
+#splashCounterBlock { display: none; flex-direction: column; align-items: center; gap: 1rem; }
+</style>
+
 <div id="splashOverlay">
     {% if config.logo %}
     <img id="splashLogo" src="{{ config.logo.url }}" alt="DounIA">
     {% else %}
     <div id="splashLogoText">DounIA</div>
     {% endif %}
-    <div id="splashNum">20</div>
-    <div id="splashBar"><div id="splashBarFill"></div></div>
-    <div id="splashLabel">Le site s'ouvre dans <strong id="splashSec">20</strong>s</div>
+
+    <!-- Bouton d'entrée (affiché au départ) -->
+    <div id="splashEnterBlock" style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+        <div style="color:rgba(255,255,255,0.7);font-size:1rem;">Prêt à découvrir DounIA ?</div>
+        <button id="splashEnterBtn" onclick="splashStart()">▶ Entrer</button>
+    </div>
+
+    <!-- Bloc compteur (caché au départ) -->
+    <div id="splashCounterBlock">
+        <div id="splashNum" style="font-size:clamp(5rem,18vw,9rem);font-weight:900;color:#fff;line-height:1;text-shadow:0 0 60px rgba(0,255,136,0.5);transition:transform 0.15s ease;min-width:1.2ch;text-align:center;">20</div>
+        <div id="splashBar" style="width:min(340px,80vw);height:6px;background:rgba(255,255,255,0.15);border-radius:99px;overflow:hidden;">
+            <div id="splashBarFill" style="height:100%;width:0%;background:#00ff88;border-radius:99px;transition:width 0.9s linear;"></div>
+        </div>
+        <div id="splashLabel" style="color:rgba(255,255,255,0.6);font-size:1rem;letter-spacing:0.05em;">Le site s'ouvre dans <strong id="splashSec">20</strong>s</div>
+    </div>
 </div>
 <div id="stickerLayer"></div>
+
+<!-- Audio jungle (chargé silencieusement) -->
+<audio id="splashAudio" loop preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-forest-ambience-1209.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 (function() {
@@ -86,25 +117,45 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     var secEl  = document.getElementById('splashSec');
     var splash = document.getElementById('splashOverlay');
     var layer  = document.getElementById('stickerLayer');
+    var audio  = document.getElementById('splashAudio');
     var EMOJIS = ['🎉','🌟','✨','🎊','💫','🚀','🌍','💡','🤖','🏆','🎯','🌈','🔥','💎','🎶'];
+    var timer;
 
-    function tick() {
-        n--;
-        numEl.textContent = n;
-        secEl.textContent = n;
-        barEl.style.width = ((20 - n) / 20 * 100) + '%';
-        // pop effect
-        numEl.classList.remove('pop');
-        void numEl.offsetWidth;
-        numEl.classList.add('pop');
-        setTimeout(function(){ numEl.classList.remove('pop'); }, 180);
-        if (n <= 0) {
-            clearInterval(timer);
-            reveal();
-        }
-    }
+    window.splashStart = function() {
+        // Cacher bouton, afficher compteur
+        document.getElementById('splashEnterBlock').style.display = 'none';
+        var cb = document.getElementById('splashCounterBlock');
+        cb.style.display = 'flex';
+
+        // Lancer l'audio jungle
+        audio.volume = 0.6;
+        audio.play().catch(function(){});
+
+        // Démarrer le décompte
+        barEl.style.width = '0%';
+        timer = setInterval(function() {
+            n--;
+            numEl.textContent = n;
+            secEl.textContent = n;
+            barEl.style.width = ((20 - n) / 20 * 100) + '%';
+            numEl.classList.remove('pop');
+            void numEl.offsetWidth;
+            numEl.classList.add('pop');
+            setTimeout(function(){ numEl.classList.remove('pop'); }, 180);
+            if (n <= 0) {
+                clearInterval(timer);
+                reveal();
+            }
+        }, 1000);
+    };
 
     function reveal() {
+        // Arrêter l'audio progressivement
+        var fadeOut = setInterval(function() {
+            if (audio.volume > 0.05) { audio.volume = Math.max(0, audio.volume - 0.08); }
+            else { clearInterval(fadeOut); audio.pause(); audio.currentTime = 0; }
+        }, 80);
+
         splash.classList.add('hiding');
         setTimeout(function() {
             splash.style.display = 'none';
@@ -131,10 +182,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
         }
         setTimeout(function(){ layer.style.display='none'; }, 16000);
     }
-
-    // Initialise bar à 0%
-    barEl.style.width = '0%';
-    var timer = setInterval(tick, 1000);
 })();
 </script>
 
