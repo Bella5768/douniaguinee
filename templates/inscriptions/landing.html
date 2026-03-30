@@ -53,10 +53,11 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     pointer-events: none; z-index: 999998; overflow: hidden;
 }
 .stk {
-    position: absolute; top: -80px;
-    font-size: clamp(0.9rem, 2vw, 1.4rem);
+    position: absolute; top: -40px;
+    width: 10px; height: 10px;
+    border-radius: 2px;
     animation: stkFall linear forwards;
-    user-select: none;
+    user-select: none; pointer-events: none;
 }
 @keyframes stkFall {
     0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
@@ -124,7 +125,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     var splash = document.getElementById('splashOverlay');
     var layer  = document.getElementById('stickerLayer');
     var audio  = document.getElementById('splashAudio');
-    var EMOJIS = ['🎉','🌟','✨','🎊','💫','🚀','🌍','💡','🤖','🏆','🎯','🌈','🔥','💎','🎶'];
+    var COLORS = ['#00ff88','#003366','#FFD700','#FF4C4C','#00BFFF','#FF69B4','#A0A0A0','#FFFFFF','#FFA500','#7CFC00','#FF6347','#00CED1','#9370DB','#FF1493','#32CD32'];
     var timer;
 
     window.splashStart = function() {
@@ -177,7 +178,10 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                 setTimeout(function() {
                     var el = document.createElement('div');
                     el.className = 'stk';
-                    el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+                    var size = (Math.random() * 8 + 6) + 'px';
+                    el.style.width = size; el.style.height = size;
+                    el.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
+                    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
                     var dur = (Math.random() * 4 + 5).toFixed(2);
                     el.style.left = (Math.random() * 100) + '%';
                     el.style.animationDuration = dur + 's';
