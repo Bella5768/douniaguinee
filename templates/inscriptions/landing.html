@@ -104,9 +104,13 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 <div id="stickerLayer"></div>
 
 <!-- Audio jungle (chargé silencieusement) -->
-{% if config.splash_audio_url %}
+{% if config.splash_audio_file or config.splash_audio_url %}
 <audio id="splashAudio" loop preload="auto">
+    {% if config.splash_audio_file %}
+    <source src="{{ config.splash_audio_file.url }}" type="audio/mpeg">
+    {% elif config.splash_audio_url %}
     <source src="{{ config.splash_audio_url }}" type="audio/mpeg">
+    {% endif %}
 </audio>
 {% endif %}
 
