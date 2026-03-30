@@ -543,6 +543,10 @@ class SiteConfiguration(models.Model):
     porteur2_description = models.CharField(max_length=300, default='Académie des Sciences de Guinée', verbose_name='Porteur 2 — Description')
     porteur2_logo = models.ImageField(upload_to='porteurs/', blank=True, null=True, verbose_name='Porteur 2 — Logo')
 
+    # SPLASH SCREEN
+    splash_duree = models.PositiveIntegerField(default=20, verbose_name='Splash — Durée du décompte (secondes)')
+    splash_audio_url = models.URLField(max_length=500, blank=True, default='https://assets.mixkit.co/sfx/preview/mixkit-forest-ambience-1209.mp3', verbose_name='Splash — URL audio jungle')
+
     # COMPTE À REBOURS (lancement du site)
     date_lancement_site = models.DateTimeField(null=True, blank=True, verbose_name="Date de lancement du site (compte à rebours hero)")
 

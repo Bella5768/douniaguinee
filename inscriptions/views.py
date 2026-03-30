@@ -2023,6 +2023,13 @@ def admin_edit_section(request, section):
                 {'name': 'date_lancement_site', 'label': 'Date de lancement du site', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_datetime': True, 'help_text': "Date et heure du lancement officiel. Le compte à rebours s'affichera dans le hero. Laissez vide pour désactiver."},
             ],
         },
+        'splash': {
+            'titre': 'Écran de chargement (Splash)',
+            'fields': [
+                {'name': 'splash_duree', 'label': 'Durée du décompte (secondes)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Nombre de secondes du décompte avant l\'ouverture du site. Ex: 20'},
+                {'name': 'splash_audio_url', 'label': 'URL du son jungle (MP3)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'Lien direct vers un fichier MP3 à jouer pendant le décompte. Laissez vide pour désactiver le son.'},
+            ],
+        },
         'footer': {
             'titre': 'Footer',
             'fields': [
