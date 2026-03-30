@@ -71,16 +71,16 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     {% else %}
     <div id="splashLogoText">DounIA</div>
     {% endif %}
-    <div id="splashNum">10</div>
+    <div id="splashNum">20</div>
     <div id="splashBar"><div id="splashBarFill"></div></div>
-    <div id="splashLabel">Le site s'ouvre dans <strong id="splashSec">10</strong>s</div>
+    <div id="splashLabel">Le site s'ouvre dans <strong id="splashSec">20</strong>s</div>
 </div>
 <div id="stickerLayer"></div>
 
 <script>
 (function() {
     document.documentElement.classList.add('splash-active');
-    var n = 10;
+    var n = 20;
     var numEl  = document.getElementById('splashNum');
     var barEl  = document.getElementById('splashBarFill');
     var secEl  = document.getElementById('splashSec');
@@ -92,7 +92,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
         n--;
         numEl.textContent = n;
         secEl.textContent = n;
-        barEl.style.width = ((10 - n) / 10 * 100) + '%';
+        barEl.style.width = ((20 - n) / 20 * 100) + '%';
         // pop effect
         numEl.classList.remove('pop');
         void numEl.offsetWidth;
