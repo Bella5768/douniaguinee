@@ -114,22 +114,22 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     }
 
     function launchStickers() {
-        for (var i = 0; i < 200; i++) {
+        for (var i = 0; i < 350; i++) {
             (function(i) {
                 setTimeout(function() {
                     var el = document.createElement('div');
                     el.className = 'stk';
                     el.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-                    var dur = (Math.random() * 2.5 + 2).toFixed(2);
+                    var dur = (Math.random() * 4 + 5).toFixed(2);
                     el.style.left = (Math.random() * 100) + '%';
                     el.style.animationDuration = dur + 's';
-                    el.style.animationDelay = (Math.random() * 1.2).toFixed(2) + 's';
+                    el.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
                     layer.appendChild(el);
                     setTimeout(function(){ if(el.parentNode) el.remove(); }, (parseFloat(dur)+1.5)*1000);
                 }, i * 55);
             })(i);
         }
-        setTimeout(function(){ layer.style.display='none'; }, 9000);
+        setTimeout(function(){ layer.style.display='none'; }, 16000);
     }
 
     // Initialise bar à 0%
