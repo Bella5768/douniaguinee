@@ -2074,6 +2074,7 @@ def admin_edit_section(request, section):
         return redirect('admin_contenu_page')
 
     if request.method == 'POST':
+        alignments = dict(config.text_alignments or {})
         for field in section_def['fields']:
             name = field['name']
             if field.get('is_file') or field.get('is_image') or field.get('is_video'):
@@ -2098,11 +2099,18 @@ def admin_edit_section(request, section):
                         pass
                 else:
                     setattr(config, name, value)
+                if field.get('is_textarea'):
+                    align_val = request.POST.get(name + '__align', 'left')
+                    if align_val in ('left', 'center', 'right'):
+                        alignments[name] = align_val
+        config.text_alignments = alignments
         config.save()
         messages.success(request, f'Section "{section_def["titre"]}" mise à jour avec succès')
         return redirect('admin_contenu_page')
 
     # Build fields_data with current values
+    _align_choices = [('left', 'Gauche'), ('center', 'Centré'), ('right', 'Droite')]
+    _alignments = config.text_alignments or {}
     fields_data = []
     for field in section_def['fields']:
         fd = dict(field)
@@ -2113,6 +2121,9 @@ def admin_edit_section(request, section):
             fd['value'] = val
         if 'help_text' not in fd:
             fd['help_text'] = ''
+        if field.get('is_textarea'):
+            fd['align_value'] = _alignments.get(field['name'], 'left')
+            fd['align_choices'] = _align_choices
         fields_data.append(fd)
 
     context = {

@@ -528,6 +528,9 @@ class SiteConfiguration(models.Model):
     calendrier_titre = models.CharField(max_length=200, default='Calendrier des Ateliers', verbose_name='Landing — Calendrier titre')
     calendrier_sous_titre = models.TextField(default='Planification détaillée de chaque atelier thématique — Octobre 2026', verbose_name='Landing — Calendrier sous-titre')
 
+    # ALIGNEMENTS PAR CHAMP (stockage JSON — clé = nom du champ, valeur = 'left'/'center'/'right')
+    text_alignments = models.JSONField(default=dict, blank=True, verbose_name='Alignements de texte par champ')
+
     # ALIGNEMENTS PAR SECTION
     ALIGN_CHOICES = [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')]
     about_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='À propos — Alignement du texte')

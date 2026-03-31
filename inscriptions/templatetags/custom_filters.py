@@ -76,6 +76,14 @@ def question_linebreak(value):
 
 
 @register.filter
+def get_align(alignments_dict, field_name):
+    """Retourne l'alignement d'un champ depuis le dict text_alignments"""
+    if not alignments_dict:
+        return 'left'
+    return alignments_dict.get(field_name, 'left')
+
+
+@register.filter
 def phrases_br(value):
     """Insère <br><br> après chaque point de fin de phrase (. suivi d'espace ou de majuscule)"""
     s = str(value or '')

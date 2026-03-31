@@ -69,6 +69,20 @@
                             <div class="form-text">Uploadez une image depuis votre ordinateur, tablette ou téléphone. Laisser vide pour garder l'image actuelle.</div>
                             {% elif field.is_textarea %}
                             <textarea class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" rows="{% if 'about_' in field.name %}{% if '_texte' in field.name %}8{% else %}6{% endif %}{% else %}4{% endif %}">{{ field.value }}</textarea>
+                            <div class="d-flex align-items-center gap-1 mt-1">
+                                <small class="text-muted me-1" style="font-size:.78rem;">Alignement :</small>
+                                {% for av, al in field.align_choices %}
+                                <label class="field-align-btn {% if field.align_value == av %}active{% endif %}" title="{{ al }}" style="cursor:pointer;margin:0;">
+                                    <input type="radio" name="{{ field.name }}__align" value="{{ av }}" {% if field.align_value == av %}checked{% endif %} style="display:none;" onchange="this.closest('.d-flex').querySelectorAll('.field-align-btn').forEach(b=>b.classList.remove('active'));this.closest('.field-align-btn').classList.add('active')">
+                                    {% if av == 'left' %}<i class="bi bi-text-left"></i>{% elif av == 'center' %}<i class="bi bi-text-center"></i>{% elif av == 'right' %}<i class="bi bi-text-right"></i>{% endif %}
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <style>
+                            .field-align-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;border:1.5px solid #dee2e6;background:#f8f9fa;font-size:.85rem;transition:all .15s;}
+                            .field-align-btn.active{border-color:#003366;background:#003366;color:#fff;}
+                            .field-align-btn:not(.active):hover{border-color:#003366;color:#003366;}
+                            </style>
                             {% elif field.is_url %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
                             {% elif field.is_datetime %}
