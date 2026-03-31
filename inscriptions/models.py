@@ -489,6 +489,7 @@ class SiteConfiguration(models.Model):
     podcast_fichier = models.FileField(upload_to='podcasts/', blank=True, null=True, verbose_name='Fichier audio du podcast (MP3/WAV)')
     podcast_video = models.FileField(upload_to='podcasts/', blank=True, null=True, verbose_name='Vidéo du podcast (MP4)')
     podcast_video_url = models.URLField(max_length=500, blank=True, default='', verbose_name='URL vidéo du podcast (YouTube, etc.)')
+    podcast_youtube_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Chaîne YouTube CSIG (lien vers la chaîne ou playlist)')
 
     # GALERIE VIDÉOS
     galerie_videos_titre = models.CharField(max_length=200, default='Podcast', verbose_name='Galerie vidéos — Titre')

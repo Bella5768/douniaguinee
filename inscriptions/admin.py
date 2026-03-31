@@ -417,7 +417,7 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
         }),
         ('Podcast', {
             'fields': (
-                'podcast_titre', 'podcast_description', 'podcast_lien', 'podcast_fichier'
+                'podcast_titre', 'podcast_description', 'podcast_lien', 'podcast_fichier', 'podcast_youtube_url'
             ),
             'classes': ('collapse',)
         }),
