@@ -1955,9 +1955,10 @@ def admin_edit_section(request, section):
             ],
         },
         'galerie_videos': {
-            'titre': 'Galerie Vidéos',
+            'titre': 'Galerie Vidéos (Podcast)',
             'fields': [
                 {'name': 'galerie_videos_titre', 'label': 'Titre de la section', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'podcast_youtube_url', 'label': 'Lien YouTube CSIG (bouton "Voir plus")', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'URL de la chaîne YouTube CSIG. Ex: https://www.youtube.com/@csig-guinee'},
                 {'name': 'galerie_video_1', 'label': 'Vidéo 1 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
                 {'name': 'galerie_video_2', 'label': 'Vidéo 2 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
                 {'name': 'galerie_video_3', 'label': 'Vidéo 3 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
