@@ -393,7 +393,13 @@ def landing_page(request):
         'hero': [img.get_image_url() for img in hero_images],
         'stats': [img.get_image_url() for img in stats_images],
     }
-    
+
+    try:
+        from .models import RestitutionImage
+        galerie_images = list(RestitutionImage.objects.filter(active=True, position='galerie').order_by('ordre', 'date_ajout'))
+    except Exception:
+        galerie_images = []
+
     try:
         evenement_dounia1 = get_evenement_data('dounia1')
     except OperationalError:
@@ -430,6 +436,7 @@ def landing_page(request):
         'hero_bg_images': hero_bg_images,
         'stats_images': stats_images,
         'bg_images_json': bg_images_json,
+        'galerie_images': galerie_images,
     }
     return render(request, 'inscriptions/landing.html', context)
 

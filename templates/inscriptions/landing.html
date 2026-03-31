@@ -837,6 +837,50 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     </div>
 </section>
 
+<!-- ============ GALERIE PHOTOS ============ -->
+{% if galerie_images %}
+<section id="galerie" style="padding:4rem 0;background:#f8f9fb;">
+    <div class="container">
+        <div class="text-center fade-in-up">
+            <h2 class="section-title">Galerie</h2>
+            <hr class="section-divider">
+        </div>
+        <div class="row justify-content-center fade-in-up">
+            <div class="col-lg-10">
+                <div id="landingGalerie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="false">
+                    <div class="carousel-indicators">
+                        {% for img in galerie_images %}
+                        <button type="button" data-bs-target="#landingGalerie" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner" style="border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.12);">
+                        {% for img in galerie_images %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ img.get_image_url }}?t={{ img.date_ajout|date:'U' }}" alt="{{ img.titre }}" style="width:100%;height:480px;object-fit:cover;">
+                            {% if img.titre or img.description %}
+                            <div class="carousel-caption d-none d-md-block" style="background:linear-gradient(transparent,rgba(0,0,0,.55));border-radius:0;left:0;right:0;bottom:0;padding:2rem 1.5rem 1.5rem;">
+                                {% if img.titre %}<h5 class="mb-1">{{ img.titre }}</h5>{% endif %}
+                                {% if img.description %}<p class="mb-0 small">{{ img.description }}</p>{% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#landingGalerie" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Précédent</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#landingGalerie" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Suivant</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- ============ SECTION 12 : PORTEURS & PARTENAIRES ============ -->
 <section id="partenaires" class="partners-section">
     <div class="container">
