@@ -222,10 +222,12 @@ class Restitution(models.Model):
     rapport_synthese_titre = models.CharField(max_length=200, default="Rapport Synthétique")
     rapport_synthese_description = models.TextField(default="Rapport complet présentant les conclusions et recommandations des ateliers DounIA.")
     rapport_synthese_fichier = models.FileField(upload_to='rapports/', blank=True, null=True)
+    rapport_synthese_lien = models.URLField(blank=True, default='', verbose_name='Lien externe rapport synthèse (Google Drive, Dropbox…)')
     
     rapport_detail_titre = models.CharField(max_length=200, default="Recommandations Détaillées")
     rapport_detail_description = models.TextField(default="Document détaillé avec l'ensemble des recommandations par atelier thématique.")
     rapport_detail_fichier = models.FileField(upload_to='rapports/', blank=True, null=True)
+    rapport_detail_lien = models.URLField(blank=True, default='', verbose_name='Lien externe rapport détaillé (Google Drive, Dropbox…)')
     
     # Section chronologie
     chronologie = models.JSONField(default=list, blank=True, help_text="Liste des événements de la chronologie")
