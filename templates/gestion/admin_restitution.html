@@ -726,32 +726,12 @@
                                           rows="3">{{ restitution.rapport_synthese_description }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="rapport_synthese_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted">— prioritaire sur l'upload</small></label>
+                                <label for="rapport_synthese_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted"></small></label>
                                 <input type="url" class="form-control" id="rapport_synthese_lien" name="rapport_synthese_lien"
                                        placeholder="https://drive.google.com/..."
                                        value="{{ restitution.rapport_synthese_lien }}">
                                 {% if restitution.rapport_synthese_lien %}
                                 <div class="small mt-1"><a href="{{ restitution.rapport_synthese_lien }}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Tester le lien</a></div>
-                                {% endif %}
-                            </div>
-                            <div class="mb-3">
-                                <label for="rapport_synthese_fichier" class="form-label"><i class="bi bi-cloud-upload me-1"></i>Ou uploader un fichier</label>
-                                <div class="file-upload">
-                                    <input type="file" class="form-control" id="rapport_synthese_fichier" name="rapport_synthese_fichier" 
-                                           accept=".pdf,.doc,.docx" style="display: none;">
-                                    <label for="rapport_synthese_fichier" class="mb-0">
-                                        <i class="bi bi-cloud-upload me-2"></i>
-                                        Cliquez pour télécharger un fichier
-                                    </label>
-                                </div>
-                                {% if restitution.rapport_synthese_fichier %}
-                                    <div class="file-info">
-                                        <i class="bi bi-file-earmark me-1"></i>
-                                        {{ restitution.rapport_synthese_fichier.name }}
-                                        <a href="{{ restitution.rapport_synthese_fichier.url }}" class="btn btn-sm btn-outline-primary ms-2" target="_blank">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                    </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -768,32 +748,12 @@
                                           rows="3">{{ restitution.rapport_detail_description }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="rapport_detail_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted">— prioritaire sur l'upload</small></label>
+                                <label for="rapport_detail_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted"></small></label>
                                 <input type="url" class="form-control" id="rapport_detail_lien" name="rapport_detail_lien"
                                        placeholder="https://drive.google.com/..."
                                        value="{{ restitution.rapport_detail_lien }}">
                                 {% if restitution.rapport_detail_lien %}
                                 <div class="small mt-1"><a href="{{ restitution.rapport_detail_lien }}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Tester le lien</a></div>
-                                {% endif %}
-                            </div>
-                            <div class="mb-3">
-                                <label for="rapport_detail_fichier" class="form-label"><i class="bi bi-cloud-upload me-1"></i>Ou uploader un fichier</label>
-                                <div class="file-upload">
-                                    <input type="file" class="form-control" id="rapport_detail_fichier" name="rapport_detail_fichier" 
-                                           accept=".pdf,.doc,.docx" style="display: none;">
-                                    <label for="rapport_detail_fichier" class="mb-0">
-                                        <i class="bi bi-cloud-upload me-2"></i>
-                                        Cliquez pour télécharger un fichier
-                                    </label>
-                                </div>
-                                {% if restitution.rapport_detail_fichier %}
-                                    <div class="file-info">
-                                        <i class="bi bi-file-earmark me-1"></i>
-                                        {{ restitution.rapport_detail_fichier.name }}
-                                        <a href="{{ restitution.rapport_detail_fichier.url }}" class="btn btn-sm btn-outline-primary ms-2" target="_blank">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                    </div>
                                 {% endif %}
                             </div>
                         </div>
