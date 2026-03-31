@@ -942,6 +942,33 @@
 </section>
 {% endif %}
 
+<!-- VIDÉO DE PRÉSENTATION -->
+{% if config.video_fichier or config.video_lien %}
+<section id="video" style="padding:4rem 0;background:#fff;">
+    <div class="container">
+        <div class="text-center fade-in-up mb-4">
+            <h2 class="section-title" style="color:#003366;">{{ config.video_titre|default:"Vidéo de présentation" }}</h2>
+            <hr style="width:60px;height:3px;background:linear-gradient(90deg,#003366,#0080ff);border:none;border-radius:2px;margin:0.5rem auto 0;">
+            <p class="section-subtitle mt-3">{{ config.video_sous_titre|default:"Découvrez DounIA en vidéo" }}</p>
+        </div>
+        <div class="row justify-content-center fade-in-up">
+            <div class="col-lg-10">
+                {% if config.video_fichier %}
+                <video autoplay loop muted playsinline controls class="w-100" style="border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+                    <source src="{{ config.video_fichier.url }}" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                {% elif config.video_lien %}
+                <div class="ratio ratio-16x9" style="border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+                    <iframe src="{{ config.video_embed_url }}" title="{{ config.video_titre }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 <!-- GALERIE DÉFILANTE -->
 {% if images %}
 <section class="ev-gallery">
@@ -990,33 +1017,6 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- VIDÉO DE PRÉSENTATION -->
-{% if config.video_fichier or config.video_lien %}
-<section id="video" style="padding:4rem 0;background:#fff;">
-    <div class="container">
-        <div class="text-center fade-in-up mb-4">
-            <h2 class="section-title" style="color:#003366;">{{ config.video_titre|default:"Vidéo de présentation" }}</h2>
-            <hr style="width:60px;height:3px;background:linear-gradient(90deg,#003366,#0080ff);border:none;border-radius:2px;margin:0.5rem auto 0;">
-            <p class="section-subtitle mt-3">{{ config.video_sous_titre|default:"Découvrez DounIA en vidéo" }}</p>
-        </div>
-        <div class="row justify-content-center fade-in-up">
-            <div class="col-lg-10">
-                {% if config.video_fichier %}
-                <video autoplay loop muted playsinline controls class="w-100" style="border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
-                    <source src="{{ config.video_fichier.url }}" type="video/mp4">
-                    Votre navigateur ne supporte pas la lecture vidéo.
-                </video>
-                {% elif config.video_lien %}
-                <div class="ratio ratio-16x9" style="border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
-                    <iframe src="{{ config.video_embed_url }}" title="{{ config.video_titre }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                {% endif %}
-            </div>
         </div>
     </div>
 </section>
