@@ -839,6 +839,16 @@ def event_page(request, event_slug):
     from .models import Expert
     experts = Expert.objects.all().order_by('ordre')
 
+    # Fallback galerie : si aucune image galerie spécifique à l'événement, utiliser les RestitutionImage
+    if not images:
+        try:
+            from .models import RestitutionImage
+            images = list(
+                RestitutionImage.objects.filter(active=True, position='galerie').order_by('ordre', 'date_ajout')
+            )
+        except Exception:
+            images = []
+
     context = {
         'evenement': event,
         'hero_images': hero_images,
