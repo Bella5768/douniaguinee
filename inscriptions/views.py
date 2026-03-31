@@ -1662,10 +1662,6 @@ def admin_restitution(request):
         restitution.cta_titre = request.POST.get('cta_titre', restitution.cta_titre)
         restitution.cta_description = request.POST.get('cta_description', restitution.cta_description)
         
-        # Gestion des liens externes rapports
-        restitution.rapport_synthese_lien = request.POST.get('rapport_synthese_lien', restitution.rapport_synthese_lien)
-        restitution.rapport_detail_lien = request.POST.get('rapport_detail_lien', restitution.rapport_detail_lien)
-
         # Gestion des fichiers
         if 'rapport_synthese_fichier' in request.FILES:
             restitution.rapport_synthese_fichier = request.FILES['rapport_synthese_fichier']

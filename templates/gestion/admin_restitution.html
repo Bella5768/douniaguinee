@@ -726,13 +726,8 @@
                                           rows="3">{{ restitution.rapport_synthese_description }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="rapport_synthese_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted"></small></label>
-                                <input type="url" class="form-control" id="rapport_synthese_lien" name="rapport_synthese_lien"
-                                       placeholder="https://drive.google.com/..."
-                                       value="{{ restitution.rapport_synthese_lien }}">
-                                {% if restitution.rapport_synthese_lien %}
-                                <div class="small mt-1"><a href="{{ restitution.rapport_synthese_lien }}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Tester le lien</a></div>
-                                {% endif %}
+                                <label for="rapport_synthese_fichier" class="form-label">Fichier Rapport Synthèse</label>
+                                <input type="file" class="form-control" id="rapport_synthese_fichier" name="rapport_synthese_fichier">
                             </div>
                         </div>
                         
@@ -748,13 +743,8 @@
                                           rows="3">{{ restitution.rapport_detail_description }}</textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="rapport_detail_lien" class="form-label"><i class="bi bi-link-45deg me-1"></i>Lien externe (Google Drive, Dropbox…) <small class="text-muted"></small></label>
-                                <input type="url" class="form-control" id="rapport_detail_lien" name="rapport_detail_lien"
-                                       placeholder="https://drive.google.com/..."
-                                       value="{{ restitution.rapport_detail_lien }}">
-                                {% if restitution.rapport_detail_lien %}
-                                <div class="small mt-1"><a href="{{ restitution.rapport_detail_lien }}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Tester le lien</a></div>
-                                {% endif %}
+                                <label for="rapport_detail_fichier" class="form-label">Fichier Rapport Détaillé</label>
+                                <input type="file" class="form-control" id="rapport_detail_fichier" name="rapport_detail_fichier">
                             </div>
                         </div>
                     </div>
