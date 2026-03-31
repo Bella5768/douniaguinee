@@ -573,15 +573,9 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                                     <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>{{ point }}</li>
                                     {% endfor %}
                                 </ul>
-                                {% if config.rapport_lien %}
-                                <a href="{{ config.rapport_lien }}" target="_blank" rel="noopener" class="btn btn-accent">
+                                <button type="button" class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#rapportModal">
                                     <i class="bi bi-file-earmark-arrow-down me-2"></i>Télécharger le rapport
-                                </a>
-                                {% elif config.rapport_fichier %}
-                                <a href="{{ config.rapport_fichier.url }}" target="_blank" rel="noopener" class="btn btn-accent">
-                                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Télécharger le rapport
-                                </a>
-                                {% endif %}
+                                </button>
                             </div>
                         </div>
                     </div>
