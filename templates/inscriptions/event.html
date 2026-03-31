@@ -969,21 +969,6 @@
 </section>
 {% endif %}
 
-<!-- GALERIE DÉFILANTE -->
-{% if images %}
-<section class="ev-gallery">
-    <h3 class="ev-gallery-title"><i class="bi bi-camera me-2"></i>Moments forts</h3>
-    <div class="ev-gallery-track">
-        {% for image in images %}
-        <img src="{{ image.get_image_url }}" alt="{{ image.titre|default:'DounIA 1' }}">
-        {% endfor %}
-        {% for image in images %}
-        <img src="{{ image.get_image_url }}" alt="{{ image.titre|default:'DounIA 1' }}" aria-hidden="true">
-        {% endfor %}
-    </div>
-</section>
-{% endif %}
-
 <!-- FORMAT DE L'ÉVÉNEMENT -->
 <section class="ev-format">
     <div class="container">
