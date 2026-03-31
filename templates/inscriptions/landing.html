@@ -498,26 +498,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 </section>
 {% endif %}
 
-<!-- ============ SECTION 8 : DOUNIA 2 ============ -->
-<section id="dounia2" class="dounia2-section text-white">
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center">
-            <div class="col-lg-6 fade-in-up">
-                <div class="hero-badge">{{ config.dounia2_badge }}</div>
-                <h2 class="mb-3" style="color: #fff;">{{ config.dounia2_titre }}</h2>
-                <p style="opacity: 0.85; font-size: 1.1rem;" class="mb-4">{{ config.dounia2_description|linebreaksbr }}</p>
-            </div>
-            <div class="col-lg-6 fade-in-up">
-                {% for phase in phases %}
-                <div class="timeline-item">
-                    <h6 style="color: #ffffff; font-weight: 700;">{{ phase.titre }}</h6>
-                    <p style="opacity: 0.92; font-size: 0.95rem; color: #ffffff;">{{ phase.description }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ============ SECTION 6 : ÉVÉNEMENTS (DounIA 1 / DounIA 2) ============ -->
 <section id="evenements" class="bg-light-custom">
