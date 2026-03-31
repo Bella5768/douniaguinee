@@ -528,6 +528,18 @@ class SiteConfiguration(models.Model):
     calendrier_titre = models.CharField(max_length=200, default='Calendrier des Ateliers', verbose_name='Landing — Calendrier titre')
     calendrier_sous_titre = models.TextField(default='Planification détaillée de chaque atelier thématique — Octobre 2026', verbose_name='Landing — Calendrier sous-titre')
 
+    # ALIGNEMENTS PAR SECTION
+    ALIGN_CHOICES = [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')]
+    about_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='À propos — Alignement du texte')
+    dounia1_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='DounIA 1 — Alignement du texte')
+    rapport_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Rapport — Alignement du texte')
+    evenements_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Événements — Alignement du texte')
+    ateliers_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Ateliers — Alignement du texte')
+    experts_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Experts — Alignement du texte')
+    dounia2_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='DounIA 2 — Alignement du texte')
+    calendrier_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Calendrier — Alignement du texte')
+    inscription_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Inscription — Alignement du texte')
+
     # LANDING — CALENDRIER (BACKGROUNDS)
     calendrier_bg_education = models.ImageField(upload_to='calendrier/', blank=True, null=True, verbose_name='Calendrier — Background Éducation')
     calendrier_bg_sante = models.ImageField(upload_to='calendrier/', blank=True, null=True, verbose_name='Calendrier — Background Santé')

@@ -22,7 +22,22 @@
                         {% for field in fields_data %}
                         <div class="mb-2">
                             <label for="id_{{ field.name }}" class="form-label fw-semibold">{{ field.label }}</label>
-                            {% if field.is_video %}
+                            {% if field.is_select %}
+                            <div class="d-flex gap-2 flex-wrap mt-1">
+                                {% for choice_val, choice_label in field.choices %}
+                                <label class="align-choice-btn {% if field.value == choice_val %}active{% endif %}" style="cursor:pointer;">
+                                    <input type="radio" name="{{ field.name }}" value="{{ choice_val }}" {% if field.value == choice_val %}checked{% endif %} style="display:none;" onchange="this.closest('.d-flex').querySelectorAll('.align-choice-btn').forEach(b=>b.classList.remove('active'));this.closest('.align-choice-btn').classList.add('active')">
+                                    {% if choice_val == 'left' %}<i class="bi bi-text-left me-1"></i>{% elif choice_val == 'center' %}<i class="bi bi-text-center me-1"></i>{% elif choice_val == 'right' %}<i class="bi bi-text-right me-1"></i>{% endif %}
+                                    {{ choice_label }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                            <style>
+                            .align-choice-btn{display:inline-flex;align-items:center;padding:.45rem 1.1rem;border-radius:8px;border:2px solid #dee2e6;background:#f8f9fa;font-weight:600;font-size:.9rem;transition:all .2s;}
+                            .align-choice-btn.active{border-color:#003366;background:#003366;color:#fff;}
+                            .align-choice-btn:not(.active):hover{border-color:#003366;color:#003366;}
+                            </style>
+                            {% elif field.is_video %}
                             {% if field.value %}
                             <div class="mb-2 p-2 rounded" style="background:#f0f7f0;border:1px solid #c3e6cb;">
                                 <video controls style="max-width:100%;max-height:180px;border-radius:8px;">
