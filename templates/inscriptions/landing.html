@@ -461,8 +461,8 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
             <!-- Les ateliers seront ajoutés dynamiquement depuis la base de données -->
             {% for atelier in ateliers_db %}
             <div class="col-md-6 col-lg-4 fade-in-up">
-                <a href="{% url 'atelier_detail' atelier.id %}" class="text-decoration-none">
-                    <div class="atelier-card" style="cursor:pointer;">
+                <div class="atelier-card d-flex flex-column" style="cursor:default;">
+                    <a href="{% url 'atelier_detail' atelier.id %}" class="text-decoration-none">
                         <div class="atelier-image">
                             <img src="{{ atelier.get_image_url }}" alt="{{ atelier.label }}">
                         </div>
@@ -473,8 +473,13 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                                 <p>{{ atelier.description|default:"Description à ajouter..." }}</p>
                             </div>
                         </div>
+                    </a>
+                    <div class="text-center mt-auto p-3">
+                        <a href="{% url 'landing_page' %}#inscription" class="btn btn-primary-custom btn-sm fw-semibold w-100" style="border-radius:50px;padding:0.5rem 1.5rem;">
+                            <i class="bi bi-pencil-square me-1"></i>S'inscrire
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
