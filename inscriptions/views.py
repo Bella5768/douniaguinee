@@ -2026,7 +2026,7 @@ def admin_edit_section(request, section):
         'splash': {
             'titre': 'Écran de chargement (Splash)',
             'fields': [
-                {'name': 'splash_duree', 'label': 'Durée du décompte (secondes)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Nombre de secondes du décompte avant l\'ouverture du site. Ex: 20'},
+                {'name': 'splash_duree', 'label': 'Durée du décompte (secondes)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_integer': True, 'help_text': 'Nombre de secondes du décompte avant l\'ouverture du site. Ex: 30'},
                 {'name': 'splash_audio_file', 'label': 'Fichier audio (MP3)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': True, 'help_text': 'Uploadez votre propre fichier MP3. Prioritaire sur l\'URL ci-dessous.'},
                 {'name': 'splash_audio_url', 'label': 'URL audio (si pas de fichier)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'Lien direct vers un MP3 en ligne. Ignoré si un fichier est uploadé.'},
             ],
@@ -2064,6 +2064,11 @@ def admin_edit_section(request, section):
                             pass
                     else:
                         setattr(config, name, None)
+                elif field.get('is_integer'):
+                    try:
+                        setattr(config, name, int(value))
+                    except (ValueError, TypeError):
+                        pass
                 else:
                     setattr(config, name, value)
         config.save()
