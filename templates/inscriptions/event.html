@@ -884,6 +884,24 @@
         <div class="ev-hero-badge">Avril 2025 &bull; Conakry</div>
         <h1 class="ev-hero-title">{{ evenement.titre_hero|dounia_exposant }}</h1>
         <p class="ev-hero-sub">Un processus scientifique et collaboratif pour co-construire une vision nationale des données numériques et de l'IA en Guinée.</p>
+        <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+            {% if config.rapport_fichier %}
+            <a href="{% url 'rapport_download' %}" class="btn btn-lg px-5 fw-semibold" style="background:#fff;color:#003366;border-radius:50px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+                <i class="bi bi-file-earmark-pdf me-2"></i>{{ config.rapport_titre|default:"Télécharger le rapport" }}
+            </a>
+            {% elif config.rapport_lien %}
+            <a href="{{ config.rapport_lien }}" target="_blank" rel="noopener" class="btn btn-lg px-5 fw-semibold" style="background:#fff;color:#003366;border-radius:50px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+                <i class="bi bi-file-earmark-pdf me-2"></i>{{ config.rapport_titre|default:"Télécharger le rapport" }}
+            </a>
+            {% else %}
+            <a href="{% url 'landing_page' %}#livrable" class="btn btn-lg px-5 fw-semibold" style="background:#fff;color:#003366;border-radius:50px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+                <i class="bi bi-file-earmark-pdf me-2"></i>{{ config.rapport_titre|default:"Consulter le rapport" }}
+            </a>
+            {% endif %}
+            <a href="{% url 'landing_page' %}#inscription" class="btn btn-lg px-5 fw-semibold" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.6);border-radius:50px;">
+                <i class="bi bi-pencil-square me-2"></i>S'inscrire aux ateliers
+            </a>
+        </div>
     </div>
 </section>
 
