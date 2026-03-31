@@ -255,6 +255,62 @@
     line-height: 1.9;
 }
 
+/* ===== FORMAT ÉVÉNEMENT ===== */
+.d2-format {
+    padding: 4rem 0;
+    background: white;
+}
+.d2-format-title {
+    text-align: center;
+    color: #003366;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+}
+.d2-format-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+.d2-format-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+    min-width: 220px;
+    max-width: 320px;
+}
+.d2-format-pill {
+    background: linear-gradient(135deg, #003d99, #0055cc);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.97rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,51,153,0.18);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.d2-format-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,51,153,0.28);
+}
+.d2-format-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #003366, #0066cc);
+    color: white;
+    border-radius: 16px;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(0,51,102,0.25);
+}
+
 /* ===== AXES ===== */
 .d2-axes {
     padding: 4rem 0;
@@ -387,6 +443,28 @@
                 <div class="d2-content-text">
                     {{ evenement.description_hero|linebreaksbr }}
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FORMAT ÉVÉNEMENT -->
+<section class="d2-format">
+    <div class="container">
+        <h3 class="d2-format-title"><i class="bi bi-grid-3x3-gap me-2"></i>Format de l'événement</h3>
+        <div class="d2-format-grid">
+            <div class="d2-format-col">
+                <div class="d2-format-pill">Cérémonie d'ouverture</div>
+                <div class="d2-format-pill">1 Keynote</div>
+                <div class="d2-format-pill">1 panel multi-acteurs</div>
+            </div>
+            <div class="d2-format-center">
+                <i class="bi bi-grid-3x3-gap"></i>
+            </div>
+            <div class="d2-format-col">
+                <div class="d2-format-pill">3 mini-talk thématiques</div>
+                <div class="d2-format-pill">6 tables rondes</div>
+                <div class="d2-format-pill">1 dialogue stratégique</div>
             </div>
         </div>
     </div>
