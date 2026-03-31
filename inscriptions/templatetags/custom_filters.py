@@ -73,3 +73,12 @@ def question_linebreak(value):
     s = str(value or '')
     s = s.replace('?', '?<br><br>')
     return mark_safe(s)
+
+
+@register.filter
+def phrases_br(value):
+    """Insère <br><br> après chaque point de fin de phrase (. suivi d'espace ou de majuscule)"""
+    s = str(value or '')
+    s = re.sub(r'\.([\s]+)([A-ZÀ-Ü])', lambda m: '.<br><br>' + m.group(2), s)
+    s = re.sub(r'\.([A-ZÀ-Ü])', lambda m: '.<br><br>' + m.group(1), s)
+    return mark_safe(s)
