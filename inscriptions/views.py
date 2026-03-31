@@ -1901,7 +1901,7 @@ def admin_edit_section(request, section):
         'about': {
             'titre': 'À propos',
             'fields': [
-                {'name': 'about_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'about_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'about_card1_icone', 'label': 'Carte 1 — Icône (Bootstrap Icons)', 'is_textarea': False, 'is_url': False, 'is_image': False},
@@ -1918,7 +1918,7 @@ def admin_edit_section(request, section):
         'dounia1': {
             'titre': 'DounIA 1',
             'fields': [
-                {'name': 'dounia1_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'dounia1_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'dounia1_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'dounia1_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'dounia1_defis', 'label': 'Défis (un par ligne)', 'is_textarea': True, 'is_url': False, 'is_image': False, 'help_text': 'Un défi par ligne'},
@@ -1928,7 +1928,7 @@ def admin_edit_section(request, section):
         'rapport': {
             'titre': 'Rapport DounIA 1',
             'fields': [
-                {'name': 'rapport_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'rapport_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_description', 'label': 'Description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -1942,7 +1942,7 @@ def admin_edit_section(request, section):
         'evenements': {
             'titre': 'Événements (section landing)',
             'fields': [
-                {'name': 'evenements_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'evenements_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
             ],
@@ -1973,7 +1973,7 @@ def admin_edit_section(request, section):
         'dounia2': {
             'titre': 'DounIA 2',
             'fields': [
-                {'name': 'dounia2_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'dounia2_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'dounia2_badge', 'label': 'Badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'dounia2_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'dounia2_description', 'label': 'Description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -1987,7 +1987,7 @@ def admin_edit_section(request, section):
         'experts_section': {
             'titre': 'Experts (section landing)',
             'fields': [
-                {'name': 'experts_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'experts_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'experts_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'experts_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
             ],
@@ -1996,7 +1996,7 @@ def admin_edit_section(request, section):
         'ateliers_section': {
             'titre': 'Ateliers (section landing)',
             'fields': [
-                {'name': 'ateliers_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'ateliers_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
             ],
@@ -2005,7 +2005,7 @@ def admin_edit_section(request, section):
         'calendrier_section': {
             'titre': 'Calendrier (section landing)',
             'fields': [
-                {'name': 'calendrier_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'calendrier_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'calendrier_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'calendrier_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
                 {'name': 'calendrier_bg_education', 'label': 'Background — Éducation', 'is_textarea': False, 'is_url': False, 'is_image': True},
@@ -2028,7 +2028,7 @@ def admin_edit_section(request, section):
         'inscription_section': {
             'titre': 'Section Inscription',
             'fields': [
-                {'name': 'inscription_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')], 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'inscription_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'inscription_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'inscription_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
             ],
@@ -2101,7 +2101,7 @@ def admin_edit_section(request, section):
                     setattr(config, name, value)
                 if field.get('is_textarea'):
                     align_val = request.POST.get(name + '__align', 'left')
-                    if align_val in ('left', 'center', 'right'):
+                    if align_val in ('left', 'center', 'right', 'justify'):
                         alignments[name] = align_val
         config.text_alignments = alignments
         config.save()
@@ -2109,7 +2109,7 @@ def admin_edit_section(request, section):
         return redirect('admin_contenu_page')
 
     # Build fields_data with current values
-    _align_choices = [('left', 'Gauche'), ('center', 'Centré'), ('right', 'Droite')]
+    _align_choices = [('left', 'Gauche'), ('center', 'Centré'), ('right', 'Droite'), ('justify', 'Justifié')]
     _alignments = config.text_alignments or {}
     fields_data = []
     for field in section_def['fields']:

@@ -27,7 +27,7 @@
                                 {% for choice_val, choice_label in field.choices %}
                                 <label class="align-choice-btn {% if field.value == choice_val %}active{% endif %}" style="cursor:pointer;">
                                     <input type="radio" name="{{ field.name }}" value="{{ choice_val }}" {% if field.value == choice_val %}checked{% endif %} style="display:none;" onchange="this.closest('.d-flex').querySelectorAll('.align-choice-btn').forEach(b=>b.classList.remove('active'));this.closest('.align-choice-btn').classList.add('active')">
-                                    {% if choice_val == 'left' %}<i class="bi bi-text-left me-1"></i>{% elif choice_val == 'center' %}<i class="bi bi-text-center me-1"></i>{% elif choice_val == 'right' %}<i class="bi bi-text-right me-1"></i>{% endif %}
+                                    {% if choice_val == 'left' %}<i class="bi bi-text-left me-1"></i>{% elif choice_val == 'center' %}<i class="bi bi-text-center me-1"></i>{% elif choice_val == 'right' %}<i class="bi bi-text-right me-1"></i>{% elif choice_val == 'justify' %}<i class="bi bi-justify me-1"></i>{% endif %}
                                     {{ choice_label }}
                                 </label>
                                 {% endfor %}
@@ -74,7 +74,7 @@
                                 {% for av, al in field.align_choices %}
                                 <label class="field-align-btn {% if field.align_value == av %}active{% endif %}" title="{{ al }}" style="cursor:pointer;margin:0;">
                                     <input type="radio" name="{{ field.name }}__align" value="{{ av }}" {% if field.align_value == av %}checked{% endif %} style="display:none;" onchange="this.closest('.d-flex').querySelectorAll('.field-align-btn').forEach(b=>b.classList.remove('active'));this.closest('.field-align-btn').classList.add('active')">
-                                    {% if av == 'left' %}<i class="bi bi-text-left"></i>{% elif av == 'center' %}<i class="bi bi-text-center"></i>{% elif av == 'right' %}<i class="bi bi-text-right"></i>{% endif %}
+                                    {% if av == 'left' %}<i class="bi bi-text-left"></i>{% elif av == 'center' %}<i class="bi bi-text-center"></i>{% elif av == 'right' %}<i class="bi bi-text-right"></i>{% elif av == 'justify' %}<i class="bi bi-justify"></i>{% endif %}
                                 </label>
                                 {% endfor %}
                             </div>

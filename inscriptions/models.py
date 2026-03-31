@@ -532,7 +532,7 @@ class SiteConfiguration(models.Model):
     text_alignments = models.JSONField(default=dict, blank=True, verbose_name='Alignements de texte par champ')
 
     # ALIGNEMENTS PAR SECTION
-    ALIGN_CHOICES = [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite')]
+    ALIGN_CHOICES = [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')]
     about_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='À propos — Alignement du texte')
     dounia1_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='DounIA 1 — Alignement du texte')
     rapport_align = models.CharField(max_length=10, choices=ALIGN_CHOICES, default='center', verbose_name='Rapport — Alignement du texte')
