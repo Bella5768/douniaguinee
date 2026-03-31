@@ -1005,13 +1005,18 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                 </div>
                 <div class="col-12">
                     <label class="partenariat-label">Type de collaboration</label>
-                    <select class="partenariat-input partenariat-select">
+                    <select class="partenariat-input partenariat-select" id="landingPartenariatType" onchange="togglePartenariatAutres(this)">
                         <option selected>Choisir...</option>
                         <option>Partenaire institutionnel</option>
                         <option>Sponsor</option>
                         <option>Appui technique</option>
                         <option>Partenaire média</option>
+                        <option value="Autres">Autres</option>
                     </select>
+                </div>
+                <div class="col-12" id="landingPartenariatAutresWrap" style="display:none;">
+                    <label class="partenariat-label">Précisez votre type de collaboration</label>
+                    <input type="text" id="landingPartenariatAutres" class="partenariat-input" placeholder="Décrivez votre type de collaboration...">
                 </div>
                 <div class="col-12">
                     <label class="partenariat-label">Pourquoi DounIA vous inspire ?</label>
@@ -1029,6 +1034,13 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 
 <!-- Modal de lecture et téléchargement du livrable -->
 {% include 'inscriptions/rapport_modal.html' %}
+
+<script>
+function togglePartenariatAutres(sel) {
+    var wrap = document.getElementById('landingPartenariatAutresWrap');
+    if (wrap) wrap.style.display = (sel.value === 'Autres') ? 'block' : 'none';
+}
+</script>
 
 <!-- Script Avis & Partenariat modals (Landing) -->
 <script>
