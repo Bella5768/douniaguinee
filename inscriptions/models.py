@@ -560,11 +560,13 @@ class SiteConfiguration(models.Model):
     porteur2_logo = models.ImageField(upload_to='porteurs/', blank=True, null=True, verbose_name='Porteur 2 — Logo')
 
     # SPLASH SCREEN
+    splash_actif = models.BooleanField(default=True, verbose_name='Splash — Activer l\'écran de chargement')
     splash_duree = models.PositiveIntegerField(default=20, verbose_name='Splash — Durée du décompte (secondes)')
     splash_audio_file = models.FileField(upload_to='splash_audio/', blank=True, null=True, verbose_name='Splash — Fichier audio (MP3/OGG)')
     splash_audio_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Splash — URL audio (si pas de fichier uploadé)')
 
     # COMPTE À REBOURS (lancement du site)
+    countdown_actif = models.BooleanField(default=True, verbose_name='Compte à rebours — Activer')
     date_lancement_site = models.DateTimeField(null=True, blank=True, verbose_name="Date de lancement du site (compte à rebours hero)")
 
     # FOOTER

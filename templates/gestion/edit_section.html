@@ -83,6 +83,33 @@
                             .field-align-btn.active{border-color:#003366;background:#003366;color:#fff;}
                             .field-align-btn:not(.active):hover{border-color:#003366;color:#003366;}
                             </style>
+                            {% elif field.is_boolean %}
+                            <div class="d-flex align-items-center gap-3 mt-1">
+                                <div class="form-check form-switch mb-0">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                           id="id_{{ field.name }}" name="{{ field.name }}"
+                                           {% if field.value %}checked{% endif %}
+                                           style="width:3rem;height:1.6rem;cursor:pointer;">
+                                </div>
+                                <span id="label_{{ field.name }}" class="fw-semibold {% if field.value %}text-success{% else %}text-danger{% endif %}">
+                                    {% if field.value %}✅ Activé{% else %}❌ Désactivé{% endif %}
+                                </span>
+                            </div>
+                            <script>
+                            (function(){
+                                var cb = document.getElementById('id_{{ field.name }}');
+                                var lb = document.getElementById('label_{{ field.name }}');
+                                cb.addEventListener('change', function(){
+                                    if(this.checked){
+                                        lb.textContent = '✅ Activé';
+                                        lb.className = 'fw-semibold text-success';
+                                    } else {
+                                        lb.textContent = '❌ Désactivé';
+                                        lb.className = 'fw-semibold text-danger';
+                                    }
+                                });
+                            })();
+                            </script>
                             {% elif field.is_url %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
                             {% elif field.is_datetime %}

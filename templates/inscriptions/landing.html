@@ -6,6 +6,7 @@
 
 {% block content %}
 
+{% if config.splash_actif %}
 <!-- ============ SPLASH SCREEN ============ -->
 <style>
 html.splash-active, html.splash-active body { overflow: hidden !important; height: 100% !important; }
@@ -195,6 +196,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     }
 })();
 </script>
+{% endif %}
 
 <!-- ============ SECTION 1 : HERO ============ -->
 <section class="hero-section" id="hero" style="margin-top: calc(-1 * var(--navbar-offset, 96px));">
@@ -273,7 +275,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
             </div>
         </div>
 
-        {% if config.date_lancement_site %}
+        {% if config.countdown_actif and config.date_lancement_site %}
         <!-- COMPTE À REBOURS LANCEMENT DU SITE -->
         <div style="text-align:center;margin-top:2rem;">
             <div id="heroCountdown" style="display:flex;flex-direction:row;justify-content:center;align-items:center;gap:1rem;">
@@ -1372,7 +1374,7 @@ function toggleAtelier(card) {
 })();
 
 // ===== HERO COUNTDOWN + CELEBRATION =====
-{% if config.date_lancement_site %}
+{% if config.countdown_actif and config.date_lancement_site %}
 (function() {
     const launchDate = new Date('{{ config.date_lancement_site|date:"Y-m-d\TH:i:s" }}').getTime();
     let launched = false;

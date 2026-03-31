@@ -2046,12 +2046,14 @@ def admin_edit_section(request, section):
         'countdown': {
             'titre': 'Compte à rebours',
             'fields': [
+                {'name': 'countdown_actif', 'label': 'Activer le compte à rebours', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True, 'help_text': 'Cochez pour afficher le compte à rebours dans le hero. Décochez pour le masquer définitivement.'},
                 {'name': 'date_lancement_site', 'label': 'Date de lancement du site', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_datetime': True, 'help_text': "Date et heure du lancement officiel. Le compte à rebours s'affichera dans le hero. Laissez vide pour désactiver."},
             ],
         },
         'splash': {
             'titre': 'Écran de chargement (Splash)',
             'fields': [
+                {'name': 'splash_actif', 'label': 'Activer l\'écran de chargement (Splash)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True, 'help_text': 'Cochez pour afficher le splash screen au chargement. Décochez pour le désactiver définitivement.'},
                 {'name': 'splash_duree', 'label': 'Durée du décompte (secondes)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_integer': True, 'help_text': 'Nombre de secondes du décompte avant l\'ouverture du site. Ex: 30'},
                 {'name': 'splash_audio_file', 'label': 'Fichier audio (MP3)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': True, 'help_text': 'Uploadez votre propre fichier MP3. Prioritaire sur l\'URL ci-dessous.'},
                 {'name': 'splash_audio_url', 'label': 'URL audio (si pas de fichier)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'Lien direct vers un MP3 en ligne. Ignoré si un fichier est uploadé.'},
@@ -2091,6 +2093,8 @@ def admin_edit_section(request, section):
                             pass
                     else:
                         setattr(config, name, None)
+                elif field.get('is_boolean'):
+                    setattr(config, name, name in request.POST)
                 elif field.get('is_integer'):
                     try:
                         setattr(config, name, int(value))
