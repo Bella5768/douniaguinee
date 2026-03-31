@@ -715,6 +715,7 @@ class Avis(models.Model):
     
     nom = models.CharField(max_length=100, verbose_name='Nom')
     email = models.EmailField(blank=True, default='', verbose_name='Email')
+    telephone = models.CharField(max_length=30, blank=True, default='', verbose_name='Téléphone')
     message = models.TextField(verbose_name='Message')
     event_slug = models.CharField(max_length=20, choices=EVENT_CHOICES, default='dounia1', verbose_name='Événement')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='Date')

@@ -2274,6 +2274,7 @@ def soumettre_avis(request):
     
     nom = data.get('nom', '').strip()
     email = data.get('email', '').strip()
+    telephone = data.get('telephone', '').strip()
     message = data.get('message', '').strip()
     event_slug = data.get('event_slug', 'dounia1')
     
@@ -2283,6 +2284,7 @@ def soumettre_avis(request):
     Avis.objects.create(
         nom=nom,
         email=email,
+        telephone=telephone,
         message=message,
         event_slug=event_slug,
     )

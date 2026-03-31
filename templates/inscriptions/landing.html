@@ -964,6 +964,10 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                     <input type="email" id="landingAvisEmail" class="avis-input" placeholder="Votre email (optionnel)">
                 </div>
                 <div class="col-12">
+                    <label class="avis-label">Téléphone</label>
+                    <input type="tel" id="landingAvisTelephone" class="avis-input" placeholder="Votre téléphone (optionnel)">
+                </div>
+                <div class="col-12">
                     <label class="avis-label">Votre message</label>
                     <textarea id="landingAvisMessage" class="avis-input avis-textarea" placeholder="Votre avis ou commentaire *" required></textarea>
                 </div>
@@ -1056,6 +1060,7 @@ document.addEventListener('DOMContentLoaded', function() {
         landingAvisSubmitBtn.addEventListener('click', function() {
             var nom = document.getElementById('landingAvisNom').value.trim();
             var email = document.getElementById('landingAvisEmail').value.trim();
+            var telephone = document.getElementById('landingAvisTelephone').value.trim();
             var message = document.getElementById('landingAvisMessage').value.trim();
             if (!nom || !message) {
                 var errDiv = document.createElement('div');
@@ -1073,7 +1078,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('{% url "soumettre_avis" %}', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json', 'X-CSRFToken': (function(n){var v=null;document.cookie.split(';').forEach(function(c){c=c.trim();if(c.startsWith(n+'='))v=decodeURIComponent(c.substring(n.length+1));});return v;})('csrftoken')},
-                body: JSON.stringify({nom: nom, email: email, message: message, event_slug: 'landing'})
+                body: JSON.stringify({nom: nom, email: email, telephone: telephone, message: message, event_slug: 'landing'})
             }).then(function(r){return r.json();}).then(function(data){
                 var botDiv = document.createElement('div');
                 botDiv.className = 'avis-bot-msg';
