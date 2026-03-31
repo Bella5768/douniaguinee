@@ -280,6 +280,73 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 {% block extra_js %}{% endblock %}
 <script>
+/* ===== ALIGNEMENT AUTOMATIQUE SUR TOUS LES TEXTAREAS ===== */
+(function(){
+    var ALIGNS = [
+        {v:'left',    icon:'bi-text-left',    label:'Gauche'},
+        {v:'center',  icon:'bi-text-center',  label:'Centré'},
+        {v:'right',   icon:'bi-text-right',   label:'Droite'},
+        {v:'justify', icon:'bi-justify',      label:'Justifié'}
+    ];
+    var CSS = '<style>.ta-align-picker{display:flex;align-items:center;gap:4px;margin-top:4px;flex-wrap:wrap;}.ta-align-lbl{font-size:.75rem;color:#6c757d;margin-right:2px;}.ta-align-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;border:1.5px solid #dee2e6;background:#f8f9fa;font-size:.85rem;cursor:pointer;transition:all .15s;}.ta-align-btn.active{border-color:#003366;background:#003366;color:#fff;}.ta-align-btn:hover:not(.active){border-color:#003366;color:#003366;}</style>';
+    function initPicker(ta){
+        if(ta.dataset.alignInit) return;
+        ta.dataset.alignInit = '1';
+        var name = ta.name || ta.id || ('ta_'+Math.random().toString(36).slice(2));
+        var hiddenName = name + '__align';
+        var stored = '';
+        /* check if hidden already exists (form re-render) */
+        var existing = ta.form ? ta.form.querySelector('input[name="'+hiddenName+'"]') : null;
+        if(existing) stored = existing.value;
+        var wrap = document.createElement('div');
+        wrap.className = 'ta-align-picker';
+        wrap.innerHTML = '<span class="ta-align-lbl">Alignement :</span>';
+        var hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = hiddenName;
+        hidden.value = stored || 'left';
+        ta.parentNode.appendChild(hidden);
+        ALIGNS.forEach(function(a){
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'ta-align-btn' + (hidden.value === a.v ? ' active' : '');
+            btn.title = a.label;
+            btn.innerHTML = '<i class="bi '+a.icon+'"></i>';
+            btn.addEventListener('click', function(){
+                wrap.querySelectorAll('.ta-align-btn').forEach(function(b){b.classList.remove('active');});
+                btn.classList.add('active');
+                hidden.value = a.v;
+                ta.style.textAlign = a.v;
+            });
+            wrap.appendChild(btn);
+        });
+        ta.style.textAlign = hidden.value;
+        ta.parentNode.insertBefore(wrap, ta.nextSibling);
+    }
+    function initAll(){
+        document.querySelectorAll('textarea').forEach(initPicker);
+    }
+    /* inject CSS once */
+    document.head.insertAdjacentHTML('beforeend', CSS);
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+        initAll();
+    }
+    /* observe dynamic textareas (modals, etc.) */
+    new MutationObserver(function(muts){
+        muts.forEach(function(m){
+            m.addedNodes.forEach(function(n){
+                if(n.nodeType===1){
+                    if(n.tagName==='TEXTAREA') initPicker(n);
+                    n.querySelectorAll && n.querySelectorAll('textarea').forEach(initPicker);
+                }
+            });
+        });
+    }).observe(document.body, {childList:true, subtree:true});
+})();
+</script>
+<script>
 (function(){
     function fixDounia(root){
         var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
