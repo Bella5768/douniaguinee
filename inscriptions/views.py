@@ -1013,12 +1013,12 @@ Date: {timezone.now().strftime('%d/%m/%Y %H:%M')}
         except Exception:
             pass
         
-        # Rediriger vers le fichier uploadé ou le lien externe
+        # Rediriger vers le lien externe en priorité, sinon le fichier uploadé
         config = SiteConfiguration.get()
-        if config.rapport_fichier:
-            return redirect(config.rapport_fichier.url)
-        elif config.rapport_lien:
+        if config.rapport_lien:
             return redirect(config.rapport_lien)
+        elif config.rapport_fichier:
+            return redirect(config.rapport_fichier.url)
         else:
             messages.error(request, "Le rapport n'est pas encore disponible.")
             return redirect('landing_page')
