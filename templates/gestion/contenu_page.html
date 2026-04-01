@@ -249,9 +249,18 @@
                     <div class="flex-grow-1">
                         <h6 class="fw-bold mb-1">Compte à rebours</h6>
                         <p class="text-muted small mb-2">Date de lancement du site (hero)</p>
-                        <a href="{% url 'admin_edit_section' 'countdown' %}" class="btn btn-primary-custom btn-sm">
-                            <i class="bi bi-pencil me-1"></i>Modifier
-                        </a>
+                        <div class="d-flex gap-2 flex-wrap align-items-center">
+                            <button type="button"
+                                id="btn-countdown"
+                                onclick="toggleConfigField('countdown_actif', this)"
+                                class="btn btn-sm fw-bold {% if config.countdown_actif %}btn-success{% else %}btn-danger{% endif %}"
+                                style="min-width:90px;">
+                                {% if config.countdown_actif %}⏸️ Actif{% else %}❌ Désactivé{% endif %}
+                            </button>
+                            <a href="{% url 'admin_edit_section' 'countdown' %}" class="btn btn-primary-custom btn-sm">
+                                <i class="bi bi-pencil me-1"></i>Date
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,9 +274,18 @@
                     <div class="flex-grow-1">
                         <h6 class="fw-bold mb-1">Écran de chargement (Splash)</h6>
                         <p class="text-muted small mb-2">Durée du décompte et son jungle</p>
-                        <a href="{% url 'admin_edit_section' 'splash' %}" class="btn btn-primary-custom btn-sm">
-                            <i class="bi bi-pencil me-1"></i>Modifier
-                        </a>
+                        <div class="d-flex gap-2 flex-wrap align-items-center">
+                            <button type="button"
+                                id="btn-splash"
+                                onclick="toggleConfigField('splash_actif', this)"
+                                class="btn btn-sm fw-bold {% if config.splash_actif %}btn-success{% else %}btn-danger{% endif %}"
+                                style="min-width:90px;">
+                                {% if config.splash_actif %}⏸️ Actif{% else %}❌ Désactivé{% endif %}
+                            </button>
+                            <a href="{% url 'admin_edit_section' 'splash' %}" class="btn btn-primary-custom btn-sm">
+                                <i class="bi bi-pencil me-1"></i>Réglages
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,4 +364,31 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleConfigField(fieldName, btn) {
+    var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    var csrfVal = csrfToken ? csrfToken.value : '{{ csrf_token }}';
+    btn.disabled = true;
+    fetch('/gestion/config/toggle/' + fieldName + '/', {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrfVal, 'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            if (data.active) {
+                btn.className = 'btn btn-sm fw-bold btn-success';
+                btn.innerHTML = '⏸️ Actif';
+            } else {
+                btn.className = 'btn btn-sm fw-bold btn-danger';
+                btn.innerHTML = '❌ Désactivé';
+            }
+        }
+        btn.disabled = false;
+    })
+    .catch(function(){ btn.disabled = false; });
+}
+</script>
 {% endblock %}

@@ -142,6 +142,20 @@ def add_stats_image(request):
 
 @require_POST
 @staff_required
+def toggle_config_field(request, field_name):
+    """Basculer un champ booléen de SiteConfiguration (splash_actif, countdown_actif…)"""
+    ALLOWED_FIELDS = {'splash_actif', 'countdown_actif'}
+    if field_name not in ALLOWED_FIELDS:
+        return JsonResponse({'success': False, 'error': 'Champ non autorisé'}, status=403)
+    config = SiteConfiguration.get()
+    current = getattr(config, field_name, False)
+    setattr(config, field_name, not current)
+    config.save()
+    return JsonResponse({'success': True, 'active': not current})
+
+
+@require_POST
+@staff_required
 def toggle_hero_image(request, image_id):
     """Activer/désactiver une image hero"""
     image = get_object_or_404(HeroImage, id=image_id)

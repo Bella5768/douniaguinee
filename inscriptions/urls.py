@@ -44,6 +44,7 @@ urlpatterns = [
     path('gestion/carousel-images/delete/<int:image_id>/', views.delete_carousel_image, name='delete_carousel_image'),
     
     # Toggle et ordre des images
+    path('gestion/config/toggle/<str:field_name>/', views.toggle_config_field, name='toggle_config_field'),
     path('gestion/hero-images/toggle/<int:image_id>/', views.toggle_hero_image, name='toggle_hero_image'),
     path('gestion/stats-images/toggle/<int:image_id>/', views.toggle_stats_image, name='toggle_stats_image'),
     path('gestion/carousel-images/toggle/<int:image_id>/', views.toggle_carousel_image, name='toggle_carousel_image'),
