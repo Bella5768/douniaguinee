@@ -482,6 +482,12 @@ def _landing_context_with_form(form):
     except OperationalError:
         hero_bg_images = []
 
+    try:
+        ateliers_db = Atelier.objects.filter(active=True).order_by('ordre')
+        atelier_map = {a.code: {'label': a.label, 'image': a.get_image_url(), 'description': a.description} for a in ateliers_db}
+    except OperationalError:
+        atelier_map = {}
+
     defis = [d.strip() for d in config.dounia1_defis.split('\n') if d.strip()]
     opportunites = [o.strip() for o in config.dounia1_opportunites.split('\n') if o.strip()]
     rapport_points = [p.strip() for p in config.rapport_points.split('\n') if p.strip()]
