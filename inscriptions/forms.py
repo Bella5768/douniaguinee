@@ -3,6 +3,12 @@ from .models import Atelier, Inscription
 
 
 class InscriptionForm(forms.ModelForm):
+    atelier = forms.CharField(
+        max_length=100,
+        widget=forms.Select(attrs={'class': 'form-select', 'id': 'id_atelier'}),
+        label='Atelier thématique',
+    )
+
     class Meta:
         model = Inscription
         fields = [
@@ -49,6 +55,7 @@ class InscriptionForm(forms.ModelForm):
             }),
             'atelier': forms.Select(attrs={
                 'class': 'form-select',
+                'id': 'id_atelier',
             }),
             'engagement': forms.Select(attrs={
                 'class': 'form-select',
@@ -76,8 +83,21 @@ class InscriptionForm(forms.ModelForm):
         self.fields['profil_autre'].required = False
 
         ateliers = list(Atelier.objects.filter(active=True).order_by('ordre', 'label').values_list('code', 'label'))
-        if ateliers:
-            self.fields['atelier'].choices = ateliers
+        choices = [('', '--- Sélectionner un atelier ---')] + ateliers
+        self.fields['atelier'].widget.choices = choices
+
+    def clean_atelier(self):
+        value = self.cleaned_data.get('atelier', '').strip()
+        if not value:
+            raise forms.ValidationError('Veuillez sélectionner un atelier thématique.')
+        return value
+
+    def _post_clean(self):
+        atelier_ok = self.cleaned_data.get('atelier')
+        super()._post_clean()
+        if atelier_ok and 'atelier' in self._errors:
+            del self._errors['atelier']
+            self.cleaned_data['atelier'] = atelier_ok
 
     def clean(self):
         cleaned_data = super().clean()
