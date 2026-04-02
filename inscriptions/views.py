@@ -233,8 +233,13 @@ def _get_evenement_payload(edition):
         if ev and ev.objectifs:
             objectifs = [x.strip() for x in ev.objectifs.split('\n') if x.strip()]
         images = []
-        if ev:
-            images = list(EvenementImage.objects.filter(evenement=ev, active=True).order_by('ordre', 'date_ajout'))
+        try:
+            from .models import DouniaEvent
+            dounia_ev = DouniaEvent.objects.filter(event_slug=edition).first()
+            if dounia_ev:
+                images = list(EvenementImage.objects.filter(evenement=dounia_ev, active=True).order_by('ordre', 'date_ajout'))
+        except (OperationalError, ValueError, Exception):
+            images = []
         chiffres_ev = []
         try:
             chiffres_ev = list(ChiffreCle.objects.filter(edition=edition).order_by('ordre'))
