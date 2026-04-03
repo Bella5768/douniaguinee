@@ -48,23 +48,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 #splashLabel {
     color: rgba(255,255,255,0.6); font-size: 1rem; letter-spacing: 0.05em;
 }
-/* Stickers */
-#stickerLayer {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 999998; overflow: hidden;
-}
-.stk {
-    position: absolute; top: -40px;
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    animation: stkFall linear forwards;
-    user-select: none; pointer-events: none;
-}
-@keyframes stkFall {
-    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-    85%  { opacity: 1; }
-    100% { transform: translateY(110vh) rotate(540deg); opacity: 0; }
-}
 </style>
 
 <style>
@@ -103,8 +86,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
         <div id="splashLabel" style="color:rgba(255,255,255,0.6);font-size:1rem;letter-spacing:0.05em;">Le site s'ouvre dans <strong id="splashSec">{{ config.splash_duree|default:20 }}</strong>s</div>
     </div>
 </div>
-<div id="stickerLayer"></div>
-
 <!-- Audio jungle (chargé silencieusement) -->
 {% if config.splash_audio_file or config.splash_audio_url %}
 <audio id="splashAudio" loop preload="auto">
@@ -124,9 +105,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     var barEl  = document.getElementById('splashBarFill');
     var secEl  = document.getElementById('splashSec');
     var splash = document.getElementById('splashOverlay');
-    var layer  = document.getElementById('stickerLayer');
     var audio  = document.getElementById('splashAudio');
-    var COLORS = ['#00ff88','#003366','#FFD700','#FF4C4C','#00BFFF','#FF69B4','#A0A0A0','#FFFFFF','#FFA500','#7CFC00','#FF6347','#00CED1','#9370DB','#FF1493','#32CD32'];
     var timer;
 
     window.splashStart = function() {
@@ -170,29 +149,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
             splash.style.display = 'none';
             document.documentElement.classList.remove('splash-active');
         }, 650);
-        launchStickers();
-    }
-
-    function launchStickers() {
-        for (var i = 0; i < 350; i++) {
-            (function(i) {
-                setTimeout(function() {
-                    var el = document.createElement('div');
-                    el.className = 'stk';
-                    var size = (Math.random() * 8 + 6) + 'px';
-                    el.style.width = size; el.style.height = size;
-                    el.style.background = COLORS[Math.floor(Math.random() * COLORS.length)];
-                    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-                    var dur = (Math.random() * 4 + 5).toFixed(2);
-                    el.style.left = (Math.random() * 100) + '%';
-                    el.style.animationDuration = dur + 's';
-                    el.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
-                    layer.appendChild(el);
-                    setTimeout(function(){ if(el.parentNode) el.remove(); }, (parseFloat(dur)+1.5)*1000);
-                }, i * 55);
-            })(i);
-        }
-        setTimeout(function(){ layer.style.display='none'; }, 16000);
     }
 })();
 </script>
