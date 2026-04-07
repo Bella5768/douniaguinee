@@ -28,15 +28,6 @@
           <!-- Colonne formulaire -->
           <div class="col-md-8 p-4">
 
-            <!-- Message email -->
-            <div class="alert d-flex align-items-start gap-3 mb-4" style="background:#fff8e1;border:1.5px solid #ffc107;border-radius:10px;">
-              <i class="bi bi-envelope-check-fill text-warning mt-1" style="font-size:1.4rem;flex-shrink:0;"></i>
-              <div>
-                <div class="fw-bold" style="color:#856404;">Confirmation par email requise</div>
-                <div class="small" style="color:#856404;">Veuillez renseigner votre adresse email valide. Vous recevrez le rapport directement après confirmation.</div>
-              </div>
-            </div>
-
             <form id="downloadForm" method="post" action="{% url 'rapport_download' %}">
               {% csrf_token %}
               <div class="row g-3">
