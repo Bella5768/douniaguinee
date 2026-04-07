@@ -1108,33 +1108,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (downloadForm) {
         downloadForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Validation simple
-            const requiredFields = ['download_nom', 'download_prenom', 'download_email', 'download_institution', 'download_usage'];
+            const requiredFields = ['download_nom', 'download_prenom', 'download_email', 'download_institution'];
             let isValid = true;
-            
             requiredFields.forEach(fieldId => {
                 const field = document.getElementById(fieldId);
-                if (!field.value.trim()) {
+                if (field && !field.value.trim()) {
                     field.classList.add('is-invalid');
                     isValid = false;
-                } else {
+                } else if (field) {
                     field.classList.remove('is-invalid');
                 }
             });
-            
-            const consentCheckbox = document.getElementById('download_consent');
-            if (!consentCheckbox.checked) {
-                consentCheckbox.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                consentCheckbox.classList.remove('is-invalid');
-            }
-            
-            if (isValid) {
-                // Soumettre le formulaire
-                this.submit();
-            }
+            if (isValid) { this.submit(); }
         });
     }
 
