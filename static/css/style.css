@@ -269,6 +269,30 @@ section {
     transform: translateY(-1px);
 }
 
+.navbar-dounia .btn-rejoindre,
+.btn-rejoindre {
+    background: linear-gradient(135deg, var(--primary) 0%, #004d99 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 25px;
+    padding: 0.5rem 1.4rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    box-shadow: 0 3px 12px rgba(0, 51, 102, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+.navbar-dounia .btn-rejoindre:hover {
+    background: linear-gradient(135deg, #004d99 0%, var(--primary) 100%);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(0, 51, 102, 0.4);
+}
+.navbar-dounia .btn-rejoindre:active {
+    transform: translateY(0);
+}
+
 /* ---- Hero Enhanced ---- */
 .hero-section {
     position: relative;
@@ -2460,6 +2484,13 @@ html {
     .navbar-dounia .btn-inscription {
         margin-top: 0.5rem;
         display: inline-block;
+    }
+
+    .navbar-dounia .btn-rejoindre {
+        margin-top: 0.75rem;
+        margin-left: 0 !important;
+        display: inline-block;
+        text-align: center;
     }
 
     .atelier-card h5 {

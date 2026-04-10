@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Événements — DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    {% if config.page_evenements_hero_image %}
+    background: url('{{ config.page_evenements_hero_image.url }}') center/cover no-repeat;
+    {% else %}
+    background: linear-gradient(135deg, #003366 0%, #004d99 50%, #0066cc 100%);
+    {% endif %}
+    margin-top: calc(-1 * var(--navbar-offset, 96px));
+    padding-top: calc(var(--navbar-offset, 96px) + 2rem);
+}
+.page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,51,102,0.7);
+    z-index: 0;
+}
+.page-hero .container { position: relative; z-index: 1; }
+.page-hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+.page-hero-title {
+    color: white;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+.page-hero-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+.page-section { padding: 4rem 0; }
+.event-page-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.event-page-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,51,102,0.15);
+}
+.event-page-card .card-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #003366, #0066cc);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+.event-page-card .card-body-inner {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.event-page-card h4 {
+    color: #003366;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+.event-page-card p {
+    color: #666;
+    flex: 1;
+}
+.event-page-card .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #003366;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: gap 0.3s;
+}
+.event-page-card .card-link:hover { gap: 0.8rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container text-center py-5">
+        <span class="page-hero-badge"><i class="bi bi-calendar-event me-1"></i> {{ config.page_evenements_hero_badge|default:"Nos événements" }}</span>
+        <h1 class="page-hero-title" style="font-size:{{ config.page_evenements_titre_size|default:'2.4rem' }};font-weight:{% if config.page_evenements_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_evenements_titre_italic %}italic{% else %}normal{% endif %};{% if config.page_evenements_font and config.page_evenements_font != 'inherit' %}font-family:{{ config.page_evenements_font }};{% endif %}">{{ config.evenements_titre|default:"Événements DounIA" }}</h1>
+        <p class="page-hero-sub" style="font-size:{{ config.page_evenements_desc_size|default:'1.05rem' }};font-weight:{% if config.page_evenements_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_evenements_desc_italic %}italic{% else %}normal{% endif %};{% if config.page_evenements_font and config.page_evenements_font != 'inherit' %}font-family:{{ config.page_evenements_font }};{% endif %}">{{ config.evenements_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="page-section bg-light-custom">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'restitution_page' %}" class="text-decoration-none">
+                    <div class="event-page-card">
+                        <div class="card-body-inner">
+                            <div class="card-icon"><i class="bi bi-clipboard-data"></i></div>
+                            <h4>
+                                {% if restitution_data %}
+                                    {{ restitution_data.titre_hero }}
+                                {% else %}
+                                    Restitution
+                                {% endif %}
+                            </h4>
+                            <p>
+                                {% if restitution_data %}
+                                    {{ restitution_data.sous_titre_hero|default:"Restitution des travaux et résultats." }}
+                                {% else %}
+                                    Restitution des travaux et résultats.
+                                {% endif %}
+                            </p>
+                            <span class="card-link">Découvrir <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'event_page' 'dounia1' %}" class="text-decoration-none">
+                    <div class="event-page-card">
+                        <div class="card-body-inner">
+                            <div class="card-icon"><i class="bi bi-flag"></i></div>
+                            <h4>
+                                {% if dounia1_event %}
+                                    {{ dounia1_event.titre_hero|dounia_exposant }}
+                                {% else %}
+                                    DounIA<sup>1</sup>
+                                {% endif %}
+                            </h4>
+                            <p>
+                                {% if dounia1_event %}
+                                    {{ dounia1_event.sous_titre_hero|default:"Première édition de la conférence DounIA." }}
+                                {% else %}
+                                    Première édition de la conférence DounIA.
+                                {% endif %}
+                            </p>
+                            <span class="card-link">Découvrir <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 fade-in-up">
+                <a href="{% url 'event_page' 'dounia2' %}" class="text-decoration-none">
+                    <div class="event-page-card">
+                        <div class="card-body-inner">
+                            <div class="card-icon"><i class="bi bi-rocket-takeoff"></i></div>
+                            <h4>
+                                {% if dounia2_event %}
+                                    {{ dounia2_event.titre_hero|dounia_exposant }}
+                                {% else %}
+                                    DounIA<sup>2</sup>
+                                {% endif %}
+                            </h4>
+                            <p>
+                                {% if dounia2_event %}
+                                    {{ dounia2_event.sous_titre_hero|default:"Deuxième édition de la conférence DounIA." }}
+                                {% else %}
+                                    Deuxième édition de la conférence DounIA.
+                                {% endif %}
+                            </p>
+                            <span class="card-link">Découvrir <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

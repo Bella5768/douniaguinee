@@ -1,0 +1,668 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rejoindre la dynamique - DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== HERO ===== */
+.rejoindre-hero {
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #001a33 0%, #003366 40%, #004d99 100%);
+    overflow: hidden;
+    padding: 5rem 0 3rem;
+}
+.rejoindre-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(0,128,255,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+}
+.rejoindre-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+}
+.rejoindre-hero-kicker {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+}
+.rejoindre-hero h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+.rejoindre-hero p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.85;
+}
+
+/* ===== CARDS SECTION ===== */
+.rejoindre-section {
+    padding: 4rem 0 5rem;
+    background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+}
+
+.rejoindre-card {
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.rejoindre-card:hover {
+    transform: translateY(-6px);
+}
+
+.rejoindre-card-light {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.rejoindre-card-light:hover {
+    box-shadow: 0 12px 40px rgba(0,51,102,0.12);
+}
+
+.rejoindre-card-dark {
+    background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(0,51,102,0.2);
+}
+.rejoindre-card-dark:hover {
+    box-shadow: 0 12px 40px rgba(0,51,102,0.35);
+}
+
+.rejoindre-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,51,102,0.25);
+}
+.rejoindre-icon-wrap-dark {
+    background: rgba(255,255,255,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.rejoindre-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 1rem;
+}
+.rejoindre-card-dark h3 {
+    color: #fff;
+}
+
+.rejoindre-card p {
+    color: #5f6b7a;
+    line-height: 1.7;
+    flex-grow: 1;
+}
+.rejoindre-card-dark p {
+    color: rgba(255,255,255,0.8);
+}
+
+.rejoindre-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+.rejoindre-pill {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(0,51,102,0.08);
+    color: #003366;
+}
+.rejoindre-pill-dark {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+.rejoindre-caption {
+    font-size: 0.82rem;
+    color: #8896a7;
+    margin-left: 0.25rem;
+}
+.rejoindre-caption-dark {
+    color: rgba(255,255,255,0.6);
+}
+
+.rejoindre-btn {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+.rejoindre-btn-primary {
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,51,102,0.25);
+}
+.rejoindre-btn-primary:hover {
+    background: linear-gradient(135deg, #004d99, #003366);
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(0,51,102,0.35);
+    transform: translateY(-2px);
+}
+.rejoindre-btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.rejoindre-btn-secondary:hover {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ===== AVIS MODAL ===== */
+.avis-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1050;
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.85rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 6px 24px rgba(0,51,102,0.35);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+.avis-fab:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,51,102,0.45); }
+.avis-fab-label { font-size: 0.85rem; }
+
+.avis-chat-box {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,20,40,0.5);
+    backdrop-filter: blur(4px);
+}
+.avis-modal-panel {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.avis-chat-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.avis-chat-close:hover { background: #e2e8f0; }
+.avis-modal-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: rgba(0,51,102,0.08);
+    color: #003366;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+.avis-modal-panel h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 1.5rem;
+}
+.avis-chat-body { margin-bottom: 1.5rem; }
+.avis-bot-msg {
+    background: #f1f5f9;
+    padding: 0.85rem 1.1rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    font-size: 0.92rem;
+    color: #334155;
+}
+.avis-user-msg {
+    background: #003366;
+    color: #fff;
+    padding: 0.85rem 1.1rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    font-size: 0.92rem;
+    text-align: right;
+}
+.avis-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #334155;
+    margin-bottom: 0.4rem;
+}
+.avis-input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+.avis-input:focus { border-color: #003366; outline: none; }
+.avis-textarea { min-height: 90px; resize: vertical; }
+.avis-submit-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #003366, #004d99);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.avis-submit-btn:hover { opacity: 0.9; }
+
+/* ===== PARTENARIAT MODAL ===== */
+.partenariat-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,20,40,0.5);
+    backdrop-filter: blur(4px);
+}
+.partenariat-modal-panel {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.partenariat-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.partenariat-modal-close:hover { background: #e2e8f0; }
+.partenariat-modal-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: rgba(0,51,102,0.08);
+    color: #003366;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+.partenariat-modal-panel h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 1.5rem;
+}
+.partenariat-label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #334155;
+    margin-bottom: 0.4rem;
+}
+.partenariat-input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+}
+.partenariat-input:focus { border-color: #003366; outline: none; }
+.partenariat-select { appearance: auto; }
+.partenariat-textarea { min-height: 90px; resize: vertical; }
+.partenariat-actions { margin-top: 1.5rem; text-align: center; }
+
+/* ===== BACK ===== */
+.rejoindre-back {
+    text-align: center;
+    padding: 2rem 0 3rem;
+    background: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+    .rejoindre-hero h1 { font-size: 1.8rem; }
+    .rejoindre-card { padding: 2rem 1.5rem; }
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="rejoindre-hero">
+    <div class="rejoindre-hero-content">
+        <div class="rejoindre-hero-kicker">Avec vous</div>
+        <h1>Construisons la suite ensemble</h1>
+        <p>Ce processus n'appartient pas qu'à nous. Il avance avec les idées, les contributions et les partenariats de celles et ceux qui souhaitent faire grandir DounIA.</p>
+    </div>
+</section>
+
+<!-- CARDS -->
+<section class="rejoindre-section">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-6 fade-in-up">
+                <div class="rejoindre-card rejoindre-card-light">
+                    <div class="rejoindre-icon-wrap">
+                        <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <h3>Votre voix façonne DounIA</h3>
+                    <p>
+                        Vous avez une idée, une critique ou une suggestion&nbsp;? Chaque retour aide à améliorer le processus et à nourrir les prochaines étapes de DounIA.
+                    </p>
+                    <div class="rejoindre-meta">
+                        <span class="rejoindre-pill">Avis</span>
+                        <span class="rejoindre-pill">Contribution</span>
+                        <span class="rejoindre-caption">Vos retours comptent dans l'amélioration continue.</span>
+                    </div>
+                    <button type="button" class="rejoindre-btn rejoindre-btn-primary" id="avisOpenBtn">
+                        Partager mon avis <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6 fade-in-up">
+                <div class="rejoindre-card rejoindre-card-dark">
+                    <div class="rejoindre-icon-wrap rejoindre-icon-wrap-dark">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h3>Devenez partenaire ou sponsor</h3>
+                    <p>
+                        Vous partagez la vision de DounIA&nbsp;? Rejoignez la dynamique comme partenaire, sponsor ou structure d'appui pour accompagner l'initiative.
+                    </p>
+                    <div class="rejoindre-meta">
+                        <span class="rejoindre-pill rejoindre-pill-dark">Partenariat</span>
+                        <span class="rejoindre-pill rejoindre-pill-dark">Sponsor</span>
+                        <span class="rejoindre-caption rejoindre-caption-dark">Construisons une alliance utile autour des données et de l'IA.</span>
+                    </div>
+                    <button type="button" class="rejoindre-btn rejoindre-btn-secondary" id="partenariatToggleBtn">
+                        Rejoindre la dynamique <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- RETOUR -->
+<section class="rejoindre-back">
+    <a href="{% url 'landing_page' %}" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>Retour à l'accueil
+    </a>
+</section>
+
+<!-- BOUTON FLOTTANT AVIS -->
+<button id="avisToggleBtn" class="avis-fab" title="Donnez votre avis">
+    <i class="bi bi-chat-dots-fill"></i>
+    <span class="avis-fab-label">Donnez votre avis</span>
+</button>
+
+<!-- CHAT MODAL AVIS -->
+<div id="avisChatBox" class="avis-chat-box" style="display:none;">
+    <div class="avis-modal-panel">
+        <button id="avisChatClose" class="avis-chat-close" type="button">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="avis-modal-badge">
+            <i class="bi bi-chat-heart-fill me-2"></i>Votre avis
+        </div>
+        <h3>Qu'est-ce qu'on peut améliorer ?</h3>
+        <div class="avis-chat-body" id="avisChatBody">
+            <div class="avis-bot-msg">
+                Bonjour ! Nous aimerions connaître votre avis sur DounIA. Remplissez le formulaire ci-dessous.
+            </div>
+        </div>
+        <div class="avis-chat-form" id="avisChatForm">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="avis-label">Nom complet</label>
+                    <input type="text" id="avisNom" class="avis-input" placeholder="Votre nom *" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="avis-label">Email</label>
+                    <input type="email" id="avisEmail" class="avis-input" placeholder="Votre email (optionnel)">
+                </div>
+                <div class="col-12">
+                    <label class="avis-label">Votre message</label>
+                    <textarea id="avisMessage" class="avis-input avis-textarea" placeholder="Votre avis ou commentaire *" required></textarea>
+                </div>
+            </div>
+            <button id="avisSubmitBtn" class="avis-submit-btn" type="button">
+                <i class="bi bi-send-fill me-1"></i>Envoyer mon retour
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- PARTENARIAT MODAL -->
+<div id="partenariatModal" class="partenariat-modal" style="display:none;">
+    <div class="partenariat-modal-panel">
+        <button type="button" id="partenariatModalClose" class="partenariat-modal-close">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="partenariat-modal-badge">
+            <i class="bi bi-stars me-2"></i>Partenariat
+        </div>
+        <h3>Construisons ensemble</h3>
+        <form class="partenariat-form">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="partenariat-label">Nom complet</label>
+                    <input type="text" class="partenariat-input" placeholder="Votre nom">
+                </div>
+                <div class="col-md-6">
+                    <label class="partenariat-label">Organisation</label>
+                    <input type="text" class="partenariat-input" placeholder="Entreprise / Association">
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Email professionnel</label>
+                    <input type="email" class="partenariat-input" placeholder="{{ config.footer_email }}">
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Type de collaboration</label>
+                    <select class="partenariat-input partenariat-select">
+                        <option selected>Choisir...</option>
+                        <option>Partenaire institutionnel</option>
+                        <option>Sponsor</option>
+                        <option>Appui technique</option>
+                        <option>Partenaire média</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="partenariat-label">Pourquoi DounIA vous inspire ?</label>
+                    <textarea class="partenariat-input partenariat-textarea" placeholder="Partagez ce qui vous a attiré vers ce projet..."></textarea>
+                </div>
+            </div>
+            <div class="partenariat-actions">
+                <a href="mailto:{{ config.footer_email }}?subject=Partenariat%20DounIA" class="rejoindre-btn rejoindre-btn-primary" style="display:inline-block;max-width:320px;">
+                    Envoyer ma demande <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fade-in animation
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in-up').forEach(el => obs.observe(el));
+
+    // Avis
+    const avisOpenBtn = document.getElementById('avisOpenBtn');
+    const toggleBtn = document.getElementById('avisToggleBtn');
+    const chatBox = document.getElementById('avisChatBox');
+    const closeBtn = document.getElementById('avisChatClose');
+    const submitBtn = document.getElementById('avisSubmitBtn');
+    const chatBody = document.getElementById('avisChatBody');
+    const chatForm = document.getElementById('avisChatForm');
+
+    function openAvis() {
+        chatBox.style.display = 'flex';
+        toggleBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+    }
+    function closeAvis() {
+        chatBox.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="bi bi-chat-dots-fill"></i><span class="avis-fab-label">Donnez votre avis</span>';
+    }
+
+    avisOpenBtn.addEventListener('click', openAvis);
+    toggleBtn.addEventListener('click', function() {
+        chatBox.style.display === 'none' ? openAvis() : closeAvis();
+    });
+    closeBtn.addEventListener('click', closeAvis);
+
+    submitBtn.addEventListener('click', function() {
+        const nom = document.getElementById('avisNom').value.trim();
+        const email = document.getElementById('avisEmail').value.trim();
+        const message = document.getElementById('avisMessage').value.trim();
+
+        if (!nom || !message) { addBotMsg('Veuillez remplir votre nom et votre message.'); return; }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Envoi...';
+        addUserMsg(message);
+
+        fetch('{% url "soumettre_avis" %}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+            body: JSON.stringify({ nom: nom, email: email, message: message, event_slug: 'general' })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                addBotMsg('Merci ' + nom + ' ! Votre avis a bien été envoyé.');
+                chatForm.style.display = 'none';
+            } else {
+                addBotMsg('Erreur : ' + (data.error || 'Veuillez réessayer.'));
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer';
+            }
+        })
+        .catch(() => {
+            addBotMsg('Une erreur est survenue. Veuillez réessayer.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-send-fill me-1"></i>Envoyer';
+        });
+    });
+
+    // Partenariat
+    const partenariatToggleBtn = document.getElementById('partenariatToggleBtn');
+    const partenariatModal = document.getElementById('partenariatModal');
+    const partenariatModalClose = document.getElementById('partenariatModalClose');
+
+    partenariatToggleBtn.addEventListener('click', function() { partenariatModal.style.display = 'flex'; });
+    partenariatModalClose.addEventListener('click', function() { partenariatModal.style.display = 'none'; });
+    partenariatModal.addEventListener('click', function(e) { if (e.target === partenariatModal) partenariatModal.style.display = 'none'; });
+
+    function addBotMsg(text) {
+        const div = document.createElement('div');
+        div.className = 'avis-bot-msg'; div.textContent = text;
+        chatBody.appendChild(div); chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function addUserMsg(text) {
+        const div = document.createElement('div');
+        div.className = 'avis-user-msg'; div.textContent = text;
+        chatBody.appendChild(div); chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    function getCookie(name) {
+        let v = null;
+        document.cookie.split(';').forEach(c => { c = c.trim(); if (c.startsWith(name + '=')) v = decodeURIComponent(c.substring(name.length + 1)); });
+        return v;
+    }
+});
+</script>
+{% endblock %}

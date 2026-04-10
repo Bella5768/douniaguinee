@@ -21,6 +21,11 @@
                         {% csrf_token %}
                         {% for field in fields_data %}
                         <div class="mb-2">
+                            {% if field.is_separator %}
+                            <div class="mt-4 mb-2 pt-3" style="border-top:2px solid #dee2e6;">
+                                <span class="fw-bold text-primary" style="font-size:.95rem;">{{ field.label }}</span>
+                            </div>
+                            {% else %}
                             <label for="id_{{ field.name }}" class="form-label fw-semibold">{{ field.label }}</label>
                             {% if field.is_select %}
                             <div class="d-flex gap-2 flex-wrap mt-1">
@@ -110,6 +115,11 @@
                                 });
                             })();
                             </script>
+                            {% elif field.is_color %}
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="color" id="id_{{ field.name }}_picker" value="{{ field.value|default:'#334155' }}" style="width:50px;height:38px;border:1px solid #dee2e6;border-radius:8px;cursor:pointer;padding:2px;" onchange="document.getElementById('id_{{ field.name }}').value=this.value">
+                                <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="#334155" style="max-width:140px;" onchange="document.getElementById('id_{{ field.name }}_picker').value=this.value">
+                            </div>
                             {% elif field.is_url %}
                             <input type="text" class="form-control" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="https://...">
                             {% elif field.is_datetime %}
@@ -119,6 +129,7 @@
                             {% endif %}
                             {% if field.help_text %}
                             <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
                             {% endif %}
                         </div>
                         {% endfor %}

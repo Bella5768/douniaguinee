@@ -4,6 +4,12 @@ from . import views
 urlpatterns = [
     # Pages publiques
     path('', views.landing_page, name='landing_page'),
+    path('a-propos/', views.about_page, name='about_page'),
+    path('ateliers/', views.ateliers_page, name='ateliers_page'),
+    path('evenements/', views.evenements_page, name='evenements_page'),
+    path('podcast/', views.podcast_page, name='podcast_page'),
+    path('rejoindre/', views.rejoindre_page, name='rejoindre_page'),
+    path('livrable/', views.livrable_page, name='livrable_page'),
     path('inscription/', views.inscription, name='inscription'),
     path('merci/', views.merci, name='merci'),
     path('rapport-download/', views.rapport_download, name='rapport_download'),

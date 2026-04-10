@@ -154,112 +154,174 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 </script>
 {% endif %}
 
-<!-- ============ SECTION 1 : HERO ============ -->
-<section class="hero-section" id="hero" style="margin-top: calc(-1 * var(--navbar-offset, 96px));">
-    <!-- Arrière-plan défilant avec les images de la gestion -->
-    {% if hero_bg_images %}
-    <div class="hero-bg-slideshow">
-        {% for bg_image in hero_bg_images %}
-        <div class="hero-bg-slide" style="background-image: url('{{ bg_image.get_image_url }}?t={{ bg_image.date_ajout|date:'U' }}');"></div>
-        {% endfor %}
-    </div>
-    {% endif %}
+<!-- ============ SECTION 1 : HERO CAROUSEL ============ -->
+<style>
+.hero-carousel-section {
+    margin-top: calc(-1 * var(--navbar-offset, 96px) - 6px);
+    position: relative;
+}
+.hero-carousel .carousel-item {
+    height: calc(600px + var(--navbar-offset, 96px));
+    background-size: cover;
+    background-position: center;
+    background-color: #6b7280;
+}
+.hero-carousel .carousel-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.8) 100%);
+    z-index: 1;
+}
+.hero-slide-content {
+    position: absolute;
+    bottom: 120px;
+    left: 8%;
+    max-width: 540px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px) saturate(1.8);
+    -webkit-backdrop-filter: blur(6px) saturate(1.8);
+    border-radius: 16px;
+    padding: 2rem 2.2rem;
+    z-index: 2;
+}
+.hero-slide-content h2 {
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.7rem;
+}
+.hero-slide-content p {
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.hero-slide-btn {
+    display: inline-block;
+    background: #009688;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.6rem 1.6rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+}
+.hero-slide-btn:hover {
+    background: #00796b;
+    color: #fff;
+    transform: translateY(-2px);
+}
+.hero-carousel .carousel-control-prev,
+.hero-carousel .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    opacity: 1;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+.hero-carousel .carousel-control-prev { left: 12px; }
+.hero-carousel .carousel-control-next { right: 12px; }
+.hero-carousel .carousel-control-prev-icon,
+.hero-carousel .carousel-control-next-icon {
+    filter: invert(0);
+    width: 1.2rem;
+    height: 1.2rem;
+}
+.hero-carousel .carousel-control-prev-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e"); }
+.hero-carousel .carousel-control-next-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23333'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+.hero-carousel .carousel-indicators {
+    bottom: 15px;
+}
+.hero-carousel .carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0.5;
+    border: none;
+}
+.hero-carousel .carousel-indicators button.active {
+    opacity: 1;
+    background: #009688;
+}
+@media (max-width: 768px) {
+    .hero-carousel .carousel-item { height: 480px; }
+    .hero-slide-content { left: 5%; right: 5%; max-width: none; bottom: 40px; padding: 1.4rem; }
+    .hero-slide-content h2 { font-size: 1.2rem; }
+    .hero-slide-content p { font-size: 0.82rem; -webkit-line-clamp: 2; }
+}
+</style>
 
-    <script>
-    (function() {
-        function initHeroBgCrossfade() {
-            var hero = document.getElementById('hero');
-            if (!hero) return;
-            var slides = hero.querySelectorAll('.hero-bg-slide');
-            if (!slides || !slides.length) return;
+<section class="hero-carousel-section" id="hero">
+    <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
+        </div>
+        <div class="carousel-inner">
 
-            var idx = 0;
-            for (var i = 0; i < slides.length; i++) {
-                slides[i].classList.toggle('is-active', i === 0);
-            }
-
-            if (slides.length === 1) return;
-
-            var fadeMs = 1200;
-            var holdMs = 8000;
-            setInterval(function() {
-                var prev = slides[idx];
-                idx = (idx + 1) % slides.length;
-                var next = slides[idx];
-                next.classList.add('is-active');
-                setTimeout(function() {
-                    prev.classList.remove('is-active');
-                }, fadeMs);
-            }, holdMs);
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initHeroBgCrossfade);
-        } else {
-            initHeroBgCrossfade();
-        }
-    })();
-    </script>
-
-    <div class="container position-relative" style="z-index: 2;">
-        <div class="row align-items-center">
-            <div class="col-lg-7 fade-in-up" style="padding-top:6rem;">
-                <div class="hero-content">
-                    <h1 class="display-3 fw-bold mb-4">
-                        {% with first=config.hero_titre|before_em_dash second=config.hero_titre|after_em_dash %}
-                            {{ first|strip_trailing_dash }}
-                            {% if second %}
-                                <span class="d-block">{{ second|strip_leading_dash }}</span>
-                            {% elif config.hero_titre_span %}
-                                <span class="d-block">{{ config.hero_titre_span|strip_leading_dash }}</span>
-                            {% endif %}
-                        {% endwith %}
-                    </h1>
-                    <p class="lead mb-4" style="margin-top:1.5rem;">
-                        {{ config.hero_sous_titre }}
-                    </p>
-
-                    <div class="hero-buttons">
-                        <a href="{% if config.hero_btn1_lien == '#rapport' %}#livrable{% else %}{{ config.hero_btn1_lien }}{% endif %}" class="btn btn-primary btn-lg me-3">
-                            <i class="bi bi-play-circle me-2"></i>{{ config.hero_btn1_texte }}
-                        </a>
-                        <a href="{{ config.hero_btn2_lien }}" class="btn btn-outline-light btn-lg">
-                            <i class="bi bi-pencil-square me-2"></i>{{ config.hero_btn2_texte }}
-                        </a>
-                    </div>
+            <!-- Slide 1 : À propos -->
+            <div class="carousel-item active" style="{% if config.page_about_hero_image %}background-image:url('{{ config.page_about_hero_image.url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content" style="{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">
+                    <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:{% if config.page_about_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_about_titre_italic %}italic{% else %}normal{% endif %};">{{ config.about_titre|default:"C'est quoi DounIA ?" }}</h2>
+                    <p style="font-size:{{ config.page_about_desc_size|default:'1.05rem' }};font-weight:{% if config.page_about_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_about_desc_italic %}italic{% else %}normal{% endif %};">{{ config.about_sous_titre|truncatewords:30 }}</p>
+                    <a href="{% url 'about_page' %}" class="hero-slide-btn">En savoir plus</a>
                 </div>
             </div>
-        </div>
 
-        {% if config.countdown_actif and config.date_lancement_site %}
-        <!-- COMPTE À REBOURS LANCEMENT DU SITE -->
-        <div style="text-align:center;margin-top:2rem;">
-            <div id="heroCountdown" style="display:flex;flex-direction:row;justify-content:center;align-items:center;gap:1rem;">
-                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
-                    <div id="hcDays" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
-                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Jours</div>
-                </div>
-                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
-                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
-                    <div id="hcHours" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
-                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Heures</div>
-                </div>
-                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
-                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
-                    <div id="hcMins" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
-                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Minutes</div>
-                </div>
-                <div style="color:rgba(255,255,255,0.5);font-size:2rem;font-weight:300;">:</div>
-                <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:1rem 1.2rem;min-width:80px;text-align:center;">
-                    <div id="hcSecs" style="font-size:2.5rem;font-weight:800;color:white;line-height:1;">--</div>
-                    <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-top:0.3rem;font-weight:600;">Secondes</div>
+            <!-- Slide 2 : Ateliers -->
+            <div class="carousel-item" style="{% if config.page_ateliers_hero_image %}background-image:url('{{ config.page_ateliers_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.1 %}background-image:url('{{ hero_bg_images.1.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content" style="{% if config.page_ateliers_font and config.page_ateliers_font != 'inherit' %}font-family:{{ config.page_ateliers_font }};{% endif %}">
+                    <h2 style="font-size:{{ config.page_ateliers_titre_size|default:'2.4rem' }};font-weight:{% if config.page_ateliers_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_ateliers_titre_italic %}italic{% else %}normal{% endif %};">{{ config.ateliers_titre|default:"Ateliers Thématiques" }}</h2>
+                    <p style="font-size:{{ config.page_ateliers_desc_size|default:'1.05rem' }};font-weight:{% if config.page_ateliers_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_ateliers_desc_italic %}italic{% else %}normal{% endif %};">{{ config.ateliers_sous_titre|truncatewords:30 }}</p>
+                    <a href="{% url 'ateliers_page' %}" class="hero-slide-btn">En savoir plus</a>
                 </div>
             </div>
-            <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-top:1.2rem;" class="hero-launch-date">
-                <i class="bi bi-calendar-event me-2"></i>Lancement officiel : {{ config.date_lancement_site|date:"j F Y" }} &bull; {{ config.date_lancement_site|date:"H\hi" }} &bull; Conakry, Guinée
-            </p>
+
+            <!-- Slide 3 : Événements -->
+            <div class="carousel-item" style="{% if config.page_evenements_hero_image %}background-image:url('{{ config.page_evenements_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.2 %}background-image:url('{{ hero_bg_images.2.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content" style="{% if config.page_evenements_font and config.page_evenements_font != 'inherit' %}font-family:{{ config.page_evenements_font }};{% endif %}">
+                    <h2 style="font-size:{{ config.page_evenements_titre_size|default:'2.4rem' }};font-weight:{% if config.page_evenements_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_evenements_titre_italic %}italic{% else %}normal{% endif %};">{{ config.evenements_titre|default:"Événements DounIA" }}</h2>
+                    <p style="font-size:{{ config.page_evenements_desc_size|default:'1.05rem' }};font-weight:{% if config.page_evenements_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_evenements_desc_italic %}italic{% else %}normal{% endif %};">{{ config.evenements_sous_titre|truncatewords:30 }}</p>
+                    <a href="{% url 'evenements_page' %}" class="hero-slide-btn">En savoir plus</a>
+                </div>
+            </div>
+
+            <!-- Slide 4 : Podcast -->
+            <div class="carousel-item" style="{% if config.page_podcast_hero_image %}background-image:url('{{ config.page_podcast_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.3 %}background-image:url('{{ hero_bg_images.3.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content" style="{% if config.page_podcast_font and config.page_podcast_font != 'inherit' %}font-family:{{ config.page_podcast_font }};{% endif %}">
+                    <h2 style="font-size:{{ config.page_podcast_titre_size|default:'2.4rem' }};font-weight:{% if config.page_podcast_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_podcast_titre_italic %}italic{% else %}normal{% endif %};">{{ config.galerie_videos_titre|default:"Podcast DounIA" }}</h2>
+                    <p style="font-size:{{ config.page_podcast_desc_size|default:'1.05rem' }};font-weight:{% if config.page_podcast_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_podcast_desc_italic %}italic{% else %}normal{% endif %};">Le podcast DounIA prolonge les réflexions à travers des échanges avec des experts, chercheurs et praticiens des données et de l'IA.</p>
+                    <a href="{% url 'podcast_page' %}" class="hero-slide-btn">En savoir plus</a>
+                </div>
+            </div>
+
+            <!-- Slide 5 : Livrable -->
+            <div class="carousel-item" style="{% if config.page_livrable_hero_image %}background-image:url('{{ config.page_livrable_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.4 %}background-image:url('{{ hero_bg_images.4.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content" style="{% if config.page_livrable_font and config.page_livrable_font != 'inherit' %}font-family:{{ config.page_livrable_font }};{% endif %}">
+                    <h2 style="font-size:{{ config.page_livrable_titre_size|default:'2.4rem' }};font-weight:{% if config.page_livrable_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_livrable_titre_italic %}italic{% else %}normal{% endif %};">{{ config.rapport_titre|default:"Livrable DounIA" }}</h2>
+                    <p style="font-size:{{ config.page_livrable_desc_size|default:'1.05rem' }};font-weight:{% if config.page_livrable_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_livrable_desc_italic %}italic{% else %}normal{% endif %};">{{ config.rapport_sous_titre|truncatewords:30 }}</p>
+                    <a href="{% url 'livrable_page' %}" class="hero-slide-btn">En savoir plus</a>
+                </div>
+            </div>
+
         </div>
-        {% endif %}
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
     </div>
 </section>
 
@@ -494,56 +556,6 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     </div>
 </section>
 {% endif %}
-
-<!-- ============ SECTION 6 : RAPPORT / LIVRABLE DOUNIA 1 ============ -->
-<section id="livrable" class="bg-light-custom">
-    <div class="container">
-        <div class="text-{{ config.rapport_align|default:'center' }} fade-in-up">
-            <h2 class="section-title">{{ config.rapport_titre }}</h2>
-            <hr class="section-divider">
-            <p class="section-subtitle" style="text-align:{{ config.text_alignments|get_align:'rapport_sous_titre' }}">{{ config.rapport_sous_titre }}</p>
-        </div>
-        <div class="row justify-content-center fade-in-up">
-            <div class="col-lg-10">
-                <div class="report-card">
-                    <div class="row g-0">
-                        <div class="col-md-5">
-                            {% if config.rapport_image %}
-                            <div class="report-preview h-100 p-0" style="overflow:hidden;">
-                                <img src="{{ config.rapport_image.url }}" alt="{{ config.rapport_titre }}" style="width:100%;height:100%;object-fit:cover;border-radius:12px 0 0 12px;">
-                            </div>
-                            {% else %}
-                            <div class="report-preview h-100">
-                                <div class="text-center">
-                                    <i class="bi bi-file-earmark-pdf report-icon-large"></i>
-                                    <p class="text-white mt-3 mb-0 fw-bold">{{ config.rapport_titre }}</p>
-                                    <small class="text-white-50">Format PDF</small>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-7">
-                            <div class="report-body">
-                                <h4>Rapport et Recommandations</h4>
-                                <p class="text-muted mb-3">{{ config.rapport_description }}</p>
-                                <ul class="list-unstyled mb-4">
-                                    {% for point in rapport_points %}
-                                    <li class="mb-2"><i class="bi bi-check2 text-success me-2"></i>{{ point }}</li>
-                                    {% endfor %}
-                                </ul>
-                                <button type="button" class="btn btn-accent" data-bs-toggle="modal" data-bs-target="#rapportModal">
-                                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Télécharger le rapport
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% include 'inscriptions/rapport_modal.html' %}
 
 <!-- ============ SECTION 11 : FORMULAIRE D'INSCRIPTION ============ -->
 <section id="inscription" class="form-section">

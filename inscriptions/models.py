@@ -467,6 +467,48 @@ class SiteConfiguration(models.Model):
     about_card3_titre = models.CharField(max_length=200, default='Des ambitions concrètes', verbose_name='About card 3 titre')
     about_card3_texte = models.TextField(default="De la réflexion à l'action : DounIA vise à produire des recommandations opérationnelles, des feuilles de route sectorielles et des cadres de gouvernance adaptés au contexte guinéen et ouest-africain.", verbose_name='About card 3 texte')
 
+    # MOT DE MADAME LA MINISTRE
+    mot_ministre_image = models.ImageField(upload_to='mots/', blank=True, null=True, verbose_name='Photo Madame la Ministre')
+    mot_ministre_nom = models.CharField(max_length=200, blank=True, default='', verbose_name='Nom Madame la Ministre')
+    mot_ministre_titre = models.CharField(max_length=300, blank=True, default='', verbose_name='Titre/Fonction Madame la Ministre')
+    mot_ministre_texte = models.TextField(blank=True, default='', verbose_name='Texte du mot de Madame la Ministre')
+    mot_ministre_texte_size = models.CharField(max_length=20, default='0.95rem', blank=True, verbose_name='Mot Ministre — Taille texte')
+    mot_ministre_texte_bold = models.BooleanField(default=False, verbose_name='Mot Ministre — Texte en gras')
+    mot_ministre_texte_italic = models.BooleanField(default=False, verbose_name='Mot Ministre — Texte en italique')
+    mot_ministre_texte_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Ministre — Police texte')
+    mot_ministre_texte_color = models.CharField(max_length=20, default='#334155', blank=True, verbose_name='Mot Ministre — Couleur texte')
+    mot_ministre_nom_size = models.CharField(max_length=20, default='1rem', blank=True, verbose_name='Mot Ministre — Taille nom')
+    mot_ministre_nom_bold = models.BooleanField(default=True, verbose_name='Mot Ministre — Nom en gras')
+    mot_ministre_nom_italic = models.BooleanField(default=False, verbose_name='Mot Ministre — Nom en italique')
+    mot_ministre_nom_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Ministre — Police nom')
+    mot_ministre_nom_color = models.CharField(max_length=20, default='#003366', blank=True, verbose_name='Mot Ministre — Couleur nom')
+    mot_ministre_titre_size = models.CharField(max_length=20, default='0.85rem', blank=True, verbose_name='Mot Ministre — Taille titre/fonction')
+    mot_ministre_titre_bold = models.BooleanField(default=False, verbose_name='Mot Ministre — Titre en gras')
+    mot_ministre_titre_italic = models.BooleanField(default=False, verbose_name='Mot Ministre — Titre en italique')
+    mot_ministre_titre_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Ministre — Police titre')
+    mot_ministre_titre_color = models.CharField(max_length=20, default='#8896a7', blank=True, verbose_name='Mot Ministre — Couleur titre')
+
+    # MOT DU PROFESSEUR BANIRÉ
+    mot_professeur_image = models.ImageField(upload_to='mots/', blank=True, null=True, verbose_name='Photo Professeur Baniré')
+    mot_professeur_nom = models.CharField(max_length=200, blank=True, default='', verbose_name='Nom Professeur Baniré')
+    mot_professeur_titre = models.CharField(max_length=300, blank=True, default='', verbose_name='Titre/Fonction Professeur Baniré')
+    mot_professeur_texte = models.TextField(blank=True, default='', verbose_name='Texte du mot du Professeur Baniré')
+    mot_professeur_texte_size = models.CharField(max_length=20, default='0.95rem', blank=True, verbose_name='Mot Professeur — Taille texte')
+    mot_professeur_texte_bold = models.BooleanField(default=False, verbose_name='Mot Professeur — Texte en gras')
+    mot_professeur_texte_italic = models.BooleanField(default=False, verbose_name='Mot Professeur — Texte en italique')
+    mot_professeur_texte_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Professeur — Police texte')
+    mot_professeur_texte_color = models.CharField(max_length=20, default='#334155', blank=True, verbose_name='Mot Professeur — Couleur texte')
+    mot_professeur_nom_size = models.CharField(max_length=20, default='1rem', blank=True, verbose_name='Mot Professeur — Taille nom')
+    mot_professeur_nom_bold = models.BooleanField(default=True, verbose_name='Mot Professeur — Nom en gras')
+    mot_professeur_nom_italic = models.BooleanField(default=False, verbose_name='Mot Professeur — Nom en italique')
+    mot_professeur_nom_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Professeur — Police nom')
+    mot_professeur_nom_color = models.CharField(max_length=20, default='#003366', blank=True, verbose_name='Mot Professeur — Couleur nom')
+    mot_professeur_titre_size = models.CharField(max_length=20, default='0.85rem', blank=True, verbose_name='Mot Professeur — Taille titre/fonction')
+    mot_professeur_titre_bold = models.BooleanField(default=False, verbose_name='Mot Professeur — Titre en gras')
+    mot_professeur_titre_italic = models.BooleanField(default=False, verbose_name='Mot Professeur — Titre en italique')
+    mot_professeur_titre_font = models.CharField(max_length=100, default='inherit', blank=True, verbose_name='Mot Professeur — Police titre')
+    mot_professeur_titre_color = models.CharField(max_length=20, default='#8896a7', blank=True, verbose_name='Mot Professeur — Couleur titre')
+
     # DOUNIA 1
     dounia1_titre = models.CharField(max_length=200, default='DounIA 1 — Contexte & Enseignements', verbose_name='DounIA 1 titre')
     dounia1_sous_titre = models.TextField(default="La première édition a permis d'établir un diagnostic approfondi et de poser les bases d'un dialogue national structuré autour de l'IA et des données.", verbose_name='DounIA 1 sous-titre')
@@ -568,6 +610,81 @@ class SiteConfiguration(models.Model):
     # COMPTE À REBOURS (lancement du site)
     countdown_actif = models.BooleanField(default=True, verbose_name='Compte à rebours — Activer')
     date_lancement_site = models.DateTimeField(null=True, blank=True, verbose_name="Date de lancement du site (compte à rebours hero)")
+
+    # HERO PAGES DÉDIÉES
+    # STYLE SLIDES HERO (carousel accueil)
+    FONT_CHOICES = [
+        ('inherit', 'Par défaut'),
+        ("'Poppins', sans-serif", 'Poppins'),
+        ("'Montserrat', sans-serif", 'Montserrat'),
+        ("'Playfair Display', serif", 'Playfair Display'),
+        ("'Roboto', sans-serif", 'Roboto'),
+        ("'Raleway', sans-serif", 'Raleway'),
+        ("'Oswald', sans-serif", 'Oswald'),
+        ("'Lora', serif", 'Lora'),
+    ]
+    hero_slide_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Slides hero — Taille du titre')
+    hero_slide_titre_bold = models.BooleanField(default=True, verbose_name='Slides hero — Titre en gras')
+    hero_slide_titre_italic = models.BooleanField(default=False, verbose_name='Slides hero — Titre en italique')
+    hero_slide_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Slides hero — Taille de la description')
+    hero_slide_desc_bold = models.BooleanField(default=False, verbose_name='Slides hero — Description en gras')
+    hero_slide_desc_italic = models.BooleanField(default=False, verbose_name='Slides hero — Description en italique')
+    hero_slide_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Slides hero — Police')
+
+    # PAGE À PROPOS
+    page_about_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page À propos — Image hero')
+    page_about_hero_badge = models.CharField(max_length=200, default='Découvrir DounIA', blank=True, verbose_name='Page À propos — Badge hero')
+    page_about_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page À propos — Taille titre')
+    page_about_titre_bold = models.BooleanField(default=True, verbose_name='Page À propos — Titre gras')
+    page_about_titre_italic = models.BooleanField(default=False, verbose_name='Page À propos — Titre italique')
+    page_about_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Page À propos — Taille description')
+    page_about_desc_bold = models.BooleanField(default=False, verbose_name='Page À propos — Description gras')
+    page_about_desc_italic = models.BooleanField(default=False, verbose_name='Page À propos — Description italique')
+    page_about_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Page À propos — Police')
+
+    # PAGE ATELIERS
+    page_ateliers_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Ateliers — Image hero')
+    page_ateliers_hero_badge = models.CharField(max_length=200, default='Thématiques', blank=True, verbose_name='Page Ateliers — Badge hero')
+    page_ateliers_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Ateliers — Taille titre')
+    page_ateliers_titre_bold = models.BooleanField(default=True, verbose_name='Page Ateliers — Titre gras')
+    page_ateliers_titre_italic = models.BooleanField(default=False, verbose_name='Page Ateliers — Titre italique')
+    page_ateliers_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Page Ateliers — Taille description')
+    page_ateliers_desc_bold = models.BooleanField(default=False, verbose_name='Page Ateliers — Description gras')
+    page_ateliers_desc_italic = models.BooleanField(default=False, verbose_name='Page Ateliers — Description italique')
+    page_ateliers_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Page Ateliers — Police')
+
+    # PAGE ÉVÉNEMENTS
+    page_evenements_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Événements — Image hero')
+    page_evenements_hero_badge = models.CharField(max_length=200, default='Nos événements', blank=True, verbose_name='Page Événements — Badge hero')
+    page_evenements_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Événements — Taille titre')
+    page_evenements_titre_bold = models.BooleanField(default=True, verbose_name='Page Événements — Titre gras')
+    page_evenements_titre_italic = models.BooleanField(default=False, verbose_name='Page Événements — Titre italique')
+    page_evenements_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Page Événements — Taille description')
+    page_evenements_desc_bold = models.BooleanField(default=False, verbose_name='Page Événements — Description gras')
+    page_evenements_desc_italic = models.BooleanField(default=False, verbose_name='Page Événements — Description italique')
+    page_evenements_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Page Événements — Police')
+
+    # PAGE PODCAST
+    page_podcast_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Podcast — Image hero')
+    page_podcast_hero_badge = models.CharField(max_length=200, default='Podcast', blank=True, verbose_name='Page Podcast — Badge hero')
+    page_podcast_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Podcast — Taille titre')
+    page_podcast_titre_bold = models.BooleanField(default=True, verbose_name='Page Podcast — Titre gras')
+    page_podcast_titre_italic = models.BooleanField(default=False, verbose_name='Page Podcast — Titre italique')
+    page_podcast_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Page Podcast — Taille description')
+    page_podcast_desc_bold = models.BooleanField(default=False, verbose_name='Page Podcast — Description gras')
+    page_podcast_desc_italic = models.BooleanField(default=False, verbose_name='Page Podcast — Description italique')
+    page_podcast_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Page Podcast — Police')
+
+    # PAGE LIVRABLE
+    page_livrable_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Livrable — Image hero')
+    page_livrable_hero_badge = models.CharField(max_length=200, default='Rapport', blank=True, verbose_name='Page Livrable — Badge hero')
+    page_livrable_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Livrable — Taille titre')
+    page_livrable_titre_bold = models.BooleanField(default=True, verbose_name='Page Livrable — Titre gras')
+    page_livrable_titre_italic = models.BooleanField(default=False, verbose_name='Page Livrable — Titre italique')
+    page_livrable_desc_size = models.CharField(max_length=20, default='1.05rem', blank=True, verbose_name='Page Livrable — Taille description')
+    page_livrable_desc_bold = models.BooleanField(default=False, verbose_name='Page Livrable — Description gras')
+    page_livrable_desc_italic = models.BooleanField(default=False, verbose_name='Page Livrable — Description italique')
+    page_livrable_font = models.CharField(max_length=100, choices=FONT_CHOICES, default='inherit', blank=True, verbose_name='Page Livrable — Police')
 
     # FOOTER
     footer_description = models.TextField(default="DounIA est un processus scientifique national visant à coconstruire une vision guinéenne autour de l'IA et de la gouvernance des données.", verbose_name='Footer description')

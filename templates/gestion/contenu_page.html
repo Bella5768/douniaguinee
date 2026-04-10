@@ -306,6 +306,142 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,51,102,0.1);color:var(--primary);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-chat-quote fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Mot de Madame la Ministre</h6>
+                        <p class="text-muted small mb-2">Photo, nom, titre, message</p>
+                        <a href="{% url 'admin_edit_section' 'mot_ministre' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(111,66,193,0.1);color:#6f42c1;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-mortarboard fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Mot du Professeur Baniré</h6>
+                        <p class="text-muted small mb-2">Photo, nom, titre, message</p>
+                        <a href="{% url 'admin_edit_section' 'mot_professeur' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-3 mt-4" style="color: var(--primary);"><i class="bi bi-window-stack me-2"></i>Carousel Hero — Pages dédiées</h4>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-fonts fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Style du texte (Slides)</h6>
+                        <p class="text-muted small mb-2">Police, taille, gras, italique</p>
+                        <a href="{% url 'admin_edit_section' 'hero_slides_style' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="fw-bold mb-3" style="color: var(--primary);"><i class="bi bi-image me-2"></i>Images Hero par page</h4>
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-info-circle fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Page À propos</h6>
+                        <p class="text-muted small mb-2">Image hero, badge, titre</p>
+                        <a href="{% url 'admin_edit_section' 'page_about' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-easel fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Page Ateliers</h6>
+                        <p class="text-muted small mb-2">Image hero, badge, titre</p>
+                        <a href="{% url 'admin_edit_section' 'page_ateliers' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-calendar-event fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Page Événements</h6>
+                        <p class="text-muted small mb-2">Image hero, badge, titre</p>
+                        <a href="{% url 'admin_edit_section' 'page_evenements' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-mic fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Page Podcast</h6>
+                        <p class="text-muted small mb-2">Image hero, badge, titre</p>
+                        <a href="{% url 'admin_edit_section' 'page_podcast' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="admin-card h-100">
+                <div class="admin-card-body d-flex align-items-start gap-3">
+                    <div class="stat-card-icon" style="background:rgba(0,102,204,0.1);color:#0066cc;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="bi bi-file-earmark-pdf fs-5"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">Page Livrable</h6>
+                        <p class="text-muted small mb-2">Image hero, badge, titre</p>
+                        <a href="{% url 'admin_edit_section' 'page_livrable' %}" class="btn btn-primary-custom btn-sm">
+                            <i class="bi bi-pencil me-1"></i>Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Listes dynamiques -->

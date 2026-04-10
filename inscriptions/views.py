@@ -460,6 +460,81 @@ def landing_page(request):
     return render(request, 'inscriptions/landing.html', context)
 
 
+def about_page(request):
+    config = SiteConfiguration.get()
+    try:
+        chiffres = list(ChiffreCle.objects.all().order_by('ordre'))
+    except OperationalError:
+        chiffres = []
+    try:
+        experts = Expert.objects.all().order_by('ordre')
+    except OperationalError:
+        experts = []
+    return render(request, 'inscriptions/about.html', {
+        'config': config,
+        'chiffres': chiffres,
+        'experts': experts,
+    })
+
+
+def ateliers_page(request):
+    config = SiteConfiguration.get()
+    try:
+        ateliers_db = Atelier.objects.filter(active=True).order_by('ordre')
+    except OperationalError:
+        ateliers_db = []
+    return render(request, 'inscriptions/ateliers.html', {
+        'config': config,
+        'ateliers_db': ateliers_db,
+    })
+
+
+def evenements_page(request):
+    config = SiteConfiguration.get()
+    from .models import DouniaEvent, Restitution
+    try:
+        dounia1_event = DouniaEvent.objects.get(event_slug='dounia1')
+    except DouniaEvent.DoesNotExist:
+        dounia1_event = None
+    try:
+        dounia2_event = DouniaEvent.objects.get(event_slug='dounia2')
+    except DouniaEvent.DoesNotExist:
+        dounia2_event = None
+    try:
+        restitution_data = Restitution.objects.get(pk=1)
+    except Restitution.DoesNotExist:
+        restitution_data = None
+    return render(request, 'inscriptions/evenements.html', {
+        'config': config,
+        'dounia1_event': dounia1_event,
+        'dounia2_event': dounia2_event,
+        'restitution_data': restitution_data,
+    })
+
+
+def podcast_page(request):
+    config = SiteConfiguration.get()
+    return render(request, 'inscriptions/podcast.html', {
+        'config': config,
+    })
+
+
+def rejoindre_page(request):
+    config = SiteConfiguration.get()
+    return render(request, 'inscriptions/rejoindre.html', {
+        'config': config,
+    })
+
+
+def livrable_page(request):
+    config = SiteConfiguration.get()
+    rapport_points = [p.strip() for p in config.rapport_points.split('\n') if p.strip()]
+    return render(request, 'inscriptions/livrable.html', {
+        'config': config,
+        'rapport_points': rapport_points,
+    })
+
+
 def _landing_context_with_form(form):
     config = SiteConfiguration.get()
     try:
@@ -1940,6 +2015,58 @@ def admin_edit_section(request, section):
                 {'name': 'about_card3_texte', 'label': 'Carte 3 — Texte', 'is_textarea': True, 'is_url': False, 'is_image': False},
             ],
         },
+        'mot_ministre': {
+            'titre': 'Mot de Madame la Ministre',
+            'fields': [
+                {'name': 'mot_ministre_image', 'label': 'Photo', 'is_textarea': False, 'is_url': False, 'is_image': True},
+                {'name': 'mot_ministre_nom', 'label': 'Nom', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'mot_ministre_titre', 'label': 'Titre / Fonction', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'mot_ministre_texte', 'label': 'Texte du message', 'is_textarea': True, 'is_url': False, 'is_image': False, 'help_text': 'Texte affiché sur la page À propos.'},
+                {'name': 'mot_ministre_texte_size', 'label': 'Taille du texte', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 0.95rem, 1rem, 1.1rem'},
+                {'name': 'mot_ministre_texte_bold', 'label': 'Texte en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_texte_italic', 'label': 'Texte en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_texte_font', 'label': 'Police', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_ministre_texte_color', 'label': 'Couleur du texte', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True, 'help_text': 'Couleur du texte du message'},
+                {'name': '_sep_nom_ministre', 'label': '━━ Style du Nom ━━', 'is_separator': True},
+                {'name': 'mot_ministre_nom_size', 'label': 'Taille du nom', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 1rem, 1.2rem'},
+                {'name': 'mot_ministre_nom_bold', 'label': 'Nom en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_nom_italic', 'label': 'Nom en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_nom_font', 'label': 'Police du nom', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_ministre_nom_color', 'label': 'Couleur du nom', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True},
+                {'name': '_sep_titre_ministre', 'label': '━━ Style du Titre/Fonction ━━', 'is_separator': True},
+                {'name': 'mot_ministre_titre_size', 'label': 'Taille du titre', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 0.85rem, 0.9rem'},
+                {'name': 'mot_ministre_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_ministre_titre_font', 'label': 'Police du titre', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_ministre_titre_color', 'label': 'Couleur du titre', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True},
+            ],
+        },
+        'mot_professeur': {
+            'titre': 'Mot du Professeur Baniré',
+            'fields': [
+                {'name': 'mot_professeur_image', 'label': 'Photo', 'is_textarea': False, 'is_url': False, 'is_image': True},
+                {'name': 'mot_professeur_nom', 'label': 'Nom', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'mot_professeur_titre', 'label': 'Titre / Fonction', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'mot_professeur_texte', 'label': 'Texte du message', 'is_textarea': True, 'is_url': False, 'is_image': False, 'help_text': 'Texte affiché sur la page À propos.'},
+                {'name': 'mot_professeur_texte_size', 'label': 'Taille du texte', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 0.95rem, 1rem, 1.1rem'},
+                {'name': 'mot_professeur_texte_bold', 'label': 'Texte en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_texte_italic', 'label': 'Texte en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_texte_font', 'label': 'Police', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_professeur_texte_color', 'label': 'Couleur du texte', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True, 'help_text': 'Couleur du texte du message'},
+                {'name': '_sep_nom_prof', 'label': '━━ Style du Nom ━━', 'is_separator': True},
+                {'name': 'mot_professeur_nom_size', 'label': 'Taille du nom', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 1rem, 1.2rem'},
+                {'name': 'mot_professeur_nom_bold', 'label': 'Nom en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_nom_italic', 'label': 'Nom en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_nom_font', 'label': 'Police du nom', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_professeur_nom_color', 'label': 'Couleur du nom', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True},
+                {'name': '_sep_titre_prof', 'label': '━━ Style du Titre/Fonction ━━', 'is_separator': True},
+                {'name': 'mot_professeur_titre_size', 'label': 'Taille du titre', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Ex: 0.85rem, 0.9rem'},
+                {'name': 'mot_professeur_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'mot_professeur_titre_font', 'label': 'Police du titre', 'is_select': True, 'is_textarea': False, 'is_url': False, 'is_image': False, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Roboto', sans-serif", 'Roboto'), ("'Playfair Display', serif", 'Playfair Display'), ("'Inter', sans-serif", 'Inter'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'mot_professeur_titre_color', 'label': 'Couleur du titre', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_color': True},
+            ],
+        },
         'dounia1': {
             'titre': 'DounIA 1',
             'fields': [
@@ -2083,6 +2210,97 @@ def admin_edit_section(request, section):
                 {'name': 'splash_duree', 'label': 'Durée du décompte (secondes)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_integer': True, 'help_text': 'Nombre de secondes du décompte avant l\'ouverture du site. Ex: 30'},
                 {'name': 'splash_audio_file', 'label': 'Fichier audio (MP3)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': True, 'help_text': 'Uploadez votre propre fichier MP3. Prioritaire sur l\'URL ci-dessous.'},
                 {'name': 'splash_audio_url', 'label': 'URL audio (si pas de fichier)', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'Lien direct vers un MP3 en ligne. Ignoré si un fichier est uploadé.'},
+            ],
+        },
+        'hero_slides_style': {
+            'titre': 'Slides Hero — Style du texte',
+            'fields': [
+                {'name': 'hero_slide_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'hero_slide_titre_size', 'label': 'Taille du titre (ex: 2.4rem, 36px)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Exemples : 2rem, 2.4rem, 3rem, 28px, 36px'},
+                {'name': 'hero_slide_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'hero_slide_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'hero_slide_desc_size', 'label': 'Taille de la description (ex: 1.05rem, 16px)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'help_text': 'Exemples : 1rem, 1.1rem, 14px, 16px'},
+                {'name': 'hero_slide_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'hero_slide_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+            ],
+        },
+        'page_about': {
+            'titre': 'Page À propos',
+            'fields': [
+                {'name': 'page_about_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_about_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'about_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'about_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
+                {'name': 'page_about_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'page_about_titre_size', 'label': 'Taille du titre (ex: 2.4rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_about_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_about_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_about_desc_size', 'label': 'Taille description (ex: 1.05rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_about_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_about_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+            ],
+        },
+        'page_ateliers': {
+            'titre': 'Page Ateliers',
+            'fields': [
+                {'name': 'page_ateliers_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_ateliers_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'ateliers_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'ateliers_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
+                {'name': 'page_ateliers_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'page_ateliers_titre_size', 'label': 'Taille du titre (ex: 2.4rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_ateliers_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_ateliers_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_ateliers_desc_size', 'label': 'Taille description (ex: 1.05rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_ateliers_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_ateliers_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+            ],
+        },
+        'page_evenements': {
+            'titre': 'Page Événements',
+            'fields': [
+                {'name': 'page_evenements_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_evenements_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'evenements_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'evenements_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
+                {'name': 'page_evenements_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'page_evenements_titre_size', 'label': 'Taille du titre (ex: 2.4rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_evenements_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_evenements_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_evenements_desc_size', 'label': 'Taille description (ex: 1.05rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_evenements_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_evenements_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+            ],
+        },
+        'page_podcast': {
+            'titre': 'Page Podcast',
+            'fields': [
+                {'name': 'page_podcast_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_podcast_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'galerie_videos_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_podcast_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'page_podcast_titre_size', 'label': 'Taille du titre (ex: 2.4rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_podcast_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_podcast_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_podcast_desc_size', 'label': 'Taille description (ex: 1.05rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_podcast_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_podcast_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+            ],
+        },
+        'page_livrable': {
+            'titre': 'Page Livrable',
+            'fields': [
+                {'name': 'page_livrable_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_livrable_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'rapport_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'rapport_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
+                {'name': 'page_livrable_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
+                {'name': 'page_livrable_titre_size', 'label': 'Taille du titre (ex: 2.4rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_livrable_titre_bold', 'label': 'Titre en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_livrable_titre_italic', 'label': 'Titre en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_livrable_desc_size', 'label': 'Taille description (ex: 1.05rem)', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': 'page_livrable_desc_bold', 'label': 'Description en gras', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
+                {'name': 'page_livrable_desc_italic', 'label': 'Description en italique', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_boolean': True},
             ],
         },
         'footer': {

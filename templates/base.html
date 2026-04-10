@@ -63,22 +63,22 @@
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#hero">Accueil</a>
+                        <a class="nav-link" href="{% url 'landing_page' %}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#about">À propos</a>
+                        <a class="nav-link" href="{% url 'about_page' %}">À propos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#ateliers">Ateliers</a>
+                        <a class="nav-link" href="{% url 'ateliers_page' %}">Ateliers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#evenements">Événements</a>
+                        <a class="nav-link" href="{% url 'evenements_page' %}">Événements</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#podcast">Podcast</a>
+                        <a class="nav-link" href="{% url 'podcast_page' %}">Podcast</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}#livrable">Livrable</a>
+                        <a class="nav-link" href="{% url 'livrable_page' %}">Livrable</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-3">
@@ -98,6 +98,9 @@
                         </div>
                     </div>
                 </form>
+                <a href="{% url 'rejoindre_page' %}" class="btn btn-rejoindre ms-3" style="background: linear-gradient(135deg, #0B4A9A 0%, #004d99 100%) !important; color: #fff !important; border: none !important; border-radius: 25px; padding: 0.5rem 1.4rem; font-weight: 600; font-size: 0.88rem; box-shadow: 0 3px 12px rgba(0,51,102,0.3); text-decoration: none;">
+                    <i class="bi bi-people-fill me-1"></i>Rejoindre la dynamique
+                </a>
             </div>
         </div>
     </nav>
@@ -120,14 +123,15 @@
                 <div class="col-lg-4">
                     <h5>Navigation</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-1"><a href="{% url 'landing_page' %}#hero"><i class="bi bi-chevron-right me-1"></i>Accueil</a></li>
-                        <li class="mb-1"><a href="{% url 'landing_page' %}#about"><i class="bi bi-chevron-right me-1"></i>À propos</a></li>
-                        <li class="mb-1"><a href="{% url 'landing_page' %}#ateliers"><i class="bi bi-chevron-right me-1"></i>Ateliers thématiques</a></li>
-                        <li class="mb-1"><a href="{% url 'landing_page' %}#evenements"><i class="bi bi-chevron-right me-1"></i>Événements</a></li>
+                        <li class="mb-1"><a href="{% url 'landing_page' %}"><i class="bi bi-chevron-right me-1"></i>Accueil</a></li>
+                        <li class="mb-1"><a href="{% url 'about_page' %}"><i class="bi bi-chevron-right me-1"></i>À propos</a></li>
+                        <li class="mb-1"><a href="{% url 'ateliers_page' %}"><i class="bi bi-chevron-right me-1"></i>Ateliers thématiques</a></li>
+                        <li class="mb-1"><a href="{% url 'evenements_page' %}"><i class="bi bi-chevron-right me-1"></i>Événements</a></li>
                         <li class="mb-1"><a href="{% url 'event_page' 'dounia1' %}"><i class="bi bi-chevron-right me-1"></i>DounIA<sup>1</sup></a></li>
                         <li class="mb-1"><a href="{% url 'event_page' 'dounia2' %}"><i class="bi bi-chevron-right me-1"></i>DounIA<sup>2</sup></a></li>
                         <li class="mb-1"><a href="{% url 'restitution_page' %}"><i class="bi bi-chevron-right me-1"></i>Restitution</a></li>
-                        <li class="mb-1"><a href="{% url 'landing_page' %}#podcast"><i class="bi bi-chevron-right me-1"></i>Podcast</a></li>
+                        <li class="mb-1"><a href="{% url 'podcast_page' %}"><i class="bi bi-chevron-right me-1"></i>Podcast</a></li>
+                        <li class="mb-1"><a href="{% url 'livrable_page' %}"><i class="bi bi-chevron-right me-1"></i>Livrable</a></li>
                         <li class="mb-1"><a href="{% url 'landing_page' %}#inscription"><i class="bi bi-chevron-right me-1"></i>S'inscrire</a></li>
                     </ul>
                 </div>

@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}À propos — DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    {% if config.page_about_hero_image %}
+    background: url('{{ config.page_about_hero_image.url }}') center/cover no-repeat;
+    {% else %}
+    background: linear-gradient(135deg, #003366 0%, #004d99 50%, #0066cc 100%);
+    {% endif %}
+    margin-top: calc(-1 * var(--navbar-offset, 96px));
+    padding-top: calc(var(--navbar-offset, 96px) + 2rem);
+}
+.page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,51,102,0.7);
+    z-index: 0;
+}
+.page-hero .container { position: relative; z-index: 1; }
+.page-hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+.page-hero-title {
+    color: white;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+.page-hero-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+.page-section { padding: 4rem 0; }
+.expert-card-page {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+}
+.expert-card-page:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+.expert-card-page img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 3px solid #003366;
+}
+
+/* ===== MOT / MESSAGE SECTION ===== */
+.mot-section {
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+.mot-section-alt {
+    background: #f8fafc;
+}
+.mot-section-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #003366;
+    margin-bottom: 3rem;
+    position: relative;
+}
+.mot-section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #003366, #004d99);
+    border-radius: 2px;
+    margin: 0.75rem auto 0;
+}
+.mot-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+    background: #fff;
+}
+.mot-photo-col {
+    flex: 0 0 38%;
+    max-width: 38%;
+    position: relative;
+    min-height: 420px;
+}
+.mot-photo-col img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.mot-text-col {
+    flex: 1;
+    padding: 2.5rem 2.8rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mot-text-col-full {
+    padding: 2.5rem 3rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+}
+.mot-flag {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.mot-quote-icon {
+    position: absolute;
+    top: 1.8rem;
+    right: 2.2rem;
+    font-size: 3.5rem;
+    color: #003366;
+    opacity: 0.10;
+    line-height: 1;
+}
+.mot-text-col p,
+.mot-text-col-full p {
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    margin-bottom: 0.9rem;
+}
+.mot-text-col p strong,
+.mot-text-col-full p strong {
+    color: #003366;
+}
+.mot-signature {
+    margin-top: 1.8rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+.mot-signature-name {
+    font-weight: 700;
+    color: #003366;
+    font-size: 1rem;
+    margin-bottom: 0.15rem;
+}
+.mot-signature-title {
+    color: #8896a7;
+    font-size: 0.85rem;
+}
+@media (max-width: 991px) {
+    .mot-section { padding: 3rem 0; }
+    .mot-section-title { font-size: 1.7rem; }
+    .mot-row { flex-direction: column; border-radius: 16px; }
+    .mot-photo-col { flex: none; max-width: 100%; min-height: 300px; }
+    .mot-text-col { padding: 2rem 1.5rem; }
+    .mot-text-col-full { padding: 2rem 1.5rem; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="container text-center py-5">
+        <span class="page-hero-badge"><i class="bi bi-info-circle me-1"></i> {{ config.page_about_hero_badge|default:"Découvrir DounIA" }}</span>
+        <h1 class="page-hero-title" style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:{% if config.page_about_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_about_titre_italic %}italic{% else %}normal{% endif %};{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">{{ config.about_titre|default:"À propos de DounIA" }}</h1>
+        <p class="page-hero-sub" style="font-size:{{ config.page_about_desc_size|default:'1.05rem' }};font-weight:{% if config.page_about_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_about_desc_italic %}italic{% else %}normal{% endif %};{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">{{ config.about_sous_titre }}</p>
+    </div>
+</section>
+
+<section class="page-section bg-light-custom">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon"><i class="bi bi-globe2"></i></div>
+                    <h5>{{ config.about_card1_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card1_texte }}</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon">
+                        {% if config.about_card2_icone %}
+                            <i class="bi {{ config.about_card2_icone }}"></i>
+                        {% else %}
+                            <i class="bi bi-diagram-3"></i>
+                        {% endif %}
+                    </div>
+                    <h5>{{ config.about_card2_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card2_texte }}</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in-up">
+                <div class="about-card">
+                    <div class="about-icon"><i class="bi {% if config.about_card3_icone %}{{ config.about_card3_icone }}{% else %}bi-lightbulb{% endif %}"></i></div>
+                    <h5>{{ config.about_card3_titre }}</h5>
+                    <p class="text-muted">{{ config.about_card3_texte }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== MOT DE MADAME LA MINISTRE ===== -->
+<section class="mot-section">
+    <div class="container">
+        <h2 class="mot-section-title fade-in-up">Mot de Madame la Ministre</h2>
+        {% if config.mot_ministre_image %}
+        <div class="mot-row fade-in-up">
+            <div class="mot-photo-col">
+                <img src="{{ config.mot_ministre_image.url }}" alt="Madame la Ministre">
+            </div>
+            <div class="mot-text-col" style="font-size:{{ config.mot_ministre_texte_size|default:'0.95rem' }};font-weight:{% if config.mot_ministre_texte_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_texte_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_texte_color|default:'#334155' }};{% if config.mot_ministre_texte_font and config.mot_ministre_texte_font != 'inherit' %}font-family:{{ config.mot_ministre_texte_font }};{% endif %}">
+                <div class="mot-flag">🇬🇳</div>
+                <div class="mot-quote-icon">&ldquo;&rdquo;</div>
+                {% if config.mot_ministre_texte %}
+                    {{ config.mot_ministre_texte|linebreaksbr }}
+                {% else %}
+                <p>Le numérique et l'intelligence artificielle représentent des leviers stratégiques pour le développement de notre pays. L'initiative <strong>DounIA</strong> s'inscrit pleinement dans cette vision en créant un espace de dialogue, de formation et de co-construction autour des enjeux de la donnée et de l'IA.</p>
+                <p>Il est essentiel que nous, en tant que nation, prenions part activement à ces transformations technologiques mondiales. DounIA est un pas concret vers la <strong>souveraineté numérique</strong> et le renforcement des <strong>compétences locales</strong>.</p>
+                {% endif %}
+                <div class="mot-signature">
+                    <div class="mot-signature-name" style="font-size:{{ config.mot_ministre_nom_size|default:'1rem' }};font-weight:{% if config.mot_ministre_nom_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_nom_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_nom_color|default:'#003366' }};{% if config.mot_ministre_nom_font and config.mot_ministre_nom_font != 'inherit' %}font-family:{{ config.mot_ministre_nom_font }};{% endif %}">{{ config.mot_ministre_nom|default:"Madame la Ministre" }}</div>
+                    <div class="mot-signature-title" style="font-size:{{ config.mot_ministre_titre_size|default:'0.85rem' }};font-weight:{% if config.mot_ministre_titre_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_titre_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_titre_color|default:'#8896a7' }};{% if config.mot_ministre_titre_font and config.mot_ministre_titre_font != 'inherit' %}font-family:{{ config.mot_ministre_titre_font }};{% endif %}">{{ config.mot_ministre_titre|default:"Ministre des Postes, des Télécommunications et de l'Économie Numérique" }}</div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="mot-text-col-full fade-in-up" style="font-size:{{ config.mot_ministre_texte_size|default:'0.95rem' }};font-weight:{% if config.mot_ministre_texte_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_texte_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_texte_color|default:'#334155' }};{% if config.mot_ministre_texte_font and config.mot_ministre_texte_font != 'inherit' %}font-family:{{ config.mot_ministre_texte_font }};{% endif %}">
+            <div class="mot-flag">🇬🇳</div>
+            <div class="mot-quote-icon">&ldquo;&rdquo;</div>
+            {% if config.mot_ministre_texte %}
+                {{ config.mot_ministre_texte|linebreaksbr }}
+            {% else %}
+            <p>Le numérique et l'intelligence artificielle représentent des leviers stratégiques pour le développement de notre pays. L'initiative <strong>DounIA</strong> s'inscrit pleinement dans cette vision en créant un espace de dialogue, de formation et de co-construction autour des enjeux de la donnée et de l'IA.</p>
+            <p>Il est essentiel que nous, en tant que nation, prenions part activement à ces transformations technologiques mondiales. DounIA est un pas concret vers la <strong>souveraineté numérique</strong> et le renforcement des <strong>compétences locales</strong>.</p>
+            {% endif %}
+            <div class="mot-signature">
+                <div class="mot-signature-name" style="font-size:{{ config.mot_ministre_nom_size|default:'1rem' }};font-weight:{% if config.mot_ministre_nom_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_nom_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_nom_color|default:'#003366' }};{% if config.mot_ministre_nom_font and config.mot_ministre_nom_font != 'inherit' %}font-family:{{ config.mot_ministre_nom_font }};{% endif %}">{{ config.mot_ministre_nom|default:"Madame la Ministre" }}</div>
+                <div class="mot-signature-title" style="font-size:{{ config.mot_ministre_titre_size|default:'0.85rem' }};font-weight:{% if config.mot_ministre_titre_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_ministre_titre_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_ministre_titre_color|default:'#8896a7' }};{% if config.mot_ministre_titre_font and config.mot_ministre_titre_font != 'inherit' %}font-family:{{ config.mot_ministre_titre_font }};{% endif %}">{{ config.mot_ministre_titre|default:"Ministre des Postes, des Télécommunications et de l'Économie Numérique" }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ===== MOT DU PROFESSEUR BANIRÉ ===== -->
+<section class="mot-section mot-section-alt">
+    <div class="container">
+        <h2 class="mot-section-title fade-in-up">Mot du Professeur Baniré</h2>
+        {% if config.mot_professeur_image %}
+        <div class="mot-row fade-in-up">
+            <div class="mot-photo-col">
+                <img src="{{ config.mot_professeur_image.url }}" alt="Professeur Baniré">
+            </div>
+            <div class="mot-text-col" style="font-size:{{ config.mot_professeur_texte_size|default:'0.95rem' }};font-weight:{% if config.mot_professeur_texte_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_texte_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_texte_color|default:'#334155' }};{% if config.mot_professeur_texte_font and config.mot_professeur_texte_font != 'inherit' %}font-family:{{ config.mot_professeur_texte_font }};{% endif %}">
+                <div class="mot-flag">🇬🇳</div>
+                <div class="mot-quote-icon">&ldquo;&rdquo;</div>
+                {% if config.mot_professeur_texte %}
+                    {{ config.mot_professeur_texte|linebreaksbr }}
+                {% else %}
+                <p>L'intelligence artificielle n'est pas un luxe réservé aux pays développés. C'est un <strong>outil de transformation</strong> que chaque nation peut et doit s'approprier. À travers <strong>DounIA</strong>, nous avons voulu prouver que la Guinée peut contribuer à la réflexion mondiale sur l'IA.</p>
+                <p>Ce projet est avant tout un <strong>processus collaboratif</strong>, porté par des experts, des étudiants et des citoyens engagés. Ensemble, nous construisons les bases d'un écosystème numérique responsable et inclusif.</p>
+                {% endif %}
+                <div class="mot-signature">
+                    <div class="mot-signature-name" style="font-size:{{ config.mot_professeur_nom_size|default:'1rem' }};font-weight:{% if config.mot_professeur_nom_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_nom_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_nom_color|default:'#003366' }};{% if config.mot_professeur_nom_font and config.mot_professeur_nom_font != 'inherit' %}font-family:{{ config.mot_professeur_nom_font }};{% endif %}">{{ config.mot_professeur_nom|default:"Pr. Baniré Diallo" }}</div>
+                    <div class="mot-signature-title" style="font-size:{{ config.mot_professeur_titre_size|default:'0.85rem' }};font-weight:{% if config.mot_professeur_titre_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_titre_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_titre_color|default:'#8896a7' }};{% if config.mot_professeur_titre_font and config.mot_professeur_titre_font != 'inherit' %}font-family:{{ config.mot_professeur_titre_font }};{% endif %}">{{ config.mot_professeur_titre|default:"Professeur, Porteur du projet DounIA" }}</div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="mot-text-col-full fade-in-up" style="font-size:{{ config.mot_professeur_texte_size|default:'0.95rem' }};font-weight:{% if config.mot_professeur_texte_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_texte_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_texte_color|default:'#334155' }};{% if config.mot_professeur_texte_font and config.mot_professeur_texte_font != 'inherit' %}font-family:{{ config.mot_professeur_texte_font }};{% endif %}">
+            <div class="mot-flag">🇬🇳</div>
+            <div class="mot-quote-icon">&ldquo;&rdquo;</div>
+            {% if config.mot_professeur_texte %}
+                {{ config.mot_professeur_texte|linebreaksbr }}
+            {% else %}
+            <p>L'intelligence artificielle n'est pas un luxe réservé aux pays développés. C'est un <strong>outil de transformation</strong> que chaque nation peut et doit s'approprier. À travers <strong>DounIA</strong>, nous avons voulu prouver que la Guinée peut contribuer à la réflexion mondiale sur l'IA.</p>
+            <p>Ce projet est avant tout un <strong>processus collaboratif</strong>, porté par des experts, des étudiants et des citoyens engagés. Ensemble, nous construisons les bases d'un écosystème numérique responsable et inclusif.</p>
+            {% endif %}
+            <div class="mot-signature">
+                <div class="mot-signature-name" style="font-size:{{ config.mot_professeur_nom_size|default:'1rem' }};font-weight:{% if config.mot_professeur_nom_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_nom_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_nom_color|default:'#003366' }};{% if config.mot_professeur_nom_font and config.mot_professeur_nom_font != 'inherit' %}font-family:{{ config.mot_professeur_nom_font }};{% endif %}">{{ config.mot_professeur_nom|default:"Pr. Baniré Diallo" }}</div>
+                <div class="mot-signature-title" style="font-size:{{ config.mot_professeur_titre_size|default:'0.85rem' }};font-weight:{% if config.mot_professeur_titre_bold %}700{% else %}400{% endif %};font-style:{% if config.mot_professeur_titre_italic %}italic{% else %}normal{% endif %};color:{{ config.mot_professeur_titre_color|default:'#8896a7' }};{% if config.mot_professeur_titre_font and config.mot_professeur_titre_font != 'inherit' %}font-family:{{ config.mot_professeur_titre_font }};{% endif %}">{{ config.mot_professeur_titre|default:"Professeur, Porteur du projet DounIA" }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% if chiffres %}
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            {% for chiffre in chiffres %}
+            <div class="col-6 col-md-3 fade-in-up">
+                <div class="stat-card">
+                    <div class="stat-number">{{ chiffre.valeur }}</div>
+                    <div class="stat-label">{{ chiffre.label }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if experts %}
+<section class="page-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Nos Experts</h2>
+            <hr class="section-divider">
+        </div>
+        <div class="row g-4">
+            {% for expert in experts %}
+            <div class="col-6 col-md-4 col-lg-3 fade-in-up">
+                <div class="expert-card-page">
+                    {% if expert.photo %}
+                    <img src="{{ expert.photo.url }}" alt="{{ expert.nom }}">
+                    {% else %}
+                    <div style="width:100px;height:100px;border-radius:50%;background:#003366;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:white;font-size:2rem;">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    {% endif %}
+                    <h6 class="fw-bold mb-1">{{ expert.nom }}</h6>
+                    <small class="text-muted">{{ expert.titre }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
