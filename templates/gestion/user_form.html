@@ -1,0 +1,130 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}{% if mode == 'create' %}Nouvel utilisateur{% else %}Modifier {{ user_obj.username }}{% endif %} — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2>
+            <i class="bi bi-{% if mode == 'create' %}person-plus{% else %}pencil{% endif %} me-2"></i>
+            {% if mode == 'create' %}Créer un utilisateur{% else %}Modifier « {{ user_obj.username }} »{% endif %}
+        </h2>
+        <p class="mb-0">
+            {% if mode == 'create' %}Remplissez les informations du nouvel utilisateur{% else %}Modifiez les informations de l'utilisateur{% endif %}
+        </p>
+    </div>
+    <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Retour
+    </a>
+</div>
+
+{% if messages %}
+<div class="mb-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="username" class="form-label fw-semibold">Nom d'utilisateur <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ form_data.username|default:'' }}" required>
+                    </div>
+                    <small class="text-muted">Identifiant unique pour se connecter</small>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ form_data.email|default:'' }}">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="first_name" class="form-label fw-semibold">Prénom</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ form_data.first_name|default:'' }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="last_name" class="form-label fw-semibold">Nom</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" value="{{ form_data.last_name|default:'' }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="password" class="form-label fw-semibold">
+                        Mot de passe {% if mode == 'create' %}<span class="text-danger">*</span>{% endif %}
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" {% if mode == 'create' %}required{% endif %} minlength="6">
+                    </div>
+                    {% if mode == 'edit' %}
+                    <small class="text-muted">Laissez vide pour ne pas changer le mot de passe</small>
+                    {% else %}
+                    <small class="text-muted">Minimum 6 caractères</small>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="password2" class="form-label fw-semibold">
+                        Confirmer le mot de passe {% if mode == 'create' %}<span class="text-danger">*</span>{% endif %}
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" class="form-control" id="password2" name="password2" {% if mode == 'create' %}required{% endif %}>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h6 class="fw-bold mb-3"><i class="bi bi-shield-lock me-2"></i>Permissions</h6>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active" {% if form_data.is_active or mode == 'create' and not form_data %}checked{% endif %}>
+                        <label class="form-check-label fw-semibold" for="is_active">Actif</label>
+                    </div>
+                    <small class="text-muted">L'utilisateur peut se connecter</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="is_staff" name="is_staff" {% if form_data.is_staff %}checked{% endif %}>
+                        <label class="form-check-label fw-semibold" for="is_staff">Staff</label>
+                    </div>
+                    <small class="text-muted">Accès au panel de gestion</small>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="is_superuser" name="is_superuser" {% if form_data.is_superuser %}checked{% endif %}>
+                        <label class="form-check-label fw-semibold" for="is_superuser">Super-administrateur</label>
+                    </div>
+                    <small class="text-muted">Tous les droits, y compris Django Admin</small>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-admin-primary">
+                    <i class="bi bi-check-lg me-1"></i>
+                    {% if mode == 'create' %}Créer l'utilisateur{% else %}Enregistrer les modifications{% endif %}
+                </button>
+                <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -13,22 +13,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    {% if not config.page_about_hero_video %}
     {% if config.page_about_hero_image %}
     background: url('{{ config.page_about_hero_image.url }}') center/cover no-repeat;
     {% else %}
     background: linear-gradient(135deg, #003366 0%, #004d99 50%, #0066cc 100%);
     {% endif %}
+    {% else %}
+    background: #001a33;
+    {% endif %}
     margin-top: calc(-1 * var(--navbar-offset, 96px));
     padding-top: calc(var(--navbar-offset, 96px) + 2rem);
+}
+.page-hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
 }
 .page-hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background: rgba(0,51,102,0.7);
-    z-index: 0;
+    z-index: 1;
 }
-.page-hero .container { position: relative; z-index: 1; }
+.page-hero .container { position: relative; z-index: 2; }
 .page-hero-badge {
     display: inline-block;
     background: rgba(255,255,255,0.15);
@@ -198,6 +210,11 @@
 
 {% block content %}
 <section class="page-hero">
+    {% if config.page_about_hero_video %}
+    <video class="page-hero-video" autoplay muted loop playsinline>
+        <source src="{{ config.page_about_hero_video.url }}" type="video/mp4">
+    </video>
+    {% endif %}
     <div class="container text-center py-5">
         <span class="page-hero-badge"><i class="bi bi-info-circle me-1"></i> {{ config.page_about_hero_badge|default:"Découvrir DounIA" }}</span>
         <h1 class="page-hero-title" style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:{% if config.page_about_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_about_titre_italic %}italic{% else %}normal{% endif %};{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">{{ config.about_titre|default:"À propos de DounIA" }}</h1>

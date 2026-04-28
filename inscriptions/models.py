@@ -633,6 +633,7 @@ class SiteConfiguration(models.Model):
 
     # PAGE À PROPOS
     page_about_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page À propos — Image hero')
+    page_about_hero_video = models.FileField(upload_to='pages_hero_video/', blank=True, null=True, verbose_name='Page À propos — Vidéo hero')
     page_about_hero_badge = models.CharField(max_length=200, default='Découvrir DounIA', blank=True, verbose_name='Page À propos — Badge hero')
     page_about_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page À propos — Taille titre')
     page_about_titre_bold = models.BooleanField(default=True, verbose_name='Page À propos — Titre gras')
@@ -644,6 +645,7 @@ class SiteConfiguration(models.Model):
 
     # PAGE ATELIERS
     page_ateliers_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Ateliers — Image hero')
+    page_ateliers_hero_video = models.FileField(upload_to='pages_hero_video/', blank=True, null=True, verbose_name='Page Ateliers — Vidéo hero')
     page_ateliers_hero_badge = models.CharField(max_length=200, default='Thématiques', blank=True, verbose_name='Page Ateliers — Badge hero')
     page_ateliers_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Ateliers — Taille titre')
     page_ateliers_titre_bold = models.BooleanField(default=True, verbose_name='Page Ateliers — Titre gras')
@@ -655,6 +657,7 @@ class SiteConfiguration(models.Model):
 
     # PAGE ÉVÉNEMENTS
     page_evenements_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Événements — Image hero')
+    page_evenements_hero_video = models.FileField(upload_to='pages_hero_video/', blank=True, null=True, verbose_name='Page Événements — Vidéo hero')
     page_evenements_hero_badge = models.CharField(max_length=200, default='Nos événements', blank=True, verbose_name='Page Événements — Badge hero')
     page_evenements_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Événements — Taille titre')
     page_evenements_titre_bold = models.BooleanField(default=True, verbose_name='Page Événements — Titre gras')
@@ -666,6 +669,7 @@ class SiteConfiguration(models.Model):
 
     # PAGE PODCAST
     page_podcast_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Podcast — Image hero')
+    page_podcast_hero_video = models.FileField(upload_to='pages_hero_video/', blank=True, null=True, verbose_name='Page Podcast — Vidéo hero')
     page_podcast_hero_badge = models.CharField(max_length=200, default='Podcast', blank=True, verbose_name='Page Podcast — Badge hero')
     page_podcast_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Podcast — Taille titre')
     page_podcast_titre_bold = models.BooleanField(default=True, verbose_name='Page Podcast — Titre gras')
@@ -677,6 +681,7 @@ class SiteConfiguration(models.Model):
 
     # PAGE LIVRABLE
     page_livrable_hero_image = models.ImageField(upload_to='pages_hero/', blank=True, null=True, verbose_name='Page Livrable — Image hero')
+    page_livrable_hero_video = models.FileField(upload_to='pages_hero_video/', blank=True, null=True, verbose_name='Page Livrable — Vidéo hero')
     page_livrable_hero_badge = models.CharField(max_length=200, default='Rapport', blank=True, verbose_name='Page Livrable — Badge hero')
     page_livrable_titre_size = models.CharField(max_length=20, default='2.4rem', blank=True, verbose_name='Page Livrable — Taille titre')
     page_livrable_titre_bold = models.BooleanField(default=True, verbose_name='Page Livrable — Titre gras')

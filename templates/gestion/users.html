@@ -1,0 +1,165 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Utilisateurs — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2><i class="bi bi-person-gear me-2"></i>Gestion des utilisateurs</h2>
+        <p class="mb-0">{{ total }} utilisateur{{ total|pluralize }} au total</p>
+    </div>
+    <a href="{% url 'admin_user_create' %}" class="btn btn-admin-primary btn-sm">
+        <i class="bi bi-person-plus me-1"></i>Nouvel utilisateur
+    </a>
+</div>
+
+{% if messages %}
+<div class="mb-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-total">
+            <div class="stat-card-icon"><i class="bi bi-people-fill"></i></div>
+            <div>
+                <div class="stat-card-number">{{ total }}</div>
+                <div class="stat-card-label">Total utilisateurs</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-atelier">
+            <div class="stat-card-icon"><i class="bi bi-shield-check"></i></div>
+            <div>
+                <div class="stat-card-number">{{ staff_count }}</div>
+                <div class="stat-card-label">Staff (accès gestion)</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card stat-card-profil">
+            <div class="stat-card-icon"><i class="bi bi-star-fill"></i></div>
+            <div>
+                <div class="stat-card-number">{{ superuser_count }}</div>
+                <div class="stat-card-label">Super-administrateurs</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtres -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-semibold small">Rechercher</label>
+                <input type="text" name="q" class="form-control" placeholder="Nom, email, identifiant..." value="{{ q }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold small">Rôle</label>
+                <select name="role" class="form-select">
+                    <option value="">Tous les rôles</option>
+                    <option value="staff" {% if role_filter == 'staff' %}selected{% endif %}>Staff</option>
+                    <option value="superuser" {% if role_filter == 'superuser' %}selected{% endif %}>Super-admin</option>
+                    <option value="normal" {% if role_filter == 'normal' %}selected{% endif %}>Utilisateur normal</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-admin-primary btn-sm flex-fill">
+                    <i class="bi bi-search me-1"></i>Filtrer
+                </button>
+                <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Statut</th>
+                    <th>Dernière connexion</th>
+                    <th>Date de création</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:{% if u.is_superuser %}#dc3545{% elif u.is_staff %}#0B4A9A{% else %}#6c757d{% endif %};color:#fff;font-weight:700;font-size:0.85rem;">
+                                {{ u.username|first|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-semibold">{{ u.username }}</div>
+                                {% if u.first_name or u.last_name %}
+                                <small class="text-muted">{{ u.first_name }} {{ u.last_name }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ u.email|default:"-" }}</td>
+                    <td>
+                        {% if u.is_superuser %}
+                        <span class="badge bg-danger">Super-admin</span>
+                        {% elif u.is_staff %}
+                        <span class="badge bg-primary">Staff</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Utilisateur</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.is_active %}
+                        <span class="badge bg-success-subtle text-success">Actif</span>
+                        {% else %}
+                        <span class="badge bg-danger-subtle text-danger">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if u.last_login %}
+                        {{ u.last_login|date:"d/m/Y H:i" }}
+                        {% else %}
+                        <span class="text-muted">Jamais</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ u.date_joined|date:"d/m/Y" }}</td>
+                    <td class="text-end">
+                        <div class="d-flex gap-1 justify-content-end">
+                            <a href="{% url 'admin_user_edit' u.pk %}" class="btn btn-sm btn-outline-primary" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            {% if u != request.user %}
+                            <a href="{% url 'admin_user_delete' u.pk %}" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Aucun utilisateur trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

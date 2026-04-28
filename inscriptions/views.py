@@ -2001,6 +2001,11 @@ def admin_edit_section(request, section):
         'about': {
             'titre': 'À propos',
             'fields': [
+                {'name': '_sep_hero_about', 'label': '━━ Hero de la page À propos ━━', 'is_separator': True},
+                {'name': 'page_about_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero de la page À propos.'},
+                {'name': 'page_about_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle. Prioritaire sur l\'image.'},
+                {'name': 'page_about_hero_badge', 'label': 'Texte du badge hero', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': '_sep_contenu_about', 'label': '━━ Contenu de la section ━━', 'is_separator': True},
                 {'name': 'about_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2080,6 +2085,11 @@ def admin_edit_section(request, section):
         'rapport': {
             'titre': 'Rapport DounIA 1',
             'fields': [
+                {'name': '_sep_hero_livrable', 'label': '━━ Hero de la page Livrable ━━', 'is_separator': True},
+                {'name': 'page_livrable_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image arrière-plan du hero de la page Livrable.'},
+                {'name': 'page_livrable_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 en boucle. Prioritaire sur l\'image.'},
+                {'name': 'page_livrable_hero_badge', 'label': 'Texte du badge hero', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': '_sep_contenu_livrable', 'label': '━━ Contenu de la section ━━', 'is_separator': True},
                 {'name': 'rapport_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2094,6 +2104,11 @@ def admin_edit_section(request, section):
         'evenements': {
             'titre': 'Événements (section landing)',
             'fields': [
+                {'name': '_sep_hero_evenements', 'label': '━━ Hero de la page Événements ━━', 'is_separator': True},
+                {'name': 'page_evenements_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image arrière-plan du hero de la page Événements.'},
+                {'name': 'page_evenements_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 en boucle. Prioritaire sur l\'image.'},
+                {'name': 'page_evenements_hero_badge', 'label': 'Texte du badge hero', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': '_sep_contenu_evenements', 'label': '━━ Contenu de la section ━━', 'is_separator': True},
                 {'name': 'evenements_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2113,6 +2128,11 @@ def admin_edit_section(request, section):
         'galerie_videos': {
             'titre': 'Galerie Vidéos (Podcast)',
             'fields': [
+                {'name': '_sep_hero_podcast', 'label': '━━ Hero de la page Podcast ━━', 'is_separator': True},
+                {'name': 'page_podcast_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image arrière-plan du hero de la page Podcast.'},
+                {'name': 'page_podcast_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 en boucle. Prioritaire sur l\'image.'},
+                {'name': 'page_podcast_hero_badge', 'label': 'Texte du badge hero', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': '_sep_contenu_podcast', 'label': '━━ Contenu de la section ━━', 'is_separator': True},
                 {'name': 'galerie_videos_titre', 'label': 'Titre de la section', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'podcast_youtube_url', 'label': 'Lien YouTube CSIG (bouton "Voir plus")', 'is_textarea': False, 'is_url': True, 'is_image': False, 'help_text': 'URL de la chaîne YouTube CSIG. Ex: https://www.youtube.com/@csig-guinee'},
                 {'name': 'galerie_video_1', 'label': 'Vidéo 1 (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_file': False, 'is_video': True, 'help_text': 'Vidéo portrait format téléphone'},
@@ -2148,6 +2168,11 @@ def admin_edit_section(request, section):
         'ateliers_section': {
             'titre': 'Ateliers (section landing)',
             'fields': [
+                {'name': '_sep_hero_ateliers', 'label': '━━ Hero de la page Ateliers ━━', 'is_separator': True},
+                {'name': 'page_ateliers_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image arrière-plan du hero de la page Ateliers.'},
+                {'name': 'page_ateliers_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 en boucle. Prioritaire sur l\'image.'},
+                {'name': 'page_ateliers_hero_badge', 'label': 'Texte du badge hero', 'is_textarea': False, 'is_url': False, 'is_image': False},
+                {'name': '_sep_contenu_ateliers', 'label': '━━ Contenu de la section ━━', 'is_separator': True},
                 {'name': 'ateliers_align', 'label': 'Alignement du texte', 'is_select': True, 'choices': [('center', 'Centré'), ('left', 'Gauche'), ('right', 'Droite'), ('justify', 'Justifié')], 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_sous_titre', 'label': 'Sous-titre', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2228,6 +2253,7 @@ def admin_edit_section(request, section):
             'titre': 'Page À propos',
             'fields': [
                 {'name': 'page_about_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_about_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle en arrière-plan du hero. Prioritaire sur l\'image.'},
                 {'name': 'page_about_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'about_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2244,6 +2270,7 @@ def admin_edit_section(request, section):
             'titre': 'Page Ateliers',
             'fields': [
                 {'name': 'page_ateliers_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_ateliers_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle en arrière-plan du hero. Prioritaire sur l\'image.'},
                 {'name': 'page_ateliers_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'ateliers_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2260,6 +2287,7 @@ def admin_edit_section(request, section):
             'titre': 'Page Événements',
             'fields': [
                 {'name': 'page_evenements_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_evenements_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle en arrière-plan du hero. Prioritaire sur l\'image.'},
                 {'name': 'page_evenements_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'evenements_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2276,6 +2304,7 @@ def admin_edit_section(request, section):
             'titre': 'Page Podcast',
             'fields': [
                 {'name': 'page_podcast_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_podcast_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle en arrière-plan du hero. Prioritaire sur l\'image.'},
                 {'name': 'page_podcast_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'galerie_videos_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'page_podcast_font', 'label': 'Police', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_select': True, 'choices': [('inherit', 'Par défaut'), ("'Poppins', sans-serif", 'Poppins'), ("'Montserrat', sans-serif", 'Montserrat'), ("'Playfair Display', serif", 'Playfair Display'), ("'Roboto', sans-serif", 'Roboto'), ("'Raleway', sans-serif", 'Raleway'), ("'Oswald', sans-serif", 'Oswald'), ("'Lora', serif", 'Lora')]},
@@ -2291,6 +2320,7 @@ def admin_edit_section(request, section):
             'titre': 'Page Livrable',
             'fields': [
                 {'name': 'page_livrable_hero_image', 'label': 'Image de fond du hero', 'is_textarea': False, 'is_url': False, 'is_image': True, 'help_text': 'Image affichée en arrière-plan du hero.'},
+                {'name': 'page_livrable_hero_video', 'label': 'Vidéo de fond du hero (MP4)', 'is_textarea': False, 'is_url': False, 'is_image': False, 'is_video': True, 'help_text': 'Vidéo MP4 jouée en boucle en arrière-plan du hero. Prioritaire sur l\'image.'},
                 {'name': 'page_livrable_hero_badge', 'label': 'Texte du badge', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_titre', 'label': 'Titre', 'is_textarea': False, 'is_url': False, 'is_image': False},
                 {'name': 'rapport_sous_titre', 'label': 'Sous-titre / description', 'is_textarea': True, 'is_url': False, 'is_image': False},
@@ -2321,6 +2351,8 @@ def admin_edit_section(request, section):
     if request.method == 'POST':
         alignments = dict(config.text_alignments or {})
         for field in section_def['fields']:
+            if field.get('is_separator'):
+                continue
             name = field['name']
             if field.get('is_file') or field.get('is_image') or field.get('is_video'):
                 uploaded = request.FILES.get(name)
@@ -2384,25 +2416,90 @@ def admin_edit_section(request, section):
 
 @staff_required
 def export_inscriptions_csv(request):
-    """Export des inscriptions en CSV"""
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="inscriptions.csv"'
-    
-    writer = csv.writer(response)
-    writer.writerow(['Nom', 'Prénom', 'Email', 'Institution', 'Fonction', 'Profil', 'Atelier', 'Date'])
-    
-    for inscription in Inscription.objects.all().order_by('-date_inscription'):
-        writer.writerow([
-            inscription.nom,
-            inscription.prenom,
-            inscription.email,
-            inscription.institution,
-            inscription.fonction,
-            inscription.get_profil_display(),
-            inscription.get_atelier_display(),
-            inscription.date_inscription.strftime('%d/%m/%Y %H:%M')
-        ])
-    
+    """Export des inscriptions en Excel (.xlsx)"""
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+    from io import BytesIO
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Inscriptions DounIA"
+
+    # --- Styles ---
+    header_font = Font(name='Calibri', bold=True, color='FFFFFF', size=11)
+    header_fill = PatternFill(start_color='003366', end_color='003366', fill_type='solid')
+    header_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
+    thin_border = Border(
+        left=Side(style='thin', color='CCCCCC'),
+        right=Side(style='thin', color='CCCCCC'),
+        top=Side(style='thin', color='CCCCCC'),
+        bottom=Side(style='thin', color='CCCCCC'),
+    )
+    cell_align = Alignment(vertical='top', wrap_text=True)
+
+    # --- En-têtes ---
+    headers = ['N°', 'Nom', 'Prénom', 'Email', 'WhatsApp', 'Institution', 'Fonction',
+               'Profil', 'Atelier', 'Engagement', 'Format', 'Disponibilité', 'Motivation', 'Date']
+    for col_idx, header in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col_idx, value=header)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = header_align
+        cell.border = thin_border
+
+    # --- Données ---
+    inscriptions = Inscription.objects.all().order_by('-date_inscription')
+    for row_idx, insc in enumerate(inscriptions, 2):
+        row_data = [
+            row_idx - 1,
+            insc.nom,
+            insc.prenom,
+            insc.email,
+            insc.whatsapp or '',
+            insc.institution,
+            insc.fonction,
+            insc.get_profil_display(),
+            insc.get_atelier_display(),
+            insc.get_engagement_display(),
+            insc.get_format_preference_display(),
+            insc.get_disponibilite_display(),
+            insc.motivation or '',
+            insc.date_inscription.strftime('%d/%m/%Y %H:%M'),
+        ]
+        # Alterner couleur de fond
+        row_fill = PatternFill(start_color='F2F7FB', end_color='F2F7FB', fill_type='solid') if row_idx % 2 == 0 else PatternFill(fill_type=None)
+        for col_idx, value in enumerate(row_data, 1):
+            cell = ws.cell(row=row_idx, column=col_idx, value=value)
+            cell.alignment = cell_align
+            cell.border = thin_border
+            cell.font = Font(name='Calibri', size=10)
+            if row_fill.fill_type:
+                cell.fill = row_fill
+        # Forcer WhatsApp en texte pour éviter que Excel le convertisse en nombre
+        ws.cell(row=row_idx, column=5).number_format = '@'
+
+    # --- Largeur auto des colonnes ---
+    col_widths = [5, 18, 18, 30, 20, 25, 20, 22, 35, 18, 18, 15, 40, 18]
+    for i, width in enumerate(col_widths, 1):
+        ws.column_dimensions[get_column_letter(i)].width = width
+
+    # --- Figer la première ligne ---
+    ws.freeze_panes = 'A2'
+
+    # --- Filtre auto ---
+    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{ws.max_row}"
+
+    # --- Réponse HTTP ---
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = 'attachment; filename="inscriptions_dounia.xlsx"'
     return response
 
 
@@ -2605,3 +2702,178 @@ def admin_avis(request):
         'q': q,
     }
     return render(request, 'gestion/avis.html', context)
+
+
+@staff_required
+def admin_users(request):
+    """Page admin pour gérer les utilisateurs"""
+    from django.contrib.auth.models import User
+
+    users = User.objects.all().order_by('-date_joined')
+    q = request.GET.get('q', '')
+    role_filter = request.GET.get('role', '')
+
+    if q:
+        users = users.filter(
+            Q(username__icontains=q) | Q(first_name__icontains=q) |
+            Q(last_name__icontains=q) | Q(email__icontains=q)
+        )
+    if role_filter == 'staff':
+        users = users.filter(is_staff=True)
+    elif role_filter == 'superuser':
+        users = users.filter(is_superuser=True)
+    elif role_filter == 'normal':
+        users = users.filter(is_staff=False, is_superuser=False)
+
+    context = {
+        'users': users,
+        'total': User.objects.count(),
+        'staff_count': User.objects.filter(is_staff=True).count(),
+        'superuser_count': User.objects.filter(is_superuser=True).count(),
+        'q': q,
+        'role_filter': role_filter,
+    }
+    return render(request, 'gestion/users.html', context)
+
+
+@staff_required
+def admin_user_create(request):
+    """Créer un nouvel utilisateur"""
+    from django.contrib.auth.models import User
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        password = request.POST.get('password', '')
+        password2 = request.POST.get('password2', '')
+        is_staff = 'is_staff' in request.POST
+        is_superuser = 'is_superuser' in request.POST
+        is_active = 'is_active' in request.POST
+
+        errors = []
+        if not username:
+            errors.append("Le nom d'utilisateur est obligatoire.")
+        elif User.objects.filter(username=username).exists():
+            errors.append(f"Le nom d'utilisateur « {username} » existe déjà.")
+        if not password:
+            errors.append("Le mot de passe est obligatoire.")
+        elif len(password) < 6:
+            errors.append("Le mot de passe doit contenir au moins 6 caractères.")
+        elif password != password2:
+            errors.append("Les deux mots de passe ne correspondent pas.")
+
+        if errors:
+            for err in errors:
+                messages.error(request, err)
+            return render(request, 'gestion/user_form.html', {
+                'mode': 'create',
+                'form_data': request.POST,
+            })
+
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+        )
+        user.is_staff = is_staff
+        user.is_superuser = is_superuser
+        user.is_active = is_active
+        user.save()
+        messages.success(request, f"Utilisateur « {username} » créé avec succès.")
+        return redirect('admin_users')
+
+    return render(request, 'gestion/user_form.html', {
+        'mode': 'create',
+        'form_data': {},
+    })
+
+
+@staff_required
+def admin_user_edit(request, pk):
+    """Modifier un utilisateur existant"""
+    from django.contrib.auth.models import User
+
+    user_obj = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        password = request.POST.get('password', '')
+        password2 = request.POST.get('password2', '')
+        is_staff = 'is_staff' in request.POST
+        is_superuser = 'is_superuser' in request.POST
+        is_active = 'is_active' in request.POST
+
+        errors = []
+        if not username:
+            errors.append("Le nom d'utilisateur est obligatoire.")
+        elif User.objects.filter(username=username).exclude(pk=pk).exists():
+            errors.append(f"Le nom d'utilisateur « {username} » est déjà pris.")
+        if password and len(password) < 6:
+            errors.append("Le mot de passe doit contenir au moins 6 caractères.")
+        elif password and password != password2:
+            errors.append("Les deux mots de passe ne correspondent pas.")
+
+        if errors:
+            for err in errors:
+                messages.error(request, err)
+            return render(request, 'gestion/user_form.html', {
+                'mode': 'edit',
+                'user_obj': user_obj,
+                'form_data': request.POST,
+            })
+
+        user_obj.username = username
+        user_obj.email = email
+        user_obj.first_name = first_name
+        user_obj.last_name = last_name
+        user_obj.is_staff = is_staff
+        user_obj.is_superuser = is_superuser
+        user_obj.is_active = is_active
+        if password:
+            user_obj.set_password(password)
+        user_obj.save()
+        messages.success(request, f"Utilisateur « {username} » mis à jour.")
+        return redirect('admin_users')
+
+    return render(request, 'gestion/user_form.html', {
+        'mode': 'edit',
+        'user_obj': user_obj,
+        'form_data': {
+            'username': user_obj.username,
+            'email': user_obj.email,
+            'first_name': user_obj.first_name,
+            'last_name': user_obj.last_name,
+            'is_staff': user_obj.is_staff,
+            'is_superuser': user_obj.is_superuser,
+            'is_active': user_obj.is_active,
+        },
+    })
+
+
+@staff_required
+def admin_user_delete(request, pk):
+    """Supprimer un utilisateur"""
+    from django.contrib.auth.models import User
+
+    user_obj = get_object_or_404(User, pk=pk)
+
+    if user_obj == request.user:
+        messages.error(request, "Vous ne pouvez pas supprimer votre propre compte.")
+        return redirect('admin_users')
+
+    if request.method == 'POST':
+        username = user_obj.username
+        user_obj.delete()
+        messages.success(request, f"Utilisateur « {username} » supprimé.")
+        return redirect('admin_users')
+
+    return render(request, 'gestion/user_confirm_delete.html', {
+        'user_obj': user_obj,
+    })
