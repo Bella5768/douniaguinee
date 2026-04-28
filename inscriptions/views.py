@@ -2460,7 +2460,7 @@ def export_inscriptions_csv(request):
             insc.institution,
             insc.fonction,
             insc.get_profil_display(),
-            insc.get_atelier_display(),
+            insc.atelier_label,
             insc.get_engagement_display(),
             insc.get_format_preference_display(),
             insc.get_disponibilite_display(),
