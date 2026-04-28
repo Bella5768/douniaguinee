@@ -230,6 +230,7 @@ section {
     font-weight: 500;
     color: var(--text-dark);
     padding: 0.5rem 1rem;
+    white-space: nowrap;
     border-radius: 8px;
     position: relative;
 }
