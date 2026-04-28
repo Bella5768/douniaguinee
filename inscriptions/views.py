@@ -2416,43 +2416,21 @@ def admin_edit_section(request, section):
 
 @staff_required
 def export_inscriptions_csv(request):
-    """Export des inscriptions en Excel (.xlsx)"""
-    from openpyxl import Workbook
-    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-    from openpyxl.utils import get_column_letter
-    from io import BytesIO
+    """Export des inscriptions en CSV Excel-compatible (UTF-8 BOM, séparateur ;)"""
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="inscriptions_dounia.csv"'
+    response.write('\ufeff')
 
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Inscriptions DounIA"
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow([
+        'N°', 'Nom', 'Prénom', 'Email', 'WhatsApp', 'Institution', 'Fonction',
+        'Profil', 'Atelier', 'Engagement', 'Format', 'Disponibilité', 'Motivation', 'Date',
+    ])
 
-    # --- Styles ---
-    header_font = Font(name='Calibri', bold=True, color='FFFFFF', size=11)
-    header_fill = PatternFill(start_color='003366', end_color='003366', fill_type='solid')
-    header_align = Alignment(horizontal='center', vertical='center', wrap_text=True)
-    thin_border = Border(
-        left=Side(style='thin', color='CCCCCC'),
-        right=Side(style='thin', color='CCCCCC'),
-        top=Side(style='thin', color='CCCCCC'),
-        bottom=Side(style='thin', color='CCCCCC'),
-    )
-    cell_align = Alignment(vertical='top', wrap_text=True)
-
-    # --- En-têtes ---
-    headers = ['N°', 'Nom', 'Prénom', 'Email', 'WhatsApp', 'Institution', 'Fonction',
-               'Profil', 'Atelier', 'Engagement', 'Format', 'Disponibilité', 'Motivation', 'Date']
-    for col_idx, header in enumerate(headers, 1):
-        cell = ws.cell(row=1, column=col_idx, value=header)
-        cell.font = header_font
-        cell.fill = header_fill
-        cell.alignment = header_align
-        cell.border = thin_border
-
-    # --- Données ---
     inscriptions = Inscription.objects.all().order_by('-date_inscription')
-    for row_idx, insc in enumerate(inscriptions, 2):
-        row_data = [
-            row_idx - 1,
+    for idx, insc in enumerate(inscriptions, 1):
+        writer.writerow([
+            idx,
             insc.nom,
             insc.prenom,
             insc.email,
@@ -2466,40 +2444,8 @@ def export_inscriptions_csv(request):
             insc.get_disponibilite_display(),
             insc.motivation or '',
             insc.date_inscription.strftime('%d/%m/%Y %H:%M'),
-        ]
-        # Alterner couleur de fond
-        row_fill = PatternFill(start_color='F2F7FB', end_color='F2F7FB', fill_type='solid') if row_idx % 2 == 0 else PatternFill(fill_type=None)
-        for col_idx, value in enumerate(row_data, 1):
-            cell = ws.cell(row=row_idx, column=col_idx, value=value)
-            cell.alignment = cell_align
-            cell.border = thin_border
-            cell.font = Font(name='Calibri', size=10)
-            if row_fill.fill_type:
-                cell.fill = row_fill
-        # Forcer WhatsApp en texte pour éviter que Excel le convertisse en nombre
-        ws.cell(row=row_idx, column=5).number_format = '@'
+        ])
 
-    # --- Largeur auto des colonnes ---
-    col_widths = [5, 18, 18, 30, 20, 25, 20, 22, 35, 18, 18, 15, 40, 18]
-    for i, width in enumerate(col_widths, 1):
-        ws.column_dimensions[get_column_letter(i)].width = width
-
-    # --- Figer la première ligne ---
-    ws.freeze_panes = 'A2'
-
-    # --- Filtre auto ---
-    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{ws.max_row}"
-
-    # --- Réponse HTTP ---
-    output = BytesIO()
-    wb.save(output)
-    output.seek(0)
-
-    response = HttpResponse(
-        output.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename="inscriptions_dounia.xlsx"'
     return response
 
 
