@@ -1,9 +1,72 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User, Group
 from .models import (
     Inscription, SiteConfiguration, Expert, Partenaire, ChiffreCle, 
     HeroCarouselImage, HeroImage, StatsImage, EvenementImage, RestitutionImage,
     DouniaEvent, Restitution, Atelier
 )
+
+
+# Configuration personnalisée de l'admin pour les utilisateurs avec privilèges
+class CustomUserAdmin(BaseUserAdmin):
+    """Admin personnalisé pour la gestion des utilisateurs avec privilèges prédéfinis"""
+    
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'date_joined')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    ordering = ('-date_joined',)
+    
+    fieldsets = (
+        ('Informations personnelles', {
+            'fields': ('username', 'first_name', 'last_name', 'email')
+        }),
+        ('Mot de passe', {
+            'fields': ('password',)
+        }),
+        ('Privilèges et permissions', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
+        }),
+        ('Dates importantes', {
+            'fields': ('last_login', 'date_joined')
+        }),
+    )
+    
+    add_fieldsets = (
+        ('Informations personnelles', {
+            'fields': ('username', 'first_name', 'last_name', 'email')
+        }),
+        ('Mot de passe', {
+            'fields': ('password1', 'password2')
+        }),
+        ('Privilèges et permissions', {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')
+        }),
+    )
+    
+    def save_model(self, request, obj, form, change):
+        """Surcharge pour définir les privilèges par défaut si nécessaire"""
+        if not change:  # Nouvel utilisateur
+            # Par défaut, les nouveaux utilisateurs sont actifs mais pas staff
+            if not obj.is_staff and not obj.is_superuser:
+                obj.is_active = True
+        super().save_model(request, obj, form, change)
+
+
+# Enregistrer l'admin personnalisé pour User
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+
+
+# Admin pour les groupes avec description
+class GroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'id')
+    search_fields = ('name',)
+    ordering = ('name',)
+
+
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
 
 
 class _BaseEvenementImageInline(admin.TabularInline):

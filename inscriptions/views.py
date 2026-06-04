@@ -55,6 +55,15 @@ def staff_required(view_func):
     return _wrapped_view
 
 
+@staff_required
+def admin_logout(request):
+    """Déconnexion de l'admin"""
+    from django.contrib.auth import logout
+    logout(request)
+    messages.success(request, 'Vous avez été déconnecté avec succès.')
+    return redirect('admin_login')
+
+
 def atelier_detail(request, atelier_id):
     """Vue pour afficher les détails d'un atelier"""
     atelier = get_object_or_404(Atelier, id=atelier_id, active=True)

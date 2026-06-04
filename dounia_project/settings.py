@@ -4,7 +4,7 @@ Django settings for dounia_project project.
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv  
 
 load_dotenv()
 
@@ -15,9 +15,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-dounia-dev-key
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get(
-    'DJANGO_ALLOWED_HOSTS',
+    'DJANGO_ALLOWED_HOSTS',    
     'localhost,127.0.0.1,douniaguinee.pythonanywhere.com,dounia.org,www.dounia.org'
-).split(',') if h.strip()]
+).split(',') if h.strip()]   
 
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get(
     'DJANGO_CSRF_TRUSTED_ORIGINS',
@@ -25,6 +25,7 @@ CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get(
 ).split(',') if o.strip()]
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

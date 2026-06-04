@@ -22,6 +22,7 @@ urlpatterns = [
     
     # Pages de gestion (admin)
     path('gestion/login/', views.admin_login, name='admin_login'),
+    path('gestion/logout/', views.admin_logout, name='admin_logout'),
     path('gestion/', views.admin_dashboard, name='admin_dashboard'),
     path('gestion/evenements/', views.admin_evenements, name='admin_evenements'),
     path('gestion/inscriptions/', views.admin_inscriptions, name='admin_inscriptions'),
