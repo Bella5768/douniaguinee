@@ -1,0 +1,254 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}{% if mode == 'create' %}Nouvel article{% else %}Modifier l'article{% endif %} — Gestion DounIA{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<style>
+    #quillEditor { min-height: 360px; background:#fff; border-bottom-left-radius:10px; border-bottom-right-radius:10px; }
+    .ql-toolbar.ql-snow { border-top-left-radius:10px; border-top-right-radius:10px; }
+    .ql-container.ql-snow { font-size: 1rem; }
+    .article-side-card .form-label { margin-bottom:.25rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_articles' %}">Articles</a></li>
+            <li class="breadcrumb-item active">{% if mode == 'create' %}Nouvel article{% else %}Modifier{% endif %}</li>
+        </ol>
+    </nav>
+
+    <form method="post" enctype="multipart/form-data" id="articleForm">
+        {% csrf_token %}
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <h2 class="fw-bold mb-0" style="color: var(--primary);">
+                <i class="bi bi-{% if mode == 'create' %}plus-circle{% else %}pencil-square{% endif %} me-2"></i>
+                {% if mode == 'create' %}Nouvel article{% else %}Modifier l'article{% endif %}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{% url 'admin_articles' %}" class="btn btn-outline-secondary">Annuler</a>
+                <button type="submit" name="statut" value="brouillon" class="btn btn-outline-primary"><i class="bi bi-save me-1"></i>Enregistrer le brouillon</button>
+                <button type="submit" name="statut" value="publie" class="btn btn-accent"><i class="bi bi-send me-1"></i>Publier</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Colonne principale -->
+            <div class="col-lg-8">
+                <div class="admin-card mb-4">
+                    <div class="admin-card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Titre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" name="titre" value="{{ article.titre }}" placeholder="Titre de l'article" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Sous-titre / Chapô</label>
+                            <textarea class="form-control" name="chapo" rows="2" placeholder="Court résumé affiché en introduction...">{{ article.chapo }}</textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-semibold">Corps de l'article</label>
+                            <div id="quillEditor"></div>
+                            <div style="display:none;">
+                                <textarea name="corps" id="corpsField">{{ article.corps }}</textarea>
+                            </div>
+                            <div class="small text-muted mt-2"><i class="bi bi-info-circle me-1"></i>Mettez en forme votre texte : titres, gras, listes, citations, liens, images.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO -->
+                <div class="admin-card mb-4">
+                    <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-search me-2"></i>Référencement (SEO)</h6></div>
+                    <div class="admin-card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Meta titre</label>
+                            <input type="text" class="form-control" name="meta_title" value="{{ article.meta_title }}" placeholder="Laisser vide pour utiliser le titre de l'article">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label small fw-semibold">Meta description</label>
+                            <textarea class="form-control" name="meta_description" rows="2" placeholder="Résumé pour les moteurs de recherche (160 caractères)">{{ article.meta_description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne latérale -->
+            <div class="col-lg-4">
+                <!-- Publication -->
+                <div class="admin-card mb-4 article-side-card">
+                    <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-gear me-2"></i>Publication</h6></div>
+                    <div class="admin-card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Statut</label>
+                            <select class="form-select" name="statut">
+                                {% for val, label in statut_choices %}
+                                <option value="{{ val }}" {% if article.statut == val %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Visibilité</label>
+                            <select class="form-select" name="visibilite">
+                                {% for val, label in visibilite_choices %}
+                                <option value="{{ val }}" {% if article.visibilite == val %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Date de publication</label>
+                            <input type="datetime-local" class="form-control" name="date_publication" value="{{ article.date_publication|date:'Y-m-d\TH:i' }}">
+                            <div class="small text-muted mt-1">Date future = article programmé.</div>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="epingle" id="epingleCheck" {% if article.epingle %}checked{% endif %}>
+                            <label class="form-check-label" for="epingleCheck">Mettre en avant / Épingler</label>
+                        </div>
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox" name="autoriser_commentaires" id="commCheck" {% if article.autoriser_commentaires or mode == 'create' %}checked{% endif %}>
+                            <label class="form-check-label" for="commCheck">Autoriser les commentaires</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Affichage sur le site -->
+                <div class="admin-card mb-4 article-side-card">
+                    <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-layout-sidebar me-2"></i>Affichage sur le site</h6></div>
+                    <div class="admin-card-body">
+                        <div class="small text-muted mb-3">Cochez les pages où cet article doit apparaître (en plus de la page Actualités).</div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="afficher_accueil" id="afficher_accueil" {% if article.afficher_accueil %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_accueil">Accueil</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="afficher_ateliers" id="afficher_ateliers" {% if article.afficher_ateliers %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_ateliers">Ateliers</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="afficher_evenements" id="afficher_evenements" {% if article.afficher_evenements %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_evenements">Événements</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="afficher_podcast" id="afficher_podcast" {% if article.afficher_podcast %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_podcast">Podcast</label>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" name="afficher_livrables" id="afficher_livrables" {% if article.afficher_livrables %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_livrables">Livrable</label>
+                        </div>
+                        <div class="form-check form-switch mb-0">
+                            <input class="form-check-input" type="checkbox" name="afficher_apropos" id="afficher_apropos" {% if article.afficher_apropos %}checked{% endif %}>
+                            <label class="form-check-label" for="afficher_apropos">À propos</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classement -->
+                <div class="admin-card mb-4 article-side-card">
+                    <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-tags me-2"></i>Rubrique & étiquettes</h6></div>
+                    <div class="admin-card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Rubrique</label>
+                            <select class="form-select" name="rubrique">
+                                <option value="">— Aucune —</option>
+                                {% for r in rubriques %}
+                                <option value="{{ r.pk }}" {% if article.rubrique_id == r.pk %}selected{% endif %}>{{ r.nom }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="small text-muted mt-1"><a href="{% url 'admin_rubriques' %}">Gérer les rubriques</a></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Étiquettes</label>
+                            <input type="text" class="form-control" name="tags" value="{{ article.tags }}" placeholder="ia, gouvernance, données">
+                            <div class="small text-muted mt-1">Séparées par des virgules.</div>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label small fw-semibold">Auteur affiché</label>
+                            <input type="text" class="form-control" name="auteur_nom" value="{{ article.auteur_nom }}" placeholder="{{ article.get_auteur_display }}">
+                            <div class="small text-muted mt-1">Vide = compte connecté.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image à la une -->
+                <div class="admin-card mb-4 article-side-card">
+                    <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-image me-2"></i>Image à la une</h6></div>
+                    <div class="admin-card-body">
+                        {% if article.get_image_url %}
+                        <div class="border rounded p-2 mb-2 bg-light text-center">
+                            <img src="{{ article.get_image_url }}" alt="" style="max-height:150px;max-width:100%;object-fit:contain;">
+                        </div>
+                        {% if article.image %}
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" name="supprimer_image" id="delImg">
+                            <label class="form-check-label small" for="delImg">Supprimer l'image uploadée</label>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Uploader une image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                            <div class="small text-muted mt-1">JPG, PNG, GIF. Max 5MB.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">OU URL de l'image</label>
+                            <input type="text" class="form-control" name="image_url" value="{{ article.image_url }}" placeholder="https://...">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label small fw-semibold">Légende</label>
+                            <input type="text" class="form-control" name="image_legende" value="{{ article.image_legende }}" placeholder="Crédit / légende">
+                        </div>
+                    </div>
+                </div>
+
+                {% if mode == 'edit' %}
+                <div class="admin-card mb-4 article-side-card">
+                    <div class="admin-card-body small text-muted">
+                        <div><label class="fw-semibold">Slug :</label> <input type="text" class="form-control form-control-sm mt-1" name="slug" value="{{ article.slug }}"></div>
+                        <div class="mt-2"><i class="bi bi-eye me-1"></i>{{ article.vues }} vue(s) · créé le {{ article.created_at|date:'d/m/Y' }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var corpsField = document.getElementById('corpsField');
+    var quill = new Quill('#quillEditor', {
+        theme: 'snow',
+        placeholder: 'Rédigez le contenu de l\'article...',
+        modules: {
+            toolbar: [
+                [{ 'header': [2, 3, 4, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'align': [] }],
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'video'],
+                ['clean']
+            ]
+        }
+    });
+    // Charger le contenu existant
+    if (corpsField.value.trim()) {
+        quill.clipboard.dangerouslyPasteHTML(corpsField.value);
+    }
+    // Synchroniser avant l'envoi
+    document.getElementById('articleForm').addEventListener('submit', function () {
+        var html = quill.root.innerHTML;
+        if (html === '<p><br></p>') html = '';
+        corpsField.value = html;
+    });
+});
+</script>
+{% endblock %}

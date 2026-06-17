@@ -11,10 +11,12 @@ from django.db.utils import OperationalError
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import user_passes_test
 from .forms import InscriptionForm
-from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage, Avis
+from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage, Avis, Rubrique, Article
 import csv
 from collections import OrderedDict
 from django.utils import timezone
+from django.utils.text import slugify
+from django.utils.dateparse import parse_datetime
 from django.core.mail import EmailMessage
 from .pdf_agenda import generer_agenda_pdf
 
@@ -444,7 +446,15 @@ def landing_page(request):
     except OperationalError:
         ateliers_db = []
         atelier_map = {}
-    
+
+    # Récupérer les articles épinglés pour la page d'accueil
+    try:
+        articles_epingles = Article.objects.filter(
+            statut='publie', visibilite='public', epingle=True, date_publication__lte=timezone.now()
+        ).select_related('rubrique')[:3]
+    except Exception:
+        articles_epingles = []
+
     context = {
         'form': form,
         'config': config,
@@ -465,6 +475,8 @@ def landing_page(request):
         'stats_images': stats_images,
         'bg_images_json': bg_images_json,
         'galerie_images': galerie_images,
+        'articles_epingles': articles_epingles,
+        'articles_lies': _articles_pour_emplacement('afficher_accueil'),
     }
     return render(request, 'inscriptions/landing.html', context)
 
@@ -483,7 +495,25 @@ def about_page(request):
         'config': config,
         'chiffres': chiffres,
         'experts': experts,
+        'articles_lies': _articles_pour_emplacement('afficher_apropos'),
     })
+
+
+def _articles_pour_emplacement(champ, limite=6):
+    """Retourne les articles publiés cochés pour un emplacement donné du site.
+
+    `champ` est le nom du booléen sur le modèle Article
+    (ex: 'afficher_ateliers', 'afficher_evenements', ...).
+    """
+    try:
+        return list(
+            Article.objects.filter(
+                statut='publie', visibilite='public',
+                date_publication__lte=timezone.now(), **{champ: True}
+            ).select_related('rubrique')[:limite]
+        )
+    except Exception:
+        return []
 
 
 def ateliers_page(request):
@@ -495,6 +525,7 @@ def ateliers_page(request):
     return render(request, 'inscriptions/ateliers.html', {
         'config': config,
         'ateliers_db': ateliers_db,
+        'articles_lies': _articles_pour_emplacement('afficher_ateliers'),
     })
 
 
@@ -518,6 +549,7 @@ def evenements_page(request):
         'dounia1_event': dounia1_event,
         'dounia2_event': dounia2_event,
         'restitution_data': restitution_data,
+        'articles_lies': _articles_pour_emplacement('afficher_evenements'),
     })
 
 
@@ -525,6 +557,7 @@ def podcast_page(request):
     config = SiteConfiguration.get()
     return render(request, 'inscriptions/podcast.html', {
         'config': config,
+        'articles_lies': _articles_pour_emplacement('afficher_podcast'),
     })
 
 
@@ -541,6 +574,7 @@ def livrable_page(request):
     return render(request, 'inscriptions/livrable.html', {
         'config': config,
         'rapport_points': rapport_points,
+        'articles_lies': _articles_pour_emplacement('afficher_livrables'),
     })
 
 
@@ -2832,3 +2866,305 @@ def admin_user_delete(request, pk):
     return render(request, 'gestion/user_confirm_delete.html', {
         'user_obj': user_obj,
     })
+
+
+# ==========================================================================
+# MODULE ARTICLES (publication façon WordPress)
+# ==========================================================================
+
+def _parse_article_post(request, article):
+    """Remplit un objet Article à partir des données POST (création ou édition)."""
+    article.titre = (request.POST.get('titre') or '').strip()
+    slug = (request.POST.get('slug') or '').strip()
+    if slug:
+        article.slug = slugify(slug)
+    article.chapo = (request.POST.get('chapo') or '').strip()
+    article.corps = request.POST.get('corps') or ''
+    article.image_url = (request.POST.get('image_url') or '').strip()
+    article.image_legende = (request.POST.get('image_legende') or '').strip()
+    article.tags = (request.POST.get('tags') or '').strip()
+    article.auteur_nom = (request.POST.get('auteur_nom') or '').strip()
+    article.meta_title = (request.POST.get('meta_title') or '').strip()
+    article.meta_description = (request.POST.get('meta_description') or '').strip()
+
+    statut = request.POST.get('statut') or 'brouillon'
+    if statut not in dict(Article.STATUT_CHOICES):
+        statut = 'brouillon'
+    article.statut = statut
+
+    visibilite = request.POST.get('visibilite') or 'public'
+    if visibilite not in dict(Article.VISIBILITE_CHOICES):
+        visibilite = 'public'
+    article.visibilite = visibilite
+
+    article.epingle = request.POST.get('epingle') == 'on'
+    article.autoriser_commentaires = request.POST.get('autoriser_commentaires') == 'on'
+
+    # Affichage sur le site
+    article.afficher_accueil = request.POST.get('afficher_accueil') == 'on'
+    article.afficher_ateliers = request.POST.get('afficher_ateliers') == 'on'
+    article.afficher_evenements = request.POST.get('afficher_evenements') == 'on'
+    article.afficher_podcast = request.POST.get('afficher_podcast') == 'on'
+    article.afficher_livrables = request.POST.get('afficher_livrables') == 'on'
+    article.afficher_apropos = request.POST.get('afficher_apropos') == 'on'
+
+    # Rubrique
+    rubrique_id = request.POST.get('rubrique')
+    if rubrique_id:
+        article.rubrique = Rubrique.objects.filter(pk=rubrique_id).first()
+    else:
+        article.rubrique = None
+
+    # Date de publication
+    date_pub = (request.POST.get('date_publication') or '').strip()
+    if date_pub:
+        parsed = parse_datetime(date_pub)
+        if parsed is not None:
+            if timezone.is_naive(parsed):
+                parsed = timezone.make_aware(parsed, timezone.get_current_timezone())
+            article.date_publication = parsed
+    elif not article.date_publication:
+        article.date_publication = timezone.now()
+
+    return article
+
+
+@staff_required
+def admin_articles(request):
+    """Liste des articles avec recherche et filtres."""
+    articles = Article.objects.select_related('rubrique', 'auteur').all()
+
+    q = request.GET.get('q', '')
+    statut_filter = request.GET.get('statut', '')
+    rubrique_filter = request.GET.get('rubrique', '')
+
+    if q:
+        articles = articles.filter(
+            Q(titre__icontains=q) | Q(chapo__icontains=q) |
+            Q(corps__icontains=q) | Q(tags__icontains=q)
+        )
+    if statut_filter in dict(Article.STATUT_CHOICES):
+        articles = articles.filter(statut=statut_filter)
+    if rubrique_filter:
+        articles = articles.filter(rubrique_id=rubrique_filter)
+
+    context = {
+        'articles': articles,
+        'total': Article.objects.count(),
+        'publies': Article.objects.filter(statut='publie').count(),
+        'brouillons': Article.objects.filter(statut='brouillon').count(),
+        'programmes': Article.objects.filter(statut='programme').count(),
+        'rubriques': Rubrique.objects.all(),
+        'statut_choices': Article.STATUT_CHOICES,
+        'q': q,
+        'statut_filter': statut_filter,
+        'rubrique_filter': rubrique_filter,
+    }
+    return render(request, 'gestion/articles.html', context)
+
+
+@staff_required
+def admin_article_create(request):
+    """Créer un nouvel article."""
+    if request.method == 'POST':
+        article = Article()
+        _parse_article_post(request, article)
+
+        if not article.titre:
+            messages.error(request, "Le titre est obligatoire.")
+            return render(request, 'gestion/article_form.html', _article_form_context('create', article))
+
+        article.auteur = request.user
+        article.save()
+
+        if 'image' in request.FILES:
+            uploaded = request.FILES['image']
+            if uploaded.size > 5 * 1024 * 1024:
+                messages.warning(request, "Image trop volumineuse (max 5MB), elle n'a pas été enregistrée.")
+            else:
+                article.image = uploaded
+                article.save()
+
+        messages.success(request, f"Article « {article.titre} » créé ({article.get_statut_display()}).")
+        return redirect('admin_articles')
+
+    article = Article(date_publication=timezone.now())
+    return render(request, 'gestion/article_form.html', _article_form_context('create', article))
+
+
+@staff_required
+def admin_article_edit(request, pk):
+    """Modifier un article existant."""
+    article = get_object_or_404(Article, pk=pk)
+
+    if request.method == 'POST':
+        _parse_article_post(request, article)
+
+        if not article.titre:
+            messages.error(request, "Le titre est obligatoire.")
+            return render(request, 'gestion/article_form.html', _article_form_context('edit', article))
+
+        if 'image' in request.FILES:
+            uploaded = request.FILES['image']
+            if uploaded.size > 5 * 1024 * 1024:
+                messages.warning(request, "Image trop volumineuse (max 5MB), non remplacée.")
+            else:
+                article.image = uploaded
+        if request.POST.get('supprimer_image') == 'on':
+            article.image = None
+
+        article.save()
+        messages.success(request, f"Article « {article.titre} » mis à jour.")
+        return redirect('admin_articles')
+
+    return render(request, 'gestion/article_form.html', _article_form_context('edit', article))
+
+
+@staff_required
+def admin_article_delete(request, pk):
+    """Supprimer un article."""
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == 'POST':
+        titre = article.titre
+        article.delete()
+        messages.success(request, f"Article « {titre} » supprimé.")
+    return redirect('admin_articles')
+
+
+@staff_required
+@require_POST
+def admin_article_toggle(request, pk):
+    """Basculer rapidement le statut publié/brouillon ou l'épinglage d'un article."""
+    article = get_object_or_404(Article, pk=pk)
+    field = request.POST.get('field')
+    if field == 'epingle':
+        article.epingle = not article.epingle
+        article.save(update_fields=['epingle'])
+        messages.success(request, f"« {article.titre} » {'épinglé' if article.epingle else 'désépinglé'}.")
+    else:
+        if article.statut == 'publie':
+            article.statut = 'brouillon'
+        else:
+            article.statut = 'publie'
+            if article.date_publication > timezone.now():
+                article.date_publication = timezone.now()
+        article.save(update_fields=['statut', 'date_publication'])
+        messages.success(request, f"« {article.titre} » → {article.get_statut_display()}.")
+    return redirect('admin_articles')
+
+
+def _article_form_context(mode, article):
+    return {
+        'mode': mode,
+        'article': article,
+        'rubriques': Rubrique.objects.all(),
+        'statut_choices': Article.STATUT_CHOICES,
+        'visibilite_choices': Article.VISIBILITE_CHOICES,
+    }
+
+
+@staff_required
+def admin_rubriques(request):
+    """Gestion des rubriques (catégories) des articles."""
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'add':
+            nom = (request.POST.get('nom') or '').strip()
+            if not nom:
+                messages.error(request, "Le nom de la rubrique est obligatoire.")
+            else:
+                Rubrique.objects.create(
+                    nom=nom,
+                    description=(request.POST.get('description') or '').strip(),
+                    couleur=(request.POST.get('couleur') or '#003366').strip(),
+                    ordre=int(request.POST.get('ordre') or 0),
+                    active=request.POST.get('active') == 'on',
+                )
+                messages.success(request, f"Rubrique « {nom} » ajoutée.")
+        elif action == 'edit':
+            r = Rubrique.objects.filter(pk=request.POST.get('pk')).first()
+            if r:
+                r.nom = (request.POST.get('nom') or r.nom).strip()
+                r.description = (request.POST.get('description') or '').strip()
+                r.couleur = (request.POST.get('couleur') or '#003366').strip()
+                r.ordre = int(request.POST.get('ordre') or 0)
+                r.active = request.POST.get('active') == 'on'
+                r.save()
+                messages.success(request, f"Rubrique « {r.nom} » mise à jour.")
+        elif action == 'delete':
+            Rubrique.objects.filter(pk=request.POST.get('pk')).delete()
+            messages.success(request, "Rubrique supprimée.")
+        return redirect('admin_rubriques')
+
+    context = {
+        'rubriques': Rubrique.objects.all(),
+    }
+    return render(request, 'gestion/rubriques.html', context)
+
+
+# ==========================================================================
+# PAGES PUBLIQUES — ACTUALITÉS
+# ==========================================================================
+
+def actualites_page(request):
+    """Liste publique des articles publiés (page Actualités)."""
+    config = SiteConfiguration.get()
+    articles = Article.objects.select_related('rubrique', 'auteur').filter(
+        statut='publie', visibilite='public', date_publication__lte=timezone.now()
+    )
+
+    q = request.GET.get('q', '')
+    rubrique_slug = request.GET.get('rubrique', '')
+    if q:
+        articles = articles.filter(
+            Q(titre__icontains=q) | Q(chapo__icontains=q) | Q(tags__icontains=q)
+        )
+    if rubrique_slug:
+        articles = articles.filter(rubrique__slug=rubrique_slug)
+
+    epingles = articles.filter(epingle=True)[:3]
+
+    context = {
+        'config': config,
+        'articles': articles,
+        'epingles': epingles,
+        'rubriques': Rubrique.objects.filter(active=True),
+        'q': q,
+        'rubrique_slug': rubrique_slug,
+    }
+    return render(request, 'actualites.html', context)
+
+
+def article_detail(request, slug):
+    """Page de détail d'un article publié."""
+    config = SiteConfiguration.get()
+    article = get_object_or_404(
+        Article.objects.select_related('rubrique', 'auteur'), slug=slug
+    )
+
+    # Sécurité de visibilité
+    if not article.est_en_ligne:
+        if not (request.user.is_authenticated and request.user.is_staff):
+            if article.visibilite == 'membres' and request.user.is_authenticated:
+                pass
+            else:
+                from django.http import Http404
+                raise Http404("Article non disponible")
+
+    # Incrémenter les vues (hors staff)
+    if not (request.user.is_authenticated and request.user.is_staff):
+        Article.objects.filter(pk=article.pk).update(vues=models.F('vues') + 1)
+
+    articles_similaires = Article.objects.filter(
+        statut='publie', visibilite='public', date_publication__lte=timezone.now()
+    ).exclude(pk=article.pk)
+    if article.rubrique_id:
+        articles_similaires = articles_similaires.filter(rubrique_id=article.rubrique_id)
+    articles_similaires = articles_similaires[:3]
+
+    context = {
+        'config': config,
+        'article': article,
+        'articles_similaires': articles_similaires,
+    }
+    return render(request, 'article_detail.html', context)

@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.meta_title|default:article.titre }} — DounIA{% endblock %}
+
+{% block extra_css %}
+{% if article.meta_description %}<meta name="description" content="{{ article.meta_description }}">{% endif %}
+<meta name="keywords" content="DounIA, Intelligence Artificielle, Guinée, {{ article.tags }}">
+<style>
+    .article-hero {
+        background: #fff;
+        padding: 6rem 0 1rem;
+    }
+    .article-hero h1 {
+        max-width: 760px;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        line-height: 1.45;
+        text-transform: uppercase;
+        color: #006b7a !important;
+    }
+    .article-hero .lead { max-width: 760px; color: #59616d; font-size: 0.95rem; line-height: 1.7; }
+    .article-hero .meta { color: #00879a; font-size: 0.85rem; }
+    .article-hero .meta i { margin-right: 6px; }
+    .article-breadcrumb { display: none; }
+    .article-badge { display: none !important; }
+    .article-shell { background: #fff; padding: 0 0 3rem; }
+    .article-detail-container { max-width: 980px; }
+    .article-featured-image { margin-bottom: 1.2rem; }
+    .article-featured-image img { width: 100%; max-height: 520px; object-fit: cover; border-radius: 0; box-shadow: none; }
+    .article-paper { background: transparent; border: 0; border-radius: 0; padding: 0; box-shadow: none; }
+    .article-content { max-width: none; margin: 0; padding: 0; }
+    .article-content img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem 0; }
+    .article-content h2 { font-weight: 750; color: #20242b; margin-top: 1.8rem; margin-bottom: 1rem; font-size: 1.25rem; }
+    .article-content h3 { font-weight: 700; color: #20242b; margin-top: 1.4rem; margin-bottom: 0.75rem; font-size: 1.1rem; }
+    .article-content p { line-height: 1.65; color: #1f2933; margin-bottom: 0.55rem; font-size: 0.95rem; text-align: justify; }
+    .article-content ul, .article-content ol { line-height: 1.65; margin-bottom: 1rem; padding-left: 1.5rem; color: #1f2933; font-size: 0.95rem; }
+    .article-content blockquote { border-left: 3px solid #006b7a; padding-left: 1rem; margin: 1.2rem 0; color: #475569; font-style: italic; }
+    .article-content a { color: #006b7a; text-decoration: none; }
+    .article-content a:hover { text-decoration: underline; }
+    .article-tags .badge { background: #eef3f8; color: #334155; padding: 0.35rem 0.75rem; border-radius: 0; margin: 0.2rem; font-weight: 600; }
+    .popular-sidebar { padding-left: 1.5rem; }
+    .popular-sidebar h4 { font-size: 1rem; font-weight: 500; color: #111827; margin-bottom: 1.7rem; }
+    .popular-item { display: flex; gap: 0.75rem; margin-bottom: 1.4rem; align-items: flex-start; }
+    .popular-item img { width: 54px; height: 54px; object-fit: cover; flex: 0 0 54px; }
+    .popular-item a { font-family: Georgia, 'Times New Roman', serif; color: #111827; text-decoration: none; font-weight: 700; font-size: 0.78rem; line-height: 1.25; }
+    .popular-item a:hover { color: #006b7a; }
+    .share-box { margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .share-box strong { font-size: 1rem; color: #111827; }
+    .share-btn { display: inline-flex; align-items: center; gap: 0.4rem; color: #fff; text-decoration: none; font-size: 0.82rem; padding: 0.5rem 0.9rem; border-radius: 3px; }
+    .share-btn:hover { color: #fff; opacity: 0.9; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="article-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="article-breadcrumb">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item"><a href="{% url 'landing_page' %}" class="text-decoration-none">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="/actualites/" class="text-decoration-none">Actualités</a></li>
+                <li class="breadcrumb-item active">Article</li>
+            </ol>
+        </nav>
+        {% if article.rubrique %}
+        <span class="badge article-badge mb-3 d-inline-block" style="background:{{ article.rubrique.couleur }};color:#fff;">{{ article.rubrique.nom }}</span>
+        {% endif %}
+        <h1>{{ article.titre }}</h1>
+        {% if article.chapo %}
+        <p class="lead mt-3">{{ article.chapo }}</p>
+        {% endif %}
+        <div class="meta mt-3">
+            <i class="bi bi-calendar"></i> {{ article.date_publication|date:"d/m/Y H:i" }}
+            {% if article.get_auteur_display %}<span class="ms-3"><i class="bi bi-person"></i> {{ article.get_auteur_display }}</span>{% endif %}
+            <span class="ms-3"><i class="bi bi-eye"></i> {{ article.vues }} vue(s)</span>
+        </div>
+    </div>
+</section>
+
+<section class="article-shell">
+    <div class="container article-detail-container">
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <!-- Image à la une -->
+                {% if article.get_image_url %}
+                <div class="article-featured-image">
+                    <img src="{{ article.get_image_url }}" alt="{{ article.titre }}">
+                    {% if article.image_legende %}
+                    <p class="text-muted small mt-2">{{ article.image_legende }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Contenu -->
+                <article class="article-paper article-content">
+                    <div class="article-body">
+                        {{ article.corps|safe }}
+                    </div>
+
+                    <!-- Tags -->
+                    {% if article.tags %}
+                    <div class="article-tags mt-5 pt-4 border-top">
+                        <h6 class="fw-bold mb-3" style="color:#1e293b;">Étiquettes</h6>
+                        {% for tag in article.get_tags_list %}
+                        <span class="badge">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="share-box">
+                        <strong>Partager:</strong>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="share-btn" style="background:#3b5998;"><i class="bi bi-facebook"></i> Facebook</a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.titre }}" target="_blank" class="share-btn" style="background:#1da1f2;"><i class="bi bi-twitter"></i> Twitter</a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ article.titre }}" target="_blank" class="share-btn" style="background:#0077b5;"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="col-lg-4 popular-sidebar">
+                {% if articles_similaires %}
+                <h4>Actualités Populaires</h4>
+                {% for sim in articles_similaires %}
+                <div class="popular-item">
+                    {% if sim.get_image_url %}
+                    <img src="{{ sim.get_image_url }}" alt="{{ sim.titre }}">
+                    {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="width:54px;height:54px;"><i class="bi bi-image text-muted"></i></div>
+                    {% endif %}
+                    <a href="/actualites/{{ sim.slug }}/">{{ sim.titre }}</a>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from inscriptions.models import Inscription, Atelier, SiteConfiguration, Expert, Partenaire, ChiffreCle, HeroCarouselImage, HeroImage, StatsImage, EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis
+from inscriptions.models import Inscription, Atelier, SiteConfiguration, Expert, Partenaire, ChiffreCle, HeroCarouselImage, HeroImage, StatsImage, EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis, Rubrique, Article
 
 
 class Command(BaseCommand):
@@ -34,7 +34,8 @@ class Command(BaseCommand):
             models_to_edit = [
                 Inscription, Atelier, SiteConfiguration, Expert, Partenaire, 
                 ChiffreCle, HeroCarouselImage, HeroImage, StatsImage, 
-                EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis
+                EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis,
+                Rubrique, Article
             ]
             for model in models_to_edit:
                 content_type = ContentType.objects.get_for_model(model)
@@ -49,7 +50,8 @@ class Command(BaseCommand):
             models_to_view = [
                 Inscription, Atelier, SiteConfiguration, Expert, Partenaire, 
                 ChiffreCle, HeroCarouselImage, HeroImage, StatsImage, 
-                EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis
+                EvenementImage, RestitutionImage, DouniaEvent, Restitution, Avis,
+                Rubrique, Article
             ]
             for model in models_to_view:
                 content_type = ContentType.objects.get_for_model(model)

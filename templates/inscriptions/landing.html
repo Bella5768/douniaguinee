@@ -251,6 +251,23 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     opacity: 1;
     background: #009688;
 }
+.hero-article-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    margin-bottom: 0.9rem;
+}
+.hero-article-meta {
+    color: rgba(255,255,255,0.8) !important;
+    font-size: 0.88rem;
+    margin-bottom: 0.8rem !important;
+}
 @media (max-width: 768px) {
     .hero-carousel .carousel-item { height: 480px; }
     .hero-slide-content { left: 5%; right: 5%; max-width: none; bottom: 40px; padding: 1.4rem; }
@@ -262,16 +279,40 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
 <section class="hero-carousel-section" id="hero">
     <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
         <div class="carousel-indicators">
+            {% if articles_epingles %}
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="5"></button>
+            {% else %}
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
+            {% endif %}
         </div>
         <div class="carousel-inner">
 
-            <!-- Slide 1 : À propos -->
-            <div class="carousel-item active" style="{% if config.page_about_hero_image %}background-image:url('{{ config.page_about_hero_image.url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
+            {% if articles_epingles %}
+            {% for art in articles_epingles %}
+            <!-- Slide article à la une -->
+            <div class="carousel-item {% if forloop.first %}active{% endif %}" style="{% if art.get_image_url %}background-image:url('{{ art.get_image_url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
+                <div class="hero-slide-content">
+                    <span class="hero-article-badge">À la une{% if art.rubrique %} · {{ art.rubrique.nom }}{% endif %}</span>
+                    <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:900;">{{ art.titre }}</h2>
+                    <p class="hero-article-meta">{{ art.date_publication|date:'d M Y' }}</p>
+                    <p>{{ art.chapo|default:art.corps|striptags|truncatewords:28 }}</p>
+                    <a href="/actualites/{{ art.slug }}/" class="hero-slide-btn">Lire l'article</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- Slide {% if articles_epingles %}1{% else %}0{% endif %} : À propos -->
+            <div class="carousel-item {% if not articles_epingles %}active{% endif %}" style="{% if config.page_about_hero_image %}background-image:url('{{ config.page_about_hero_image.url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
                 <div class="hero-slide-content" style="{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">
                     <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:{% if config.page_about_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_about_titre_italic %}italic{% else %}normal{% endif %};">{{ config.about_titre|default:"C'est quoi DounIA ?" }}</h2>
                     <p style="font-size:{{ config.page_about_desc_size|default:'1.05rem' }};font-weight:{% if config.page_about_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_about_desc_italic %}italic{% else %}normal{% endif %};">{{ config.about_sous_titre|truncatewords:30 }}</p>
@@ -1451,4 +1492,5 @@ function toggleAtelier(card) {
 {% endif %}
 
 </script>
+{% include 'partials/_articles_lies.html' with titre_section="Actualités à la une" %}
 {% endblock %}

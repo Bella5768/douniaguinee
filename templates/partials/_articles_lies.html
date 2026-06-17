@@ -1,0 +1,44 @@
+{% comment %}
+Bloc réutilisable : articles d'actualité associés à une page via les cases à cocher
+de l'admin (afficher_ateliers, afficher_evenements, afficher_podcast, afficher_livrables...).
+Attend une variable de contexte `articles_lies` (liste d'Article).
+Paramètre optionnel : `titre_section` (via {% include ... with titre_section="..." %}).
+{% endcomment %}
+{% if articles_lies %}
+<section class="py-5 articles-lies-section" style="background:#f6f8fb;">
+    <div class="container" style="max-width:1140px;">
+        <h2 class="mb-4" style="font-size:1.15rem;font-weight:800;color:#1e293b;letter-spacing:0.02em;">
+            <span style="display:inline-block;width:4px;height:18px;background:var(--primary,#003366);border-radius:4px;margin-right:0.6rem;vertical-align:-3px;"></span>
+            {{ titre_section|default:"Actualités liées" }}
+        </h2>
+        <div class="row g-4">
+            {% for art in articles_lies %}
+            <div class="col-md-6 col-lg-4">
+                <a href="/actualites/{{ art.slug }}/" class="text-decoration-none">
+                    <div class="article-lie-card" style="border:1px solid #e8edf3;border-radius:16px;overflow:hidden;background:#fff;height:100%;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(15,23,42,0.05);transition:transform .2s,box-shadow .2s;">
+                        <div style="position:relative;overflow:hidden;">
+                            {% if art.get_image_url %}
+                            <img src="{{ art.get_image_url }}" alt="{{ art.titre }}" style="width:100%;height:190px;object-fit:cover;display:block;">
+                            {% else %}
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height:190px;"><i class="bi bi-image text-muted" style="font-size:2.2rem;"></i></div>
+                            {% endif %}
+                            {% if art.rubrique %}
+                            <span style="position:absolute;top:12px;left:12px;background:{{ art.rubrique.couleur }};color:#fff;font-size:0.7rem;font-weight:700;padding:0.32rem 0.7rem;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,0.18);">{{ art.rubrique.nom }}</span>
+                            {% endif %}
+                        </div>
+                        <div style="padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;flex:1;">
+                            <h5 style="font-size:1.05rem;font-weight:750;line-height:1.4;margin-bottom:0.55rem;color:#1e293b;">{{ art.titre }}</h5>
+                            <p style="color:#64748b;font-size:0.9rem;line-height:1.6;margin-bottom:1rem;">{{ art.chapo|default:art.corps|striptags|truncatewords:18 }}</p>
+                            <div style="color:#94a3b8;font-size:0.8rem;margin-top:auto;border-top:1px solid #eef2f7;padding-top:0.8rem;">
+                                <i class="bi bi-calendar3"></i> {{ art.date_publication|date:"d M Y" }}
+                                <span class="ms-3"><i class="bi bi-person"></i> {{ art.get_auteur_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

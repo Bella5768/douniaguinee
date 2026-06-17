@@ -80,6 +80,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'livrable_page' %}">Livrable</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/actualites/">Actualités</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ms-3">
                     {% comment %}
@@ -91,14 +94,14 @@
                     {% endcomment %}
                 </ul>
                 <form class="d-flex ms-auto position-relative" role="search" id="quickSearchForm" style="display: flex !important;">
-                    <input class="form-control" type="search" placeholder="Rechercher..." aria-label="Rechercher" id="quickSearchInput" autocomplete="off" style="min-width: 160px; border-radius: 20px; border: 1px solid #dee2e6; padding: 0.375rem 1rem; font-size: 0.9rem; display: block !important;">
+                    <input class="form-control" type="search" placeholder="Rechercher..." aria-label="Rechercher" id="quickSearchInput" autocomplete="off" style="min-width: 130px; max-width: 180px; border-radius: 20px; border: 1px solid #dee2e6; padding: 0.375rem 1rem; font-size: 0.9rem; display: block !important;">
                     <div id="searchDropdown" class="position-absolute w-100 bg-white border rounded-3 shadow-lg mt-1" style="top: 100%; z-index: 1000; display: none; max-height: 400px; overflow-y: auto;">
                         <div class="p-3">
                             <div class="text-muted small">Tapez pour rechercher...</div>
                         </div>
                     </div>
                 </form>
-                <a href="{% url 'rejoindre_page' %}" class="btn btn-rejoindre ms-3" style="background: linear-gradient(135deg, #0B4A9A 0%, #004d99 100%) !important; color: #fff !important; border: none !important; border-radius: 25px; padding: 0.5rem 1.4rem; font-weight: 600; font-size: 0.88rem; box-shadow: 0 3px 12px rgba(0,51,102,0.3); text-decoration: none;">
+                <a href="{% url 'rejoindre_page' %}" class="btn btn-rejoindre ms-3" style="background: linear-gradient(135deg, #0B4A9A 0%, #004d99 100%) !important; color: #fff !important; border: none !important; border-radius: 25px; padding: 0.5rem 1.3rem; font-weight: 600; font-size: 0.85rem; line-height: 1.2; white-space: nowrap; flex-shrink: 0; box-shadow: 0 3px 12px rgba(0,51,102,0.3); text-decoration: none; display: inline-flex; align-items: center;">
                     <i class="bi bi-people-fill me-1"></i>Rejoindre la dynamique
                 </a>
             </div>
@@ -132,6 +135,7 @@
                         <li class="mb-1"><a href="{% url 'restitution_page' %}"><i class="bi bi-chevron-right me-1"></i>Restitution</a></li>
                         <li class="mb-1"><a href="{% url 'podcast_page' %}"><i class="bi bi-chevron-right me-1"></i>Podcast</a></li>
                         <li class="mb-1"><a href="{% url 'livrable_page' %}"><i class="bi bi-chevron-right me-1"></i>Livrable</a></li>
+                        <li class="mb-1"><a href="/actualites/"><i class="bi bi-chevron-right me-1"></i>Actualités</a></li>
                         <li class="mb-1"><a href="{% url 'landing_page' %}#inscription"><i class="bi bi-chevron-right me-1"></i>S'inscrire</a></li>
                     </ul>
                 </div>

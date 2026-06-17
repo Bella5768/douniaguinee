@@ -2,6 +2,9 @@ from django.db import models
 from django.core.validators import URLValidator
 import os
 from django.utils import timezone
+from django.utils.text import slugify
+from django.urls import reverse
+from django.conf import settings
 
 
 class HeroImage(models.Model):
@@ -867,3 +870,154 @@ class Avis(models.Model):
     
     def __str__(self):
         return f"{self.nom} — {self.get_event_slug_display()} ({self.date_creation:%d/%m/%Y})"
+
+
+class Rubrique(models.Model):
+    """Rubrique / Catégorie pour classer les articles (comme WordPress)."""
+    nom = models.CharField(max_length=120, verbose_name='Nom de la rubrique')
+    slug = models.SlugField(max_length=140, unique=True, blank=True, verbose_name='Slug (URL)')
+    description = models.TextField(blank=True, default='', verbose_name='Description')
+    couleur = models.CharField(max_length=20, default='#003366', blank=True, verbose_name='Couleur (badge)')
+    ordre = models.PositiveIntegerField(default=0, verbose_name="Ordre d'affichage")
+    active = models.BooleanField(default=True, verbose_name='Active')
+
+    class Meta:
+        verbose_name = 'Rubrique'
+        verbose_name_plural = 'Rubriques'
+        ordering = ['ordre', 'nom']
+
+    def __str__(self):
+        return self.nom
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.nom) or 'rubrique'
+            slug = base
+            i = 2
+            while Rubrique.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def articles_publies_count(self):
+        return self.articles.filter(statut='publie').count()
+
+
+class Article(models.Model):
+    """Article / Actualité publié(e) sur le site DounIA (façon WordPress)."""
+
+    STATUT_CHOICES = [
+        ('brouillon', 'Brouillon'),
+        ('publie', 'Publié'),
+        ('programme', 'Programmé'),
+    ]
+
+    VISIBILITE_CHOICES = [
+        ('public', 'Public'),
+        ('prive', 'Privé (admin uniquement)'),
+        ('membres', 'Membres connectés'),
+    ]
+
+    # Contenu principal
+    titre = models.CharField(max_length=255, verbose_name='Titre')
+    slug = models.SlugField(max_length=280, unique=True, blank=True, verbose_name='Slug (URL)')
+    chapo = models.TextField(blank=True, default='', verbose_name='Sous-titre / Chapô', help_text='Court résumé affiché en introduction')
+    corps = models.TextField(blank=True, default='', verbose_name='Corps de l\'article', help_text='Contenu riche (HTML)')
+
+    # Image à la une
+    image = models.ImageField(upload_to='articles/', blank=True, null=True, verbose_name='Image à la une (upload)')
+    image_url = models.URLField(max_length=500, blank=True, default='', verbose_name='Image à la une (URL fallback)')
+    image_legende = models.CharField(max_length=255, blank=True, default='', verbose_name='Légende de l\'image')
+
+    # Classification
+    rubrique = models.ForeignKey(
+        'Rubrique', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='articles', verbose_name='Rubrique'
+    )
+    tags = models.CharField(max_length=300, blank=True, default='', verbose_name='Étiquettes (séparées par des virgules)')
+
+    # Auteur / écriture
+    auteur = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='articles', verbose_name='Auteur (compte)'
+    )
+    auteur_nom = models.CharField(max_length=150, blank=True, default='', verbose_name='Nom de l\'auteur (affiché)', help_text='Laisser vide pour utiliser le compte')
+
+    # Publication
+    statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='brouillon', verbose_name='Statut')
+    visibilite = models.CharField(max_length=20, choices=VISIBILITE_CHOICES, default='public', verbose_name='Visibilité')
+    date_publication = models.DateTimeField(default=timezone.now, verbose_name='Date de publication', help_text='Pour un article programmé, date future de mise en ligne')
+    epingle = models.BooleanField(default=False, verbose_name='Mettre en avant / Épingler')
+    autoriser_commentaires = models.BooleanField(default=True, verbose_name='Autoriser les commentaires')
+
+    # Emplacements d'affichage sur le site (cases à cocher)
+    afficher_accueil = models.BooleanField(default=False, verbose_name="Afficher sur l'accueil")
+    afficher_ateliers = models.BooleanField(default=False, verbose_name='Afficher sur la page Ateliers')
+    afficher_evenements = models.BooleanField(default=False, verbose_name='Afficher sur la page Événements')
+    afficher_podcast = models.BooleanField(default=False, verbose_name='Afficher sur la page Podcast')
+    afficher_livrables = models.BooleanField(default=False, verbose_name='Afficher sur la page Livrable')
+    afficher_apropos = models.BooleanField(default=False, verbose_name='Afficher sur la page À propos')
+
+    # SEO
+    meta_title = models.CharField(max_length=255, blank=True, default='', verbose_name='Meta titre (SEO)')
+    meta_description = models.TextField(blank=True, default='', verbose_name='Meta description (SEO)')
+
+    # Statistiques
+    vues = models.PositiveIntegerField(default=0, verbose_name='Nombre de vues')
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Créé le')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Modifié le')
+
+    class Meta:
+        verbose_name = 'Article'
+        verbose_name_plural = 'Articles'
+        ordering = ['-date_publication', '-created_at']
+
+    def __str__(self):
+        return self.titre
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.titre) or 'article'
+            slug = base
+            i = 2
+            while Article.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('article_detail', kwargs={'slug': self.slug})
+
+    def get_image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        if self.image_url:
+            return self.image_url
+        return ''
+
+    def get_auteur_display(self):
+        if self.auteur_nom:
+            return self.auteur_nom
+        if self.auteur:
+            full = self.auteur.get_full_name()
+            return full or self.auteur.username
+        return 'Rédaction DounIA'
+
+    def get_tags_list(self):
+        return [t.strip() for t in (self.tags or '').split(',') if t.strip()]
+
+    @property
+    def est_en_ligne(self):
+        """L'article est visible publiquement (publié, public, date passée)."""
+        if self.statut != 'publie':
+            return False
+        if self.visibilite != 'public':
+            return False
+        return self.date_publication <= timezone.now()
+
+    @property
+    def est_programme_futur(self):
+        return self.statut == 'programme' or (self.statut == 'publie' and self.date_publication > timezone.now())

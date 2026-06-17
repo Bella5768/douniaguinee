@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 from .models import (
     Inscription, SiteConfiguration, Expert, Partenaire, ChiffreCle, 
     HeroCarouselImage, HeroImage, StatsImage, EvenementImage, RestitutionImage,
-    DouniaEvent, Restitution, Atelier
+    DouniaEvent, Restitution, Atelier, Rubrique, Article
 )
 
 
@@ -543,3 +543,62 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
         if 'delete_selected' in actions:
             del actions['delete_selected']
         return actions
+
+
+@admin.register(Rubrique)
+class RubriqueAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'slug', 'ordre', 'active', 'articles_publies_count')
+    list_filter = ('active',)
+    search_fields = ('nom', 'description')
+    list_editable = ('ordre', 'active')
+    prepopulated_fields = {'slug': ('nom',)}
+    ordering = ('ordre', 'nom')
+
+
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('titre', 'rubrique', 'statut', 'visibilite', 'epingle', 'date_publication', 'vues')
+    list_filter = ('statut', 'visibilite', 'epingle', 'rubrique',
+                   'afficher_accueil', 'afficher_ateliers', 'afficher_evenements',
+                   'afficher_podcast', 'afficher_livrables', 'afficher_apropos')
+    search_fields = ('titre', 'chapo', 'corps', 'tags')
+    list_editable = ('statut', 'epingle')
+    prepopulated_fields = {'slug': ('titre',)}
+    readonly_fields = ('vues', 'created_at', 'updated_at')
+    date_hierarchy = 'date_publication'
+    ordering = ('-date_publication',)
+
+    fieldsets = (
+        ('Contenu', {
+            'fields': ('titre', 'slug', 'chapo', 'corps')
+        }),
+        ('Image à la une', {
+            'fields': ('image', 'image_url', 'image_legende')
+        }),
+        ('Classification', {
+            'fields': ('rubrique', 'tags', 'auteur', 'auteur_nom')
+        }),
+        ('Publication', {
+            'fields': ('statut', 'visibilite', 'date_publication', 'epingle', 'autoriser_commentaires')
+        }),
+        ('Affichage sur le site', {
+            'fields': (
+                'afficher_accueil', 'afficher_ateliers', 'afficher_evenements',
+                'afficher_podcast', 'afficher_livrables', 'afficher_apropos',
+            ),
+            'description': "Cochez les pages du site sur lesquelles cet article doit aussi apparaître (en plus de la page Actualités)."
+        }),
+        ('SEO', {
+            'fields': ('meta_title', 'meta_description'),
+            'classes': ('collapse',)
+        }),
+        ('Métadonnées', {
+            'fields': ('vues', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.auteur_id:
+            obj.auteur = request.user
+        super().save_model(request, obj, form, change)

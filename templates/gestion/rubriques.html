@@ -1,0 +1,158 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Rubriques — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_articles' %}">Articles</a></li>
+            <li class="breadcrumb-item active">Rubriques</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <h2 class="fw-bold mb-0" style="color: var(--primary);"><i class="bi bi-tags me-2"></i>Rubriques</h2>
+        <a href="{% url 'admin_articles' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Retour aux articles</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Liste -->
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-body p-0">
+                    <table class="table table-hover admin-table mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;"></th>
+                                <th>Nom</th>
+                                <th>Slug</th>
+                                <th>Articles</th>
+                                <th>Ordre</th>
+                                <th>Actif</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in rubriques %}
+                            <tr>
+                                <td>
+                                    <div style="width:32px;height:32px;border-radius:50%;background:{{ r.couleur }};"></div>
+                                </td>
+                                <td class="fw-semibold">{{ r.nom }}</td>
+                                <td class="small text-muted"><code>{{ r.slug }}</code></td>
+                                <td>{{ r.articles_publies_count }}</td>
+                                <td>{{ r.ordre }}</td>
+                                <td>
+                                    {% if r.active %}
+                                    <span class="badge bg-success">Oui</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Non</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center text-nowrap">
+                                    <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ r.pk }}"><i class="bi bi-pencil"></i></button>
+                                    <form method="post" class="d-inline" onsubmit="return confirm('Supprimer cette rubrique ?')">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="pk" value="{{ r.pk }}">
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="editModal{{ r.pk }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="border-radius:16px;">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="edit">
+                                            <input type="hidden" name="pk" value="{{ r.pk }}">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title fw-bold">Modifier</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-semibold">Nom</label>
+                                                    <input type="text" class="form-control" name="nom" value="{{ r.nom }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-semibold">Slug</label>
+                                                    <input type="text" class="form-control" name="slug" value="{{ r.slug }}" readonly class="bg-light">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-semibold">Description</label>
+                                                    <textarea class="form-control" name="description" rows="2">{{ r.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-semibold">Couleur (badge)</label>
+                                                    <input type="color" class="form-control form-control-color" name="couleur" value="{{ r.couleur }}" style="height:40px;">
+                                                </div>
+                                                <div class="row g-3">
+                                                    <div class="col-6">
+                                                        <label class="form-label small fw-semibold">Ordre</label>
+                                                        <input type="number" class="form-control" name="ordre" value="{{ r.ordre }}">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="form-check form-switch mt-4">
+                                                            <input class="form-check-input" type="checkbox" name="active" id="active{{ r.pk }}" {% if r.active %}checked{% endif %}>
+                                                            <label class="form-check-label" for="active{{ r.pk }}">Actif</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer border-0">
+                                                <button type="submit" class="btn btn-accent">Enregistrer</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% empty %}
+                            <tr><td colspan="7" class="text-center text-muted py-4">Aucune rubrique</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ajouter -->
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="admin-card-header"><h6 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Ajouter une rubrique</h6></div>
+                <div class="admin-card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="add">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Nom</label>
+                            <input type="text" class="form-control" name="nom" placeholder="ex: Actualités" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Description</label>
+                            <textarea class="form-control" name="description" rows="2" placeholder="Description courte..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Couleur (badge)</label>
+                            <input type="color" class="form-control form-control-color" name="couleur" value="#003366" style="height:40px;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Ordre</label>
+                            <input type="number" class="form-control" name="ordre" value="0">
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" name="active" checked>
+                            <label class="form-check-label">Actif</label>
+                        </div>
+                        <button type="submit" class="btn btn-accent w-100"><i class="bi bi-plus-lg me-1"></i>Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

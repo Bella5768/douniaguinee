@@ -1,0 +1,168 @@
+{% extends 'gestion/base_admin.html' %}
+
+{% block title %}Articles — Gestion DounIA{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Tableau de bord</a></li>
+            <li class="breadcrumb-item active">Articles</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <h2 class="fw-bold mb-0" style="color: var(--primary);"><i class="bi bi-newspaper me-2"></i>Articles & Publications</h2>
+        <div class="d-flex gap-2">
+            <a href="{% url 'admin_rubriques' %}" class="btn btn-outline-secondary"><i class="bi bi-tags me-1"></i>Rubriques</a>
+            <a href="{% url 'admin_article_create' %}" class="btn btn-accent"><i class="bi bi-plus-lg me-1"></i>Nouvel article</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="admin-card h-100"><div class="admin-card-body text-center">
+                <div class="h3 fw-bold mb-0">{{ total }}</div><div class="small text-muted">Total</div>
+            </div></div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="admin-card h-100"><div class="admin-card-body text-center">
+                <div class="h3 fw-bold mb-0 text-success">{{ publies }}</div><div class="small text-muted">Publiés</div>
+            </div></div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="admin-card h-100"><div class="admin-card-body text-center">
+                <div class="h3 fw-bold mb-0 text-secondary">{{ brouillons }}</div><div class="small text-muted">Brouillons</div>
+            </div></div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="admin-card h-100"><div class="admin-card-body text-center">
+                <div class="h3 fw-bold mb-0 text-warning">{{ programmes }}</div><div class="small text-muted">Programmés</div>
+            </div></div>
+        </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="admin-card mb-4">
+        <div class="admin-card-body">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label small fw-semibold">Recherche</label>
+                    <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="Titre, chapô, contenu, étiquette...">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Statut</label>
+                    <select class="form-select" name="statut">
+                        <option value="">Tous</option>
+                        {% for val, label in statut_choices %}
+                        <option value="{{ val }}" {% if statut_filter == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-semibold">Rubrique</label>
+                    <select class="form-select" name="rubrique">
+                        <option value="">Toutes</option>
+                        {% for r in rubriques %}
+                        <option value="{{ r.pk }}" {% if rubrique_filter == r.pk|stringformat:'s' %}selected{% endif %}>{{ r.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste -->
+    <div class="admin-card">
+        <div class="admin-card-body p-0">
+            <table class="table table-hover admin-table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th style="width:70px;"></th>
+                        <th>Titre</th>
+                        <th>Rubrique</th>
+                        <th>Auteur</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th class="text-center">Vues</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for art in articles %}
+                    <tr>
+                        <td>
+                            {% if art.get_image_url %}
+                            <img src="{{ art.get_image_url }}" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:6px;">
+                            {% else %}
+                            <div class="bg-light d-flex align-items-center justify-content-center text-muted" style="width:56px;height:40px;border-radius:6px;"><i class="bi bi-image"></i></div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="fw-semibold">
+                                {% if art.epingle %}<i class="bi bi-pin-angle-fill text-warning me-1" title="Épinglé"></i>{% endif %}
+                                {{ art.titre }}
+                            </div>
+                            {% if art.chapo %}<div class="small text-muted text-truncate" style="max-width:340px;">{{ art.chapo }}</div>{% endif %}
+                        </td>
+                        <td>
+                            {% if art.rubrique %}
+                            <span class="badge" style="background:{{ art.rubrique.couleur }};">{{ art.rubrique.nom }}</span>
+                            {% else %}<span class="text-muted small">—</span>{% endif %}
+                        </td>
+                        <td class="small">{{ art.get_auteur_display }}</td>
+                        <td>
+                            {% if art.statut == 'publie' %}
+                                {% if art.est_programme_futur %}
+                                <span class="badge bg-warning text-dark">Programmé</span>
+                                {% else %}
+                                <span class="badge bg-success">Publié</span>
+                                {% endif %}
+                            {% elif art.statut == 'programme' %}
+                                <span class="badge bg-warning text-dark">Programmé</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Brouillon</span>
+                            {% endif %}
+                            {% if art.visibilite != 'public' %}<span class="badge bg-light text-dark border" title="Visibilité"><i class="bi bi-lock"></i> {{ art.get_visibilite_display }}</span>{% endif %}
+                        </td>
+                        <td class="small text-muted">{{ art.date_publication|date:"d/m/Y H:i" }}</td>
+                        <td class="text-center small">{{ art.vues }}</td>
+                        <td class="text-center text-nowrap">
+                            {% if art.est_en_ligne %}
+                            <a href="{% url 'article_detail' art.slug %}" target="_blank" class="btn btn-sm btn-outline-secondary" title="Voir"><i class="bi bi-box-arrow-up-right"></i></a>
+                            {% endif %}
+                            <form method="post" action="{% url 'admin_article_toggle' art.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="field" value="statut">
+                                <button class="btn btn-sm {% if art.statut == 'publie' %}btn-outline-success{% else %}btn-outline-primary{% endif %}" title="{% if art.statut == 'publie' %}Dépublier{% else %}Publier{% endif %}">
+                                    <i class="bi bi-{% if art.statut == 'publie' %}eye-slash{% else %}send{% endif %}"></i>
+                                </button>
+                            </form>
+                            <form method="post" action="{% url 'admin_article_toggle' art.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="field" value="epingle">
+                                <button class="btn btn-sm {% if art.epingle %}btn-warning{% else %}btn-outline-warning{% endif %}" title="Épingler"><i class="bi bi-pin-angle"></i></button>
+                            </form>
+                            <a href="{% url 'admin_article_edit' art.pk %}" class="btn btn-sm btn-outline-warning" title="Modifier"><i class="bi bi-pencil"></i></a>
+                            <form method="post" action="{% url 'admin_article_delete' art.pk %}" class="d-inline" onsubmit="return confirm('Supprimer définitivement cet article ?')">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger" title="Supprimer"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" class="text-center text-muted py-5">
+                        <i class="bi bi-newspaper d-block mb-2" style="font-size:2rem;"></i>
+                        Aucun article. <a href="{% url 'admin_article_create' %}">Créer le premier article</a>.
+                    </td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -84,6 +84,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if 'article' in request.resolver_match.url_name or 'rubrique' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'admin_articles' %}">
+                            <i class="bi bi-newspaper me-1"></i>Articles
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'admin_avis' %}active{% endif %}" href="{% url 'admin_avis' %}">
                             <i class="bi bi-chat-dots me-1"></i>Avis
                         </a>

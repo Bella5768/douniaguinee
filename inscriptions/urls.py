@@ -19,6 +19,8 @@ urlpatterns = [
     path('event/<slug:event_slug>/', views.event_page, name='event_page'),
     path('search/', views.search_results, name='search_results'),
     path('soumettre-avis/', views.soumettre_avis, name='soumettre_avis'),
+    path('actualites/', views.actualites_page, name='actualites_page'),
+    path('actualites/<slug:slug>/', views.article_detail, name='article_detail'),
     
     # Pages de gestion (admin)
     path('gestion/login/', views.admin_login, name='admin_login'),
@@ -42,6 +44,13 @@ urlpatterns = [
     path('gestion/utilisateurs/creer/', views.admin_user_create, name='admin_user_create'),
     path('gestion/utilisateurs/<int:pk>/modifier/', views.admin_user_edit, name='admin_user_edit'),
     path('gestion/utilisateurs/<int:pk>/supprimer/', views.admin_user_delete, name='admin_user_delete'),
+    # Module Articles (publication)
+    path('gestion/articles/', views.admin_articles, name='admin_articles'),
+    path('gestion/articles/creer/', views.admin_article_create, name='admin_article_create'),
+    path('gestion/articles/<int:pk>/modifier/', views.admin_article_edit, name='admin_article_edit'),
+    path('gestion/articles/<int:pk>/supprimer/', views.admin_article_delete, name='admin_article_delete'),
+    path('gestion/articles/<int:pk>/toggle/', views.admin_article_toggle, name='admin_article_toggle'),
+    path('gestion/rubriques/', views.admin_rubriques, name='admin_rubriques'),
     path('gestion/edit-section/<str:section>/', views.admin_edit_section, name='admin_edit_section'),
     path('export-csv/', views.export_inscriptions_csv, name='export_inscriptions_csv'),
     path('manage-hero-stats-images/', views.manage_hero_stats_images, name='manage_hero_stats_images'),

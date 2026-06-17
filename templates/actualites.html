@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Actualités — DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Bandeau d'en-tête institutionnel, colle sous la navbar (pas d'espace vide) */
+    .page-hero {
+        background: linear-gradient(135deg, #003366 0%, #004d99 55%, #0066cc 100%);
+        color: #fff;
+        margin-top: calc(-1 * var(--navbar-offset, 96px));
+        padding-top: calc(var(--navbar-offset, 96px) + 2.5rem);
+        padding-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .page-hero::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        top: -80px;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .page-hero .eyebrow { color: rgba(255,255,255,0.75); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .page-hero h1 {
+        color: #fff !important;
+        font-size: clamp(1.9rem, 4vw, 2.6rem);
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 0.6rem;
+    }
+    .page-hero .lead { color: rgba(255,255,255,0.9) !important; font-size: 1.02rem; max-width: 640px; margin-bottom: 0; }
+    .actualites-page { background: #f6f8fb; padding-top: 2.5rem; padding-bottom: 4rem; }
+    .actualites-container { max-width: 1140px; }
+
+    /* Barre filtres + recherche */
+    .toolbar { background: #fff; border: 1px solid #e8edf3; border-radius: 14px; padding: 1rem 1.1rem; box-shadow: 0 6px 18px rgba(15,23,42,0.05); margin-top: -3.5rem; position: relative; z-index: 3; }
+    .rubrique-filter { display: inline-flex; align-items: center; padding: 0.42rem 0.95rem; border-radius: 999px; background: #f1f4f8; color: #334155; text-decoration: none; margin: 0.2rem; transition: all 0.2s; border: 1px solid transparent; font-size: 0.85rem; font-weight: 600; }
+    .rubrique-filter:hover { background: #e2e8f1; }
+    .rubrique-filter.active { background: var(--primary); color: #fff; }
+    .search-box { max-width: 320px; }
+    .search-box input { border-radius: 999px; padding: 0.55rem 1rem; border: 1px solid #d9dee6; font-size: 0.9rem; }
+    .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(0,51,102,0.15); }
+
+    .section-heading { font-size: 1.05rem; font-weight: 800; color: #1e293b; letter-spacing: 0.02em; }
+    .section-heading::before { content: ""; display: inline-block; width: 4px; height: 18px; background: var(--primary); border-radius: 4px; margin-right: 0.6rem; vertical-align: -3px; }
+
+    /* Cartes articles */
+    .article-card { border: 1px solid #e8edf3; border-radius: 16px; overflow: hidden; background: #fff; height: 100%; display: flex; flex-direction: column; box-shadow: 0 6px 18px rgba(15,23,42,0.05); transition: transform 0.2s, box-shadow 0.2s; }
+    .article-card:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(15,23,42,0.12); }
+    .article-card .img-wrap { position: relative; overflow: hidden; }
+    .article-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.4s; }
+    .article-card:hover img { transform: scale(1.05); }
+    .article-card .card-body { padding: 1.2rem 1.3rem 1.4rem; display: flex; flex-direction: column; flex: 1; }
+    .article-card .badge-rubrique { position: absolute; top: 12px; left: 12px; font-size: 0.7rem; font-weight: 700; padding: 0.32rem 0.7rem; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
+    .featured-marker { display: none !important; }
+    .article-card .card-title { font-size: 1.05rem; font-weight: 750; line-height: 1.4; margin-bottom: 0.55rem; }
+    .article-card .card-title a { color: #1e293b !important; text-decoration: none; }
+    .article-card .card-title a:hover { color: var(--primary) !important; }
+    .article-card .card-text { color: #64748b; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .article-card .meta { color: #94a3b8; font-size: 0.8rem; margin-top: auto; border-top: 1px solid #eef2f7; padding-top: 0.8rem; }
+    .article-card .meta i { margin-right: 4px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Bandeau d'en-tête -->
+<section class="page-hero">
+    <div class="container actualites-container">
+        <div class="eyebrow">Centre d'information</div>
+        <h1>Toutes les actualités</h1>
+        <p class="lead">Retrouvez les informations officielles, publications et annonces liées aux activités du projet DounIA.</p>
+    </div>
+</section>
+
+<section class="actualites-page">
+    <div class="container actualites-container">
+        <!-- Barre filtres + recherche -->
+        <div class="toolbar d-flex flex-wrap align-items-center justify-content-between gap-3 mb-5">
+            <div class="d-flex flex-wrap align-items-center">
+                <a href="/actualites/" class="rubrique-filter {% if not rubrique_slug %}active{% endif %}">Toutes</a>
+                {% for r in rubriques %}
+                <a href="/actualites/?rubrique={{ r.slug }}" class="rubrique-filter {% if rubrique_slug == r.slug %}active{% endif %}">{{ r.nom }}</a>
+                {% endfor %}
+            </div>
+            <div class="search-box">
+                <form method="get" class="d-flex">
+                    <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="Rechercher un article...">
+                    <button type="submit" class="btn btn-primary ms-2 rounded-circle" style="width:40px;height:40px;flex:0 0 40px;"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Épinglés -->
+        {% if epingles %}
+        <h2 class="section-heading mb-4">À la une</h2>
+        <div class="row g-4 align-items-stretch mb-5">
+            {% for art in epingles %}
+            <div class="col-md-6 col-lg-4">
+                <div class="article-card">
+                    <div class="img-wrap">
+                        {% if art.get_image_url %}
+                        <img src="{{ art.get_image_url }}" alt="{{ art.titre }}">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;"><i class="bi bi-image text-muted" style="font-size:2.2rem;"></i></div>
+                        {% endif %}
+                        {% if art.rubrique %}
+                        <span class="badge-rubrique" style="background:{{ art.rubrique.couleur }};color:#fff;">{{ art.rubrique.nom }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/actualites/{{ art.slug }}/">{{ art.titre }}</a></h5>
+                        <p class="card-text">{{ art.chapo|default:art.corps|striptags|truncatewords:18 }}</p>
+                        <div class="meta">
+                            <i class="bi bi-calendar3"></i> {{ art.date_publication|date:"d M Y" }}
+                            <span class="ms-3"><i class="bi bi-person"></i> {{ art.get_auteur_display }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Liste -->
+        <h2 class="section-heading mb-4">Tous les articles</h2>
+        <div class="row g-4">
+            {% for art in articles %}
+            <div class="col-md-6 col-lg-4">
+                <div class="article-card">
+                    <div class="img-wrap">
+                        {% if art.get_image_url %}
+                        <img src="{{ art.get_image_url }}" alt="{{ art.titre }}">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;"><i class="bi bi-image text-muted" style="font-size:3rem;"></i></div>
+                        {% endif %}
+                        {% if art.rubrique %}
+                        <span class="badge-rubrique" style="background:{{ art.rubrique.couleur }};color:#fff;">{{ art.rubrique.nom }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/actualites/{{ art.slug }}/">{{ art.titre }}</a></h5>
+                        <p class="card-text">{{ art.chapo|default:art.corps|striptags|truncatewords:18 }}</p>
+                        <div class="meta">
+                            <i class="bi bi-calendar3"></i> {{ art.date_publication|date:"d M Y" }}
+                            <span class="ms-3"><i class="bi bi-person"></i> {{ art.get_auteur_display }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-newspaper text-muted" style="font-size:4rem;"></i>
+                <p class="text-muted mt-3">Aucun article publié pour le moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
