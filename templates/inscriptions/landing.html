@@ -723,26 +723,37 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                                     <div class="text-danger small mt-1">{{ form.atelier.errors.0 }}</div>
                                     {% endif %}
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <label for="id_engagement" class="form-label">Engagement souhaité <span class="text-danger">*</span></label>
                                     {{ form.engagement }}
                                     {% if form.engagement.errors %}
                                     <div class="text-danger small mt-1">{{ form.engagement.errors.0 }}</div>
                                     {% endif %}
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="id_format_preference" class="form-label">Format préféré <span class="text-danger">*</span></label>
-                                    {{ form.format_preference }}
-                                    {% if form.format_preference.errors %}
-                                    <div class="text-danger small mt-1">{{ form.format_preference.errors.0 }}</div>
-                                    {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Source de connaissance -->
+                        <div class="mb-4">
+                            <h5 class="d-flex align-items-center mb-3">
+                                <span class="form-step-badge">5</span>
+                                Comment avez-vous connu DounIA² ?
+                            </h5>
+                            <div>
+                                <div class="mt-2">
+                                    {% for radio in form.source_connaissance %}
+                                    <div class="form-check mb-2">
+                                        {{ radio.tag }}
+                                        <label class="form-check-label ms-1" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                    </div>
+                                    {% endfor %}
                                 </div>
-                                <div class="col-12">
-                                    <label for="id_disponibilite" class="form-label">Disponibilité <span class="text-danger">*</span></label>
-                                    {{ form.disponibilite }}
-                                    {% if form.disponibilite.errors %}
-                                    <div class="text-danger small mt-1">{{ form.disponibilite.errors.0 }}</div>
-                                    {% endif %}
+                                {% if form.source_connaissance.errors %}
+                                <div class="text-danger small mt-1">{{ form.source_connaissance.errors.0 }}</div>
+                                {% endif %}
+                                <div id="courrier-numero-wrapper" class="mt-2" style="display: none;">
+                                    <label for="id_source_connaissance_courrier_numero" class="form-label">N° du courrier, si possible</label>
+                                    {{ form.source_connaissance_courrier_numero }}
                                 </div>
                             </div>
                         </div>
@@ -750,7 +761,7 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
                         <!-- Motivation -->
                         <div class="mb-4">
                             <h5 class="d-flex align-items-center mb-3">
-                                <span class="form-step-badge">5</span>
+                                <span class="form-step-badge">6</span>
                                 Motivation
                             </h5>
                             <div>
@@ -1155,6 +1166,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         profilSelect.addEventListener('change', toggleProfilAutre);
         toggleProfilAutre();
+    }
+
+    // Show/hide courrier numero field when 'lettre_invitation' is selected
+    var courrierWrapper = document.getElementById('courrier-numero-wrapper');
+    var sourceRadios = document.querySelectorAll('input[name="source_connaissance"]');
+    if (courrierWrapper && sourceRadios.length) {
+        function toggleCourrier() {
+            var checked = document.querySelector('input[name="source_connaissance"]:checked');
+            courrierWrapper.style.display = (checked && checked.value === 'lettre_invitation') ? 'block' : 'none';
+        }
+        sourceRadios.forEach(function(r) { r.addEventListener('change', toggleCourrier); });
+        toggleCourrier();
     }
 
 

@@ -10,8 +10,8 @@ from django.db.models import Count, Q
 from django.db.utils import OperationalError
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import user_passes_test
-from .forms import InscriptionForm
-from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage, Avis, Rubrique, Article
+from .forms import InscriptionForm, InscriptionConferenceForm
+from .models import Atelier, Inscription, SiteConfiguration, ChiffreCle, Expert, Partenaire, HeroCarouselImage, HeroImage, StatsImage, Evenement, EvenementImage, Avis, Rubrique, Article, InscriptionConference, BadgeTemplate
 import csv
 from collections import OrderedDict
 from django.utils import timezone
@@ -1081,8 +1081,8 @@ Fonction: {inscription.fonction}
 Profil: {inscription.get_profil_display()}
 Atelier: {inscription.get_atelier_display()}
 Engagement: {inscription.get_engagement_display()}
-Format: {inscription.get_format_preference_display()}
-Disponibilité: {inscription.disponibilite}
+Source: {inscription.get_source_connaissance_display()}
+N° courrier: {inscription.source_connaissance_courrier_numero}
 Motivation: {inscription.motivation}
 Consentement RGPD: {inscription.validation_engagement}
 Date: {timezone.now().strftime('%d/%m/%Y %H:%M')}
@@ -3168,3 +3168,312 @@ def article_detail(request, slug):
         'articles_similaires': articles_similaires,
     }
     return render(request, 'article_detail.html', context)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# MODULE ACCÈS — Inscription Conférence + Badge PDF
+# ═══════════════════════════════════════════════════════════════════
+
+def inscription_conference(request):
+    """Page publique d'inscription à la conférence DounIA."""
+    config = SiteConfiguration.objects.first()
+    if request.method == 'POST':
+        form = InscriptionConferenceForm(request.POST)
+        if form.is_valid():
+            inscrit = form.save()
+            return redirect('conference_merci', identifiant=inscrit.identifiant)
+    else:
+        form = InscriptionConferenceForm()
+
+    return render(request, 'inscriptions/conference_inscription.html', {
+        'config': config,
+        'form': form,
+    })
+
+
+def conference_merci(request, identifiant):
+    """Page de confirmation après inscription à la conférence."""
+    config = SiteConfiguration.objects.first()
+    try:
+        inscrit = InscriptionConference.objects.get(identifiant=identifiant)
+    except InscriptionConference.DoesNotExist:
+        messages.error(request,
+            "L'inscription demandée n'a pas été trouvée. "
+            "Veuillez vérifier l'identifiant ou vous inscrire à la conférence.")
+        return redirect('inscription_conference')
+    return render(request, 'inscriptions/conference_merci.html', {
+        'config': config,
+        'inscrit': inscrit,
+    })
+
+
+def conference_badge_download(request, identifiant):
+    """Téléchargement du badge PDF — uniquement si l'inscription est validée."""
+    inscrit = get_object_or_404(InscriptionConference, identifiant=identifiant)
+
+    if not inscrit.valide:
+        messages.warning(request, "Votre inscription n'a pas encore été validée. Le badge sera disponible après validation.")
+        return redirect('conference_merci', identifiant=identifiant)
+
+    if not inscrit.badge_pdf:
+        messages.error(request, "Le badge n'est pas encore disponible.")
+        return redirect('conference_merci', identifiant=identifiant)
+
+    import os
+    pdf_path = os.path.join(settings.MEDIA_ROOT, str(inscrit.badge_pdf))
+    if not os.path.exists(pdf_path):
+        messages.error(request, "Le fichier badge est introuvable.")
+        return redirect('conference_merci', identifiant=identifiant)
+
+    with open(pdf_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="badge_{inscrit.identifiant}.pdf"'
+        return response
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_conference_inscriptions(request):
+    """Liste des inscriptions à la conférence (admin)."""
+    config = SiteConfiguration.objects.first()
+    inscriptions = InscriptionConference.objects.all()
+
+    # Filtres
+    categorie = request.GET.get('categorie', '')
+    search = request.GET.get('q', '')
+    if categorie:
+        inscriptions = inscriptions.filter(categorie=categorie)
+    if search:
+        inscriptions = inscriptions.filter(
+            Q(nom__icontains=search) | Q(prenom__icontains=search) |
+            Q(email__icontains=search) | Q(identifiant__icontains=search)
+        )
+
+    # Stats
+    stats = {
+        'total': InscriptionConference.objects.count(),
+        'valides': InscriptionConference.objects.filter(valide=True).count(),
+        'par_categorie': InscriptionConference.objects.values('categorie').annotate(
+            count=Count('id')
+        ).order_by('categorie'),
+    }
+
+    # Templates de badges uploadés
+    badge_templates = BadgeTemplate.objects.all()
+    categories_avec_template = set(badge_templates.values_list('categorie', flat=True))
+
+    return render(request, 'gestion/conference_inscriptions.html', {
+        'config': config,
+        'inscriptions': inscriptions,
+        'stats': stats,
+        'categorie_filter': categorie,
+        'search_query': search,
+        'categories': InscriptionConference.CATEGORIE_CHOICES,
+        'badge_templates': badge_templates,
+        'categories_avec_template': categories_avec_template,
+    })
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_conference_valider(request, pk):
+    """Valider une inscription conférence, générer le badge PDF et l'envoyer par email."""
+    inscrit = get_object_or_404(InscriptionConference, pk=pk)
+    inscrit.valide = True
+    inscrit.date_validation = timezone.now()
+    inscrit.save(update_fields=['valide', 'date_validation'])
+
+    pdf_path = None
+
+    # Générer le badge PDF à la validation
+    try:
+        from .generer_badge import generer_badge
+        import os
+        pdf_path = generer_badge(
+            nom=inscrit.nom, prenom=inscrit.prenom,
+            categorie=inscrit.categorie, identifiant=inscrit.identifiant,
+        )
+        rel_path = os.path.relpath(pdf_path, settings.MEDIA_ROOT)
+        inscrit.badge_pdf = rel_path
+        inscrit.save(update_fields=['badge_pdf'])
+    except Exception as e:
+        messages.warning(request,
+            f"Inscription validée mais le badge n'a pas pu être généré : {e}")
+        return redirect('admin_conference_inscriptions')
+
+    # Envoyer le badge par email au participant + copie à l'admin
+    try:
+        admin_email = settings.DEFAULT_FROM_EMAIL
+        categorie_label = inscrit.get_categorie_display()
+
+        # Email au participant
+        email_participant = EmailMessage(
+            subject=f"Conférence DounIA — Votre badge {categorie_label} est prêt",
+            body=(
+                f"Bonjour {inscrit.prenom},\n\n"
+                f"Votre inscription à la Conférence DounIA a été validée.\n\n"
+                f"Catégorie : {categorie_label}\n"
+                f"Identifiant : {inscrit.identifiant}\n"
+                f"Date : 15 Août 2026 — Conakry, Guinée\n\n"
+                f"Veuillez trouver votre badge personnalisé en pièce jointe.\n"
+                f"Imprimez-le et présentez-le à l'entrée de la conférence.\n\n"
+                f"Cordialement,\n"
+                f"L'équipe DounIA"
+            ),
+            from_email=admin_email,
+            to=[inscrit.email],
+        )
+        email_participant.attach_file(pdf_path)
+        email_participant.send(fail_silently=False)
+
+        # Copie à l'organisateur
+        email_admin = EmailMessage(
+            subject=f"[Badge généré] {inscrit.prenom} {inscrit.nom} — {categorie_label}",
+            body=(
+                f"Badge généré et envoyé pour :\n\n"
+                f"Nom : {inscrit.nom}\n"
+                f"Prénoms : {inscrit.prenom}\n"
+                f"Email : {inscrit.email}\n"
+                f"Catégorie : {categorie_label}\n"
+                f"Identifiant : {inscrit.identifiant}\n"
+                f"Téléphone : {inscrit.telephone}\n"
+                f"Organisation : {inscrit.organisation}\n"
+            ),
+            from_email=admin_email,
+            to=[admin_email],
+        )
+        email_admin.attach_file(pdf_path)
+        email_admin.send(fail_silently=False)
+
+        messages.success(request,
+            f"Inscription de {inscrit.prenom} {inscrit.nom} validée. "
+            f"Badge généré et envoyé par email.")
+    except Exception as e:
+        messages.warning(request,
+            f"Badge généré mais l'envoi email a échoué : {e}")
+
+    return redirect('admin_conference_inscriptions')
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_conference_delete(request, pk):
+    """Supprimer une inscription conférence."""
+    inscrit = get_object_or_404(InscriptionConference, pk=pk)
+    nom_complet = f"{inscrit.prenom} {inscrit.nom}"
+    # Supprimer le fichier badge si existant
+    if inscrit.badge_pdf:
+        import os
+        pdf_path = os.path.join(settings.MEDIA_ROOT, str(inscrit.badge_pdf))
+        if os.path.exists(pdf_path):
+            os.remove(pdf_path)
+    inscrit.delete()
+    messages.success(request, f"Inscription de {nom_complet} supprimée.")
+    return redirect('admin_conference_inscriptions')
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_conference_export_csv(request):
+    """Export CSV des inscriptions conférence."""
+    response = HttpResponse(content_type='text/csv; charset=utf-8')
+    response['Content-Disposition'] = 'attachment; filename="inscriptions_conference.csv"'
+    response.write('\ufeff')  # BOM UTF-8
+
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['Identifiant', 'Nom', 'Prénoms', 'Email', 'Téléphone',
+                     'Organisation', 'Catégorie', 'Date inscription', 'Validée'])
+
+    for i in InscriptionConference.objects.all():
+        writer.writerow([
+            i.identifiant, i.nom, i.prenom, i.email, i.telephone,
+            i.organisation, i.get_categorie_display(),
+            i.date_inscription.strftime('%d/%m/%Y %H:%M'),
+            'Oui' if i.valide else 'Non',
+        ])
+
+    return response
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_badge_template_upload(request):
+    """Upload ou mise à jour d'un template de badge pour une catégorie."""
+    if request.method == 'POST':
+        categorie = request.POST.get('categorie', '')
+        image = request.FILES.get('template_image')
+        if not categorie or not image:
+            messages.error(request, "Veuillez sélectionner une catégorie et un fichier image.")
+            return redirect('admin_conference_inscriptions')
+
+        badge_tpl, created = BadgeTemplate.objects.get_or_create(
+            categorie=categorie,
+            defaults={'template_image': image}
+        )
+        if not created:
+            import os
+            old_path = badge_tpl.template_image.path
+            if os.path.exists(old_path):
+                os.remove(old_path)
+            badge_tpl.template_image = image
+            badge_tpl.save()
+
+        # Mettre à jour les coordonnées si fournies
+        fields_int = ['nom_x', 'nom_y', 'nom_font_size', 'prenom_x', 'prenom_y',
+                       'prenom_font_size', 'qr_x1', 'qr_y1', 'qr_x2', 'qr_y2']
+        fields_str = ['nom_color', 'prenom_color']
+        for f in fields_int:
+            val = request.POST.get(f, '').strip()
+            if val:
+                try:
+                    setattr(badge_tpl, f, int(val))
+                except ValueError:
+                    pass
+        for f in fields_str:
+            val = request.POST.get(f, '').strip()
+            if val:
+                setattr(badge_tpl, f, val)
+        badge_tpl.save()
+
+        label = dict(BadgeTemplate.CATEGORIE_CHOICES).get(categorie, categorie)
+        messages.success(request, f"Template de badge '{label}' {'créé' if created else 'mis à jour'}.")
+
+    return redirect('admin_conference_inscriptions')
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_badge_template_delete(request, pk):
+    """Supprimer un template de badge."""
+    tpl = get_object_or_404(BadgeTemplate, pk=pk)
+    label = tpl.get_categorie_display()
+    if tpl.template_image:
+        import os
+        path = tpl.template_image.path
+        if os.path.exists(path):
+            os.remove(path)
+    tpl.delete()
+    messages.success(request, f"Template '{label}' supprimé.")
+    return redirect('admin_conference_inscriptions')
+
+
+@user_passes_test(is_staff_user, login_url='/gestion/login/')
+def admin_conference_export_badges_zip(request):
+    """Télécharger tous les badges PDF générés dans un fichier ZIP."""
+    import os
+    import zipfile
+    from io import BytesIO
+
+    inscrits = InscriptionConference.objects.filter(valide=True).exclude(badge_pdf='').exclude(badge_pdf=None)
+
+    if not inscrits.exists():
+        messages.warning(request, "Aucun badge généré à exporter.")
+        return redirect('admin_conference_inscriptions')
+
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for inscrit in inscrits:
+            pdf_path = os.path.join(settings.MEDIA_ROOT, str(inscrit.badge_pdf))
+            if os.path.exists(pdf_path):
+                cat = inscrit.get_categorie_display().replace(' ', '_')
+                filename = f"{cat}/badge_{inscrit.nom}_{inscrit.prenom}_{inscrit.identifiant}.pdf"
+                zf.write(pdf_path, filename)
+
+    buffer.seek(0)
+    response = HttpResponse(buffer.read(), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename="badges_conference_dounia.zip"'
+    return response

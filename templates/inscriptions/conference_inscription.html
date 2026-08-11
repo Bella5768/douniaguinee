@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscription Conférence — DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-section {
+        background: #f8f9fa;
+        padding: 60px 0 80px;
+        min-height: 100vh;
+    }
+    .form-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 40px;
+        max-width: 640px;
+        margin: -40px auto 0;
+        position: relative;
+        z-index: 2;
+    }
+    .form-card .form-label {
+        font-weight: 600;
+        color: #003366;
+        margin-bottom: 0.3rem;
+    }
+    .form-card .form-control,
+    .form-card .form-select {
+        border-radius: 8px;
+        border: 1.5px solid #dee2e6;
+        padding: 0.6rem 1rem;
+    }
+    .form-card .form-control:focus,
+    .form-card .form-select:focus {
+        border-color: #003366;
+        box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+    }
+    .btn-conference {
+        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        padding: 0.75rem 2.5rem;
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s;
+    }
+    .btn-conference:hover {
+        background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,51,102,0.3);
+    }
+    .conference-info {
+        background: linear-gradient(135deg, rgba(0,51,102,0.05), rgba(0,51,102,0.02));
+        border-left: 4px solid #003366;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    .conference-info h5 {
+        color: #003366;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    .conference-info ul {
+        margin-bottom: 0;
+        padding-left: 1.2rem;
+    }
+    .conference-info li {
+        margin-bottom: 0.3rem;
+        color: #555;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="form-section" style="padding-top: 30px;">
+    <div class="container">
+        <div class="form-card">
+            <div class="text-center mb-4">
+                <h2 style="color: #003366; font-weight: 800;">Inscription</h2>
+                <p class="text-muted">Remplissez le formulaire ci-dessous pour vous inscrire à la conférence.</p>
+            </div>
+
+            <div class="conference-info">
+                <h5><i class="bi bi-info-circle me-2"></i>Informations</h5>
+                <ul>
+                    <li>Conférence DounIA — 15 Août 2026, Conakry</li>
+                    <li>Votre badge vous sera envoyé après validation</li>
+                </ul>
+            </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="id_nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                        {{ form.nom }}
+                        {% if form.nom.errors %}
+                        <div class="invalid-feedback d-block">{{ form.nom.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_prenom" class="form-label">Prénoms <span class="text-danger">*</span></label>
+                        {{ form.prenom }}
+                        {% if form.prenom.errors %}
+                        <div class="invalid-feedback d-block">{{ form.prenom.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_email" class="form-label">Email <span class="text-danger">*</span></label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                        <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_telephone" class="form-label">Téléphone</label>
+                        {{ form.telephone }}
+                        {% if form.telephone.errors %}
+                        <div class="invalid-feedback d-block">{{ form.telephone.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <label for="id_organisation" class="form-label">Organisation / Institution</label>
+                        {{ form.organisation }}
+                        {% if form.organisation.errors %}
+                        <div class="invalid-feedback d-block">{{ form.organisation.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+                        <label for="id_categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                        {{ form.categorie }}
+                        {% if form.categorie.errors %}
+                        <div class="invalid-feedback d-block">{{ form.categorie.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">Sélectionnez la catégorie correspondant à votre profil.</div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-conference">
+                        <i class="bi bi-check-circle me-2"></i>S'inscrire à la conférence
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

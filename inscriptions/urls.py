@@ -76,4 +76,16 @@ urlpatterns = [
     path('gestion/hero-images/', views.manage_hero_images, name='manage_hero_images'),
     path('export-pdf/', views.export_inscriptions_pdf, name='export_inscriptions_pdf'),
     path('generer-agenda-pdf/', views.generer_agenda_pdf_view, name='generer_agenda_pdf_view'),
+    
+    # Module Accès — Inscription Conférence + Badges (désactivé temporairement)
+    # path('conference/', views.inscription_conference, name='inscription_conference'),
+    # path('conference/merci/<str:identifiant>/', views.conference_merci, name='conference_merci'),
+    # path('conference/badge/<str:identifiant>/', views.conference_badge_download, name='conference_badge_download'),
+    # path('gestion/conference/', views.admin_conference_inscriptions, name='admin_conference_inscriptions'),
+    # path('gestion/conference/<int:pk>/valider/', views.admin_conference_valider, name='admin_conference_valider'),
+    # path('gestion/conference/<int:pk>/supprimer/', views.admin_conference_delete, name='admin_conference_delete'),
+    # path('gestion/conference/export-csv/', views.admin_conference_export_csv, name='admin_conference_export_csv'),
+    # path('gestion/conference/badge-template/upload/', views.admin_badge_template_upload, name='admin_badge_template_upload'),
+    # path('gestion/conference/badge-template/<int:pk>/supprimer/', views.admin_badge_template_delete, name='admin_badge_template_delete'),
+    # path('gestion/conference/export-badges-zip/', views.admin_conference_export_badges_zip, name='admin_conference_export_badges_zip'),
 ]

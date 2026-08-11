@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inscription confirmée — DounIA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .merci-section {
+        background: #f8f9fa;
+        padding: 60px 0 80px;
+        min-height: 100vh;
+    }
+    .merci-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 50px 40px;
+        max-width: 600px;
+        margin: -40px auto 0;
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+    .success-icon i {
+        font-size: 2.5rem;
+        color: #fff;
+    }
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    .info-label {
+        font-weight: 600;
+        color: #003366;
+    }
+    .info-value {
+        color: #555;
+    }
+    .badge-id {
+        background: #003366;
+        color: #FFD700;
+        font-family: monospace;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        padding: 8px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 15px 0;
+    }
+    .btn-badge {
+        background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        padding: 0.7rem 2rem;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+    .btn-badge:hover {
+        background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,51,102,0.3);
+    }
+    .btn-outline-conference {
+        border: 2px solid #003366;
+        color: #003366;
+        border-radius: 25px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s;
+    }
+    .btn-outline-conference:hover {
+        background: #003366;
+        color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="merci-section" style="padding-top: 50px;">
+    <div class="container">
+        <div class="merci-card">
+            <div class="success-icon">
+                <i class="bi bi-check-lg"></i>
+            </div>
+
+            <h2 style="color: #003366; font-weight: 800; margin-bottom: 5px;">Merci, {{ inscrit.prenom }} !</h2>
+            <p class="text-muted">Votre inscription à la conférence DounIA a été enregistrée avec succès.</p>
+
+            <div class="badge-id">{{ inscrit.identifiant }}</div>
+            <p class="small text-muted mb-4">Votre identifiant unique — conservez-le précieusement</p>
+
+            <div class="text-start mx-auto" style="max-width: 380px; margin-bottom: 30px;">
+                <div class="info-row">
+                    <span class="info-label">Nom</span>
+                    <span class="info-value">{{ inscrit.nom }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Prénoms</span>
+                    <span class="info-value">{{ inscrit.prenom }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ inscrit.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Catégorie</span>
+                    <span class="info-value">{{ inscrit.get_categorie_display }}</span>
+                </div>
+            </div>
+
+            {% if inscrit.valide and inscrit.badge_pdf %}
+            <div class="mb-4">
+                <a href="{% url 'conference_badge_download' inscrit.identifiant %}" class="btn-badge">
+                    <i class="bi bi-download"></i> Télécharger mon badge PDF
+                </a>
+            </div>
+            {% elif inscrit.valide %}
+            <div class="alert alert-info small">
+                <i class="bi bi-check-circle me-1"></i>
+                Votre inscription est validée. Le badge sera disponible prochainement.
+            </div>
+            {% else %}
+            <div class="alert alert-warning small">
+                <i class="bi bi-hourglass-split me-1"></i>
+                Votre inscription est <strong>en attente de validation</strong> par l'équipe organisatrice.
+                Votre badge sera disponible une fois votre inscription validée.
+            </div>
+            {% endif %}
+
+            <a href="{% url 'landing_page' %}" class="btn-outline-conference">
+                <i class="bi bi-house"></i> Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

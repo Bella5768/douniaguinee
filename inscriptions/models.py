@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import URLValidator
 import os
+import uuid
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
@@ -401,6 +402,13 @@ class Inscription(models.Model):
         ('flexible', 'Flexible'),
     ]
 
+    SOURCE_CONNAISSANCE_CHOICES = [
+        ('web_reseaux', 'Site web ou réseaux sociaux'),
+        ('bouche_a_oreille', 'Par un ami, un collègue ou une connaissance'),
+        ('lettre_invitation', 'Par une lettre d\'invitation officielle'),
+        ('autre', 'Autre'),
+    ]
+
     nom = models.CharField(max_length=100, verbose_name='Nom')
     prenom = models.CharField(max_length=100, verbose_name='Prénom')
     email = models.EmailField(verbose_name='Adresse email')
@@ -411,8 +419,10 @@ class Inscription(models.Model):
     profil_autre = models.CharField(max_length=200, blank=True, default='', verbose_name='Profil (autre, précisez)')
     atelier = models.CharField(max_length=50, choices=ATELIER_CHOICES, verbose_name='Atelier thématique choisi')
     engagement = models.CharField(max_length=50, choices=ENGAGEMENT_CHOICES, verbose_name='Engagement souhaité')
-    format_preference = models.CharField(max_length=50, choices=FORMAT_CHOICES, verbose_name='Format préféré')
-    disponibilite = models.CharField(max_length=50, choices=DISPONIBILITE_CHOICES, verbose_name='Disponibilité')
+    format_preference = models.CharField(max_length=50, choices=FORMAT_CHOICES, blank=True, default='', verbose_name='Format préféré')
+    disponibilite = models.CharField(max_length=50, choices=DISPONIBILITE_CHOICES, blank=True, default='', verbose_name='Disponibilité')
+    source_connaissance = models.CharField(max_length=50, choices=SOURCE_CONNAISSANCE_CHOICES, blank=True, default='', verbose_name='Comment avez-vous connu DounIA² ?')
+    source_connaissance_courrier_numero = models.CharField(max_length=100, blank=True, default='', verbose_name='N° du courrier d\'invitation')
     motivation = models.TextField(max_length=500, blank=True, default='', verbose_name='Motivation (500 caractères max)')
     validation_engagement = models.BooleanField(default=False, verbose_name='Je m\'engage à participer activement aux travaux de l\'atelier choisi')
     date_inscription = models.DateTimeField(default=timezone.now, verbose_name='Date d\'inscription')
@@ -1021,3 +1031,95 @@ class Article(models.Model):
     @property
     def est_programme_futur(self):
         return self.statut == 'programme' or (self.statut == 'publie' and self.date_publication > timezone.now())
+
+
+class BadgeTemplate(models.Model):
+    """Template PNG de badge uploadé par l'admin pour chaque catégorie."""
+
+    CATEGORIE_CHOICES = [
+        ('grand_public', 'Grand public'),
+        ('speaker', 'Speaker'),
+        ('sponsor', 'Sponsor'),
+        ('presse', 'Presse'),
+        ('vip', 'VIP'),
+        ('staff', 'Staff'),
+        ('organisateur', 'Organisateur'),
+    ]
+
+    categorie = models.CharField(
+        max_length=20, choices=CATEGORIE_CHOICES, unique=True,
+        verbose_name='Catégorie',
+    )
+    template_image = models.ImageField(
+        upload_to='badges_templates/',
+        verbose_name='Image template (PNG, 591x1004 px)',
+    )
+    nom_x = models.IntegerField(default=200, verbose_name='Nom — position X')
+    nom_y = models.IntegerField(default=555, verbose_name='Nom — position Y')
+    nom_font_size = models.IntegerField(default=28, verbose_name='Nom — taille police')
+    nom_color = models.CharField(max_length=20, default='#FFFFFF', verbose_name='Nom — couleur')
+    prenom_x = models.IntegerField(default=200, verbose_name='Prénoms — position X')
+    prenom_y = models.IntegerField(default=655, verbose_name='Prénoms — position Y')
+    prenom_font_size = models.IntegerField(default=28, verbose_name='Prénoms — taille police')
+    prenom_color = models.CharField(max_length=20, default='#FFFFFF', verbose_name='Prénoms — couleur')
+    qr_x1 = models.IntegerField(default=231, verbose_name='QR code — X1')
+    qr_y1 = models.IntegerField(default=791, verbose_name='QR code — Y1')
+    qr_x2 = models.IntegerField(default=394, verbose_name='QR code — X2')
+    qr_y2 = models.IntegerField(default=954, verbose_name='QR code — Y2')
+    date_upload = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Template de badge'
+        verbose_name_plural = 'Templates de badges'
+        ordering = ['categorie']
+
+    def __str__(self):
+        return f"Badge — {self.get_categorie_display()}"
+
+
+class InscriptionConference(models.Model):
+    """Inscription du public à la conférence DounIA avec génération de badge PDF."""
+
+    CATEGORIE_CHOICES = [
+        ('grand_public', 'Grand public'),
+        ('speaker', 'Speaker'),
+        ('sponsor', 'Sponsor'),
+        ('presse', 'Presse'),
+        ('vip', 'VIP'),
+        ('staff', 'Staff'),
+        ('organisateur', 'Organisateur'),
+    ]
+
+    identifiant = models.CharField(
+        max_length=12, unique=True, editable=False,
+        verbose_name='Identifiant unique',
+    )
+    nom = models.CharField(max_length=100, verbose_name='Nom')
+    prenom = models.CharField(max_length=100, verbose_name='Prénoms')
+    email = models.EmailField(verbose_name='Adresse email')
+    telephone = models.CharField(max_length=30, blank=True, default='', verbose_name='Téléphone')
+    organisation = models.CharField(max_length=200, blank=True, default='', verbose_name='Organisation / Institution')
+    categorie = models.CharField(
+        max_length=20, choices=CATEGORIE_CHOICES,
+        default='grand_public', verbose_name='Catégorie',
+    )
+    badge_pdf = models.FileField(
+        upload_to='badges/', blank=True, null=True,
+        verbose_name='Badge PDF généré',
+    )
+    date_inscription = models.DateTimeField(default=timezone.now, verbose_name="Date d'inscription")
+    valide = models.BooleanField(default=False, verbose_name='Inscription validée')
+    date_validation = models.DateTimeField(null=True, blank=True, verbose_name='Date de validation')
+
+    class Meta:
+        verbose_name = 'Inscription Conférence'
+        verbose_name_plural = 'Inscriptions Conférence'
+        ordering = ['-date_inscription']
+
+    def __str__(self):
+        return f"{self.prenom} {self.nom} — {self.get_categorie_display()}"
+
+    def save(self, *args, **kwargs):
+        if not self.identifiant:
+            self.identifiant = uuid.uuid4().hex[:12].upper()
+        super().save(*args, **kwargs)

@@ -1,0 +1,333 @@
+{% extends "gestion/base_admin.html" %}
+{% load static %}
+
+{% block title %}Gestion — Inscriptions Conférence{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<style>
+    .conf-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+    .conf-stat-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        border-left: 4px solid #003366;
+    }
+    .conf-stat-card .number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #003366;
+    }
+    .conf-stat-card .label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 4px;
+    }
+    .badge-cat {
+        font-size: 0.75rem;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+    .badge-vip { background: #003366; color: #FFD700; }
+    .badge-grand_public { background: #1a6b3c; color: #fff; }
+    .badge-speaker { background: #8B0000; color: #FFD700; }
+    .badge-sponsor { background: #4B0082; color: #FFD700; }
+    .badge-presse { background: #CC5500; color: #fff; }
+    .badge-staff { background: #2F4F4F; color: #00CED1; }
+    .badge-organisateur { background: #191970; color: #FFD700; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4" style="padding-top: 20px !important;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="color: #003366; font-weight: 800;">
+                <i class="bi bi-people-fill me-2"></i>Inscriptions Conférence
+            </h2>
+            <p class="text-muted mb-0">Gestion des inscriptions et badges de la conférence DounIA</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'admin_conference_export_badges_zip' %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-file-earmark-zip me-1"></i>Tous les badges (ZIP)
+            </a>
+            <a href="{% url 'admin_conference_export_csv' %}" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-file-earmark-spreadsheet me-1"></i>Export CSV
+            </a>
+            <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Tableau de bord
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="conf-stats">
+        <div class="conf-stat-card">
+            <div class="number">{{ stats.total }}</div>
+            <div class="label">Total inscrits</div>
+        </div>
+        <div class="conf-stat-card" style="border-left-color: #28a745;">
+            <div class="number" style="color: #28a745;">{{ stats.valides }}</div>
+            <div class="label">Validées</div>
+        </div>
+        {% for cat in stats.par_categorie %}
+        <div class="conf-stat-card" style="border-left-color: #6c757d;">
+            <div class="number" style="font-size: 1.5rem; color: #555;">{{ cat.count }}</div>
+            <div class="label">{{ cat.categorie }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Filtres -->
+    <div class="card mb-4" style="border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <div class="card-body py-3">
+            <form method="get" class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold">Rechercher</label>
+                    <input type="text" name="q" class="form-control form-control-sm" placeholder="Nom, prénom, email, ID..."
+                           value="{{ search_query }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Catégorie</label>
+                    <select name="categorie" class="form-select form-select-sm">
+                        <option value="">Toutes</option>
+                        {% for code, label in categories %}
+                        <option value="{{ code }}" {% if categorie_filter == code %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-sm btn-primary w-100">
+                        <i class="bi bi-search me-1"></i>Filtrer
+                    </button>
+                </div>
+                {% if search_query or categorie_filter %}
+                <div class="col-md-2">
+                    <a href="{% url 'admin_conference_inscriptions' %}" class="btn btn-sm btn-outline-secondary w-100">
+                        <i class="bi bi-x-lg me-1"></i>Réinitialiser
+                    </a>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- ═══ Templates de badges ═══ -->
+    <div class="card mb-4" style="border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <div class="card-header bg-white border-0 pt-3 pb-0 px-4">
+            <h5 style="color: #003366; font-weight: 700;">
+                <i class="bi bi-image me-2"></i>Templates de badges par catégorie
+            </h5>
+            <p class="text-muted small mb-2">Uploadez vos designs PNG (591x1004 px) pour chaque catégorie. Le badge ne sera généré qu'à la validation de l'inscription.</p>
+        </div>
+        <div class="card-body pt-2">
+            <!-- Templates existants -->
+            {% if badge_templates %}
+            <div class="row g-3 mb-4">
+                {% for tpl in badge_templates %}
+                <div class="col-md-3 col-sm-4 col-6">
+                    <div class="border rounded-3 p-2 text-center position-relative" style="background: #f8f9fa;">
+                        <img src="{{ tpl.template_image.url }}" alt="{{ tpl.get_categorie_display }}"
+                             style="max-height: 180px; width: auto; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div class="mt-2">
+                            <span class="badge-cat badge-{{ tpl.categorie }}">{{ tpl.get_categorie_display }}</span>
+                        </div>
+                        <div class="small text-muted mt-1">
+                            Nom: ({{ tpl.nom_x }},{{ tpl.nom_y }}) | Prénom: ({{ tpl.prenom_x }},{{ tpl.prenom_y }})
+                        </div>
+                        <div class="small text-muted">
+                            QR: ({{ tpl.qr_x1 }},{{ tpl.qr_y1 }})→({{ tpl.qr_x2 }},{{ tpl.qr_y2 }})
+                        </div>
+                        <a href="{% url 'admin_badge_template_delete' tpl.pk %}"
+                           class="btn btn-sm btn-outline-danger mt-2"
+                           onclick="return confirm('Supprimer ce template ?')">
+                            <i class="bi bi-trash me-1"></i>Supprimer
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Formulaire upload -->
+            <form method="post" action="{% url 'admin_badge_template_upload' %}" enctype="multipart/form-data"
+                  class="border rounded-3 p-3" style="background: #fafbfc;">
+                {% csrf_token %}
+                <h6 class="fw-bold mb-3" style="color: #003366;">
+                    <i class="bi bi-upload me-1"></i>Uploader / Remplacer un template
+                </h6>
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Catégorie</label>
+                        <select name="categorie" class="form-select form-select-sm" required>
+                            <option value="">— Choisir —</option>
+                            {% for code, label in categories %}
+                            <option value="{{ code }}">{{ label }}{% if code in categories_avec_template %} (remplacer){% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Image PNG</label>
+                        <input type="file" name="template_image" accept="image/png,image/jpeg" class="form-control form-control-sm" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-sm btn-primary w-100">
+                            <i class="bi bi-cloud-upload me-1"></i>Uploader
+                        </button>
+                    </div>
+                </div>
+                <!-- Coordonnées avancées (toggle) -->
+                <div class="mt-3">
+                    <a class="small text-decoration-none" data-bs-toggle="collapse" href="#coordAdvanced" role="button">
+                        <i class="bi bi-sliders me-1"></i>Coordonnées avancées (optionnel)
+                    </a>
+                    <div class="collapse mt-2" id="coordAdvanced">
+                        <div class="row g-2">
+                            <div class="col-md-2">
+                                <label class="form-label small">Nom X</label>
+                                <input type="number" name="nom_x" class="form-control form-control-sm" placeholder="200">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Nom Y</label>
+                                <input type="number" name="nom_y" class="form-control form-control-sm" placeholder="555">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Nom taille</label>
+                                <input type="number" name="nom_font_size" class="form-control form-control-sm" placeholder="28">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Nom couleur</label>
+                                <input type="text" name="nom_color" class="form-control form-control-sm" placeholder="#FFFFFF">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Prénom X</label>
+                                <input type="number" name="prenom_x" class="form-control form-control-sm" placeholder="200">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Prénom Y</label>
+                                <input type="number" name="prenom_y" class="form-control form-control-sm" placeholder="655">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Prénom taille</label>
+                                <input type="number" name="prenom_font_size" class="form-control form-control-sm" placeholder="28">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">Prénom couleur</label>
+                                <input type="text" name="prenom_color" class="form-control form-control-sm" placeholder="#FFFFFF">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">QR X1</label>
+                                <input type="number" name="qr_x1" class="form-control form-control-sm" placeholder="231">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">QR Y1</label>
+                                <input type="number" name="qr_y1" class="form-control form-control-sm" placeholder="791">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">QR X2</label>
+                                <input type="number" name="qr_x2" class="form-control form-control-sm" placeholder="394">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label small">QR Y2</label>
+                                <input type="number" name="qr_y2" class="form-control form-control-sm" placeholder="954">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ Tableau des inscriptions ═══ -->
+    <div class="card" style="border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead style="background: #f8f9fa;">
+                        <tr>
+                            <th class="small fw-bold">ID</th>
+                            <th class="small fw-bold">Nom</th>
+                            <th class="small fw-bold">Prénoms</th>
+                            <th class="small fw-bold">Email</th>
+                            <th class="small fw-bold">Catégorie</th>
+                            <th class="small fw-bold">Date</th>
+                            <th class="small fw-bold">Statut</th>
+                            <th class="small fw-bold text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscrit in inscriptions %}
+                        <tr>
+                            <td><code class="small">{{ inscrit.identifiant }}</code></td>
+                            <td class="fw-bold">{{ inscrit.nom }}</td>
+                            <td>{{ inscrit.prenom }}</td>
+                            <td class="small">{{ inscrit.email }}</td>
+                            <td>
+                                <span class="badge-cat badge-{{ inscrit.categorie }}">
+                                    {{ inscrit.get_categorie_display }}
+                                </span>
+                            </td>
+                            <td class="small text-muted">{{ inscrit.date_inscription|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                {% if inscrit.valide %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Validée</span>
+                                {% else %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>En attente</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    {% if not inscrit.valide %}
+                                    <a href="{% url 'admin_conference_valider' inscrit.pk %}"
+                                       class="btn btn-outline-success" title="Valider"
+                                       onclick="return confirm('Valider cette inscription ?')">
+                                        <i class="bi bi-check-lg"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if inscrit.badge_pdf %}
+                                    <a href="{% url 'conference_badge_download' inscrit.identifiant %}"
+                                       class="btn btn-outline-primary" title="Télécharger le badge">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    {% endif %}
+                                    <a href="{% url 'admin_conference_delete' inscrit.pk %}"
+                                       class="btn btn-outline-danger" title="Supprimer"
+                                       onclick="return confirm('Supprimer l\'inscription de {{ inscrit.prenom }} {{ inscrit.nom }} ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                Aucune inscription pour le moment.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

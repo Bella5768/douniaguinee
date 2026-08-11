@@ -1,0 +1,44 @@
+{
+    "vip": {
+        "template": "badges_templates/badge_vip.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "grand_public": {
+        "template": "badges_templates/badge_grand_public.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "speaker": {
+        "template": "badges_templates/badge_speaker.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "sponsor": {
+        "template": "badges_templates/badge_sponsor.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "presse": {
+        "template": "badges_templates/badge_presse.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "staff": {
+        "template": "badges_templates/badge_staff.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    },
+    "organisateur": {
+        "template": "badges_templates/badge_organisateur.png",
+        "nom": {"x": 200, "y": 555, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "prenom": {"x": 200, "y": 655, "font_size": 28, "color": "#FFFFFF", "font": "fonts/Arial-Bold.ttf"},
+        "qr_code": {"x1": 231, "y1": 791, "x2": 394, "y2": 954}
+    }
+}

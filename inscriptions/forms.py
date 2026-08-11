@@ -1,5 +1,5 @@
 from django import forms
-from .models import Atelier, Inscription
+from .models import Atelier, Inscription, InscriptionConference
 
 
 class InscriptionForm(forms.ModelForm):
@@ -14,8 +14,8 @@ class InscriptionForm(forms.ModelForm):
         fields = [
             'nom', 'prenom', 'email', 'whatsapp', 'institution',
             'fonction', 'profil', 'profil_autre', 'atelier', 'engagement',
-            'format_preference', 'disponibilite', 'motivation',
-            'validation_engagement',
+            'source_connaissance', 'source_connaissance_courrier_numero',
+            'motivation', 'validation_engagement',
         ]
         labels = {
             'prenom': 'Prénoms',
@@ -60,11 +60,12 @@ class InscriptionForm(forms.ModelForm):
             'engagement': forms.Select(attrs={
                 'class': 'form-select',
             }),
-            'format_preference': forms.Select(attrs={
-                'class': 'form-select',
+            'source_connaissance': forms.RadioSelect(attrs={
+                'class': 'form-check-input',
             }),
-            'disponibilite': forms.Select(attrs={
-                'class': 'form-select',
+            'source_connaissance_courrier_numero': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'N° du courrier, si possible',
             }),
             'motivation': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -81,10 +82,14 @@ class InscriptionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['motivation'].required = False
         self.fields['profil_autre'].required = False
+        self.fields['source_connaissance'].required = False
 
         ateliers = list(Atelier.objects.filter(active=True).order_by('ordre', 'label').values_list('code', 'label'))
         choices = [('', '--- Sélectionner un atelier ---')] + ateliers
         self.fields['atelier'].widget.choices = choices
+
+        # Remove empty choice from radio buttons
+        self.fields['source_connaissance'].choices = Inscription.SOURCE_CONNAISSANCE_CHOICES
 
     def clean_atelier(self):
         value = self.cleaned_data.get('atelier', '').strip()
@@ -114,4 +119,45 @@ class InscriptionForm(forms.ModelForm):
                 'Vous devez vous engager à participer activement pour valider votre inscription.'
             )
         return value
+
+
+class InscriptionConferenceForm(forms.ModelForm):
+    """Formulaire d'inscription du public à la conférence DounIA."""
+
+    class Meta:
+        model = InscriptionConference
+        fields = ['nom', 'prenom', 'email', 'telephone', 'organisation', 'categorie']
+        widgets = {
+            'nom': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Votre nom de famille',
+            }),
+            'prenom': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Vos prénoms',
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'exemple@email.com',
+            }),
+            'telephone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '+224 XXX XX XX XX',
+            }),
+            'organisation': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Votre organisation (optionnel)',
+            }),
+            'categorie': forms.Select(attrs={
+                'class': 'form-select',
+            }),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if InscriptionConference.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                'Cette adresse email est déjà inscrite à la conférence.'
+            )
+        return email
 
