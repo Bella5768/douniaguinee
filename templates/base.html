@@ -71,8 +71,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'ateliers_page' %}">Ateliers</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'evenements_page' %}">Événements</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'evenements_page' %}" id="navEvenementsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+                        <ul class="dropdown-menu" aria-labelledby="navEvenementsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'restitution_page' %}">Restitution DounIA1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_page' 'dounia1' %}">DounIA1 — Première édition</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_page' 'dounia2' %}">DounIA²</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'podcast_page' %}">Podcast</a>

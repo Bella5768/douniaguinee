@@ -455,6 +455,14 @@ def landing_page(request):
     except Exception:
         articles_epingles = []
 
+    # Dernier article publié (bloc fixe du hero)
+    try:
+        dernier_article = Article.objects.filter(
+            statut='publie', visibilite='public', date_publication__lte=timezone.now()
+        ).select_related('rubrique').order_by('-date_publication').first()
+    except Exception:
+        dernier_article = None
+
     context = {
         'form': form,
         'config': config,
@@ -476,6 +484,7 @@ def landing_page(request):
         'bg_images_json': bg_images_json,
         'galerie_images': galerie_images,
         'articles_epingles': articles_epingles,
+        'dernier_article': dernier_article,
         'articles_lies': _articles_pour_emplacement('afficher_accueil'),
     }
     return render(request, 'inscriptions/landing.html', context)

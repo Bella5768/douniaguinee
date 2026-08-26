@@ -268,18 +268,47 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
     font-size: 0.88rem;
     margin-bottom: 0.8rem !important;
 }
+.hero-article-fixed {
+    position: absolute;
+    bottom: 120px;
+    left: 8%;
+    max-width: 540px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px) saturate(1.8);
+    -webkit-backdrop-filter: blur(6px) saturate(1.8);
+    border-radius: 16px;
+    padding: 2rem 2.2rem;
+    z-index: 3;
+}
+.hero-article-fixed h2 {
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.7rem;
+}
+.hero-article-fixed p {
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 @media (max-width: 768px) {
     .hero-carousel .carousel-item { height: 480px; }
     .hero-slide-content { left: 5%; right: 5%; max-width: none; bottom: 40px; padding: 1.4rem; }
     .hero-slide-content h2 { font-size: 1.2rem; }
     .hero-slide-content p { font-size: 0.82rem; -webkit-line-clamp: 2; }
+    .hero-article-fixed { left: 5%; right: 5%; max-width: none; bottom: 40px; padding: 1.4rem; }
+    .hero-article-fixed h2 { font-size: 1.2rem !important; }
+    .hero-article-fixed p { font-size: 0.82rem; -webkit-line-clamp: 2; }
 }
 </style>
 
 <section class="hero-carousel-section" id="hero">
     <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="6000">
         <div class="carousel-indicators">
-            {% if articles_epingles %}
+            {% if dernier_article.get_image_url %}
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
             <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
@@ -296,67 +325,38 @@ html.splash-active, html.splash-active body { overflow: hidden !important; heigh
         </div>
         <div class="carousel-inner">
 
-            {% if articles_epingles %}
-            {% for art in articles_epingles %}
-            <!-- Slide article à la une -->
-            <div class="carousel-item {% if forloop.first %}active{% endif %}" style="{% if art.get_image_url %}background-image:url('{{ art.get_image_url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content">
-                    <span class="hero-article-badge">À la une{% if art.rubrique %} · {{ art.rubrique.nom }}{% endif %}</span>
-                    <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:900;">{{ art.titre }}</h2>
-                    <p class="hero-article-meta">{{ art.date_publication|date:'d M Y' }}</p>
-                    <p>{{ art.chapo|default:art.corps|striptags|truncatewords:28 }}</p>
-                    <a href="/actualites/{{ art.slug }}/" class="hero-slide-btn">Lire l'article</a>
-                </div>
-            </div>
-            {% endfor %}
+            {% if dernier_article.get_image_url %}
+            <!-- Slide 0 : image du dernier article -->
+            <div class="carousel-item active" style="background-image:url('{{ dernier_article.get_image_url }}');"></div>
             {% endif %}
 
-            <!-- Slide {% if articles_epingles %}1{% else %}0{% endif %} : À propos -->
-            <div class="carousel-item {% if not articles_epingles %}active{% endif %}" style="{% if config.page_about_hero_image %}background-image:url('{{ config.page_about_hero_image.url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content" style="{% if config.page_about_font and config.page_about_font != 'inherit' %}font-family:{{ config.page_about_font }};{% endif %}">
-                    <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:{% if config.page_about_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_about_titre_italic %}italic{% else %}normal{% endif %};">{{ config.about_titre|default:"C'est quoi DounIA ?" }}</h2>
-                    <p style="font-size:{{ config.page_about_desc_size|default:'1.05rem' }};font-weight:{% if config.page_about_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_about_desc_italic %}italic{% else %}normal{% endif %};">{{ config.about_sous_titre|truncatewords:30 }}</p>
-                    <a href="{% url 'about_page' %}" class="hero-slide-btn">En savoir plus</a>
-                </div>
-            </div>
+            <!-- Slide À propos -->
+            <div class="carousel-item {% if not dernier_article.get_image_url %}active{% endif %}" style="{% if config.page_about_hero_image %}background-image:url('{{ config.page_about_hero_image.url }}');{% elif hero_bg_images %}background-image:url('{{ hero_bg_images.0.get_image_url }}');{% endif %}"></div>
 
-            <!-- Slide 2 : Ateliers -->
-            <div class="carousel-item" style="{% if config.page_ateliers_hero_image %}background-image:url('{{ config.page_ateliers_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.1 %}background-image:url('{{ hero_bg_images.1.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content" style="{% if config.page_ateliers_font and config.page_ateliers_font != 'inherit' %}font-family:{{ config.page_ateliers_font }};{% endif %}">
-                    <h2 style="font-size:{{ config.page_ateliers_titre_size|default:'2.4rem' }};font-weight:{% if config.page_ateliers_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_ateliers_titre_italic %}italic{% else %}normal{% endif %};">{{ config.ateliers_titre|default:"Ateliers Thématiques" }}</h2>
-                    <p style="font-size:{{ config.page_ateliers_desc_size|default:'1.05rem' }};font-weight:{% if config.page_ateliers_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_ateliers_desc_italic %}italic{% else %}normal{% endif %};">{{ config.ateliers_sous_titre|truncatewords:30 }}</p>
-                    <a href="{% url 'ateliers_page' %}" class="hero-slide-btn">En savoir plus</a>
-                </div>
-            </div>
+            <!-- Slide Ateliers -->
+            <div class="carousel-item" style="{% if config.page_ateliers_hero_image %}background-image:url('{{ config.page_ateliers_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.1 %}background-image:url('{{ hero_bg_images.1.get_image_url }}');{% endif %}"></div>
 
-            <!-- Slide 3 : Événements -->
-            <div class="carousel-item" style="{% if config.page_evenements_hero_image %}background-image:url('{{ config.page_evenements_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.2 %}background-image:url('{{ hero_bg_images.2.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content" style="{% if config.page_evenements_font and config.page_evenements_font != 'inherit' %}font-family:{{ config.page_evenements_font }};{% endif %}">
-                    <h2 style="font-size:{{ config.page_evenements_titre_size|default:'2.4rem' }};font-weight:{% if config.page_evenements_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_evenements_titre_italic %}italic{% else %}normal{% endif %};">{{ config.evenements_titre|default:"Événements DounIA" }}</h2>
-                    <p style="font-size:{{ config.page_evenements_desc_size|default:'1.05rem' }};font-weight:{% if config.page_evenements_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_evenements_desc_italic %}italic{% else %}normal{% endif %};">{{ config.evenements_sous_titre|truncatewords:30 }}</p>
-                    <a href="{% url 'evenements_page' %}" class="hero-slide-btn">En savoir plus</a>
-                </div>
-            </div>
+            <!-- Slide Événements -->
+            <div class="carousel-item" style="{% if config.page_evenements_hero_image %}background-image:url('{{ config.page_evenements_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.2 %}background-image:url('{{ hero_bg_images.2.get_image_url }}');{% endif %}"></div>
 
-            <!-- Slide 4 : Podcast -->
-            <div class="carousel-item" style="{% if config.page_podcast_hero_image %}background-image:url('{{ config.page_podcast_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.3 %}background-image:url('{{ hero_bg_images.3.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content" style="{% if config.page_podcast_font and config.page_podcast_font != 'inherit' %}font-family:{{ config.page_podcast_font }};{% endif %}">
-                    <h2 style="font-size:{{ config.page_podcast_titre_size|default:'2.4rem' }};font-weight:{% if config.page_podcast_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_podcast_titre_italic %}italic{% else %}normal{% endif %};">{{ config.galerie_videos_titre|default:"Podcast DounIA" }}</h2>
-                    <p style="font-size:{{ config.page_podcast_desc_size|default:'1.05rem' }};font-weight:{% if config.page_podcast_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_podcast_desc_italic %}italic{% else %}normal{% endif %};">Le podcast DounIA prolonge les réflexions à travers des échanges avec des experts, chercheurs et praticiens des données et de l'IA.</p>
-                    <a href="{% url 'podcast_page' %}" class="hero-slide-btn">En savoir plus</a>
-                </div>
-            </div>
+            <!-- Slide Podcast -->
+            <div class="carousel-item" style="{% if config.page_podcast_hero_image %}background-image:url('{{ config.page_podcast_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.3 %}background-image:url('{{ hero_bg_images.3.get_image_url }}');{% endif %}"></div>
 
-            <!-- Slide 5 : Livrable -->
-            <div class="carousel-item" style="{% if config.page_livrable_hero_image %}background-image:url('{{ config.page_livrable_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.4 %}background-image:url('{{ hero_bg_images.4.get_image_url }}');{% endif %}">
-                <div class="hero-slide-content" style="{% if config.page_livrable_font and config.page_livrable_font != 'inherit' %}font-family:{{ config.page_livrable_font }};{% endif %}">
-                    <h2 style="font-size:{{ config.page_livrable_titre_size|default:'2.4rem' }};font-weight:{% if config.page_livrable_titre_bold %}900{% else %}400{% endif %};font-style:{% if config.page_livrable_titre_italic %}italic{% else %}normal{% endif %};">{{ config.rapport_titre|default:"Livrable DounIA" }}</h2>
-                    <p style="font-size:{{ config.page_livrable_desc_size|default:'1.05rem' }};font-weight:{% if config.page_livrable_desc_bold %}700{% else %}400{% endif %};font-style:{% if config.page_livrable_desc_italic %}italic{% else %}normal{% endif %};">{{ config.rapport_sous_titre|truncatewords:30 }}</p>
-                    <a href="{% url 'livrable_page' %}" class="hero-slide-btn">En savoir plus</a>
-                </div>
-            </div>
+            <!-- Slide Livrable -->
+            <div class="carousel-item" style="{% if config.page_livrable_hero_image %}background-image:url('{{ config.page_livrable_hero_image.url }}');{% elif hero_bg_images and hero_bg_images.4 %}background-image:url('{{ hero_bg_images.4.get_image_url }}');{% endif %}"></div>
 
         </div>
+
+        {% if dernier_article %}
+        <!-- Bloc fixe : dernier article, visible sur tous les slides -->
+        <div class="hero-article-fixed">
+            <span class="hero-article-badge">À la une{% if dernier_article.rubrique %} · {{ dernier_article.rubrique.nom }}{% endif %}</span>
+            <h2 style="font-size:{{ config.page_about_titre_size|default:'2.4rem' }};font-weight:900;">{{ dernier_article.titre }}</h2>
+            <p class="hero-article-meta">{{ dernier_article.date_publication|date:'d M Y' }}</p>
+            <p>{{ dernier_article.chapo|default:dernier_article.corps|striptags|truncatewords:28 }}</p>
+            <a href="/actualites/{{ dernier_article.slug }}/" class="hero-slide-btn">Lire l'article</a>
+        </div>
+        {% endif %}
         <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </button>
